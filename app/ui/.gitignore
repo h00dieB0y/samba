@@ -1,0 +1,101 @@
+# -----------------------
+# Flutter .gitignore File
+# -----------------------
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IDE Related
+
+# IntelliJ/Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+.idea_modules/
+.gradle/
+local.properties
+
+# VSCode
+.vscode/
+
+# Flutter/Dart/Pub Related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/coverage/
+/build/
+/.merged_bin/
+
+# Android Related
+/android/app/debug
+/android/app/profile
+/android/app/release
+**/android/local.properties
+/android/key.properties
+/android/.externalNativeBuild/
+/android/.cxx/
+
+# iOS Related
+ios/Flutter/Flutter.framework
+ios/Flutter/App.framework
+ios/Flutter/Flutter.podspec
+ios/.symlinks/
+ios/Pods/
+ios/.dart_tool/
+ios/Generated.xcconfig
+ios/ServiceDefinitions.json
+ios/Runner.xcworkspace
+
+# Firebase and Secrets
+google-services.json
+GoogleService-Info.plist
+.firebase/
+firebase_app_id_file.json
+
+# Generated Artifacts
+app.*.symbols
+app.*.map.json
+*.apk
+*.aab
+*.ipa
+
+# Debug and Testing
+test-output/
+reports/
+.dart_tool/package_config.json
+
+# User Specific Files
+*.user
+*.rs.user
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Obfuscation Related
+app.*.map.json
+app.*.symbols
+
+# Symbolication Related
+app.*.symbols
+
+# Android Studio Build Artifacts
+/android/app/debug
+/android/app/profile
+/android/app/release
