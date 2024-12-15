@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/presentation/pages/home_page/widgets/home_search_bar.dart';
 
 
 class HomeHeader extends StatelessWidget {
@@ -7,30 +8,7 @@ class HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
       children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const TextField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Search on Somba.com',
-                      prefixIcon: Icon(Icons.search),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        const HomeSearchBar(),
         // Category list
         SizedBox(
           height: 50,
