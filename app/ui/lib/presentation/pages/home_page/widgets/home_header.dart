@@ -2,29 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:ui/presentation/pages/home_page/widgets/category_item.dart';
 import 'package:ui/presentation/pages/home_page/widgets/home_search_bar.dart';
 
-
-class HomeHeader extends StatelessWidget {
+class HomeHeader extends StatefulWidget {
   const HomeHeader({super.key});
 
   @override
-  Widget build(BuildContext context) => Column(
+  State<HomeHeader> createState() => _HomeHeaderState();
+}
+
+class _HomeHeaderState extends State<HomeHeader> {
+  int selectedCategoryIndex = 0; // Track the selected category
+
+  final List<String> categoryList = [
+    'All',
+    'Clothes',
+    'Shoes',
+    'Electronics',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const HomeSearchBar(),
-        // Category list
+        const SizedBox(height: 10),
         SizedBox(
-          height: 50,
-          child: ListView(
+          height: 60,
+          child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            children: const [
-              CategoryItem(title: 'All', icon: Icons.apps),
-              CategoryItem(title: 'Clothes', icon: Icons.shopping_bag),
-              CategoryItem(title: 'Shoes', icon: Icons.shopping_bag),
-              CategoryItem(title: 'Electronics', icon: Icons.shopping_bag),
-              CategoryItem(title: 'Furniture', icon: Icons.shopping_bag),
-              CategoryItem(title: 'Books', icon: Icons.shopping_bag),
-            ],
+            physics: const BouncingScrollPhysics(), // Smooth scroll
+            itemCount: categoryList.length,
+            itemBuilder: (context, index) {
+              return CategoryItem(
+                title: categoryList[index],
+                isSelected: selectedCategoryIndex == index,
+                onTap: () {
+                  setState(() {
+                    selectedCategoryIndex = index;
+                  });
+                },
+              );
+            },
           ),
         ),
       ],
     );
+  }
 }
