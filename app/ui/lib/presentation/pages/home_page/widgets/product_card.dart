@@ -27,6 +27,14 @@ class ProductCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const Text(
+                "Shop Name",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blueGrey,
+                ),
+              ),
+              const SizedBox(height: 5),
               Flexible(
                 child: Image.network(
                   'https://via.placeholder.com/150',
