@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/presentation/pages/home_page/widgets/home_header.dart';
+import 'package:ui/presentation/pages/home_page/widgets/product_grid.dart';
 import 'package:ui/presentation/widgets/app_bottom_navigation_bar.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,98 +9,17 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: const SafeArea(
         child: Column(
           children: [
-            const HomeHeader(),
-            productList(),
+            HomeHeader(),
+            ProductGrid(),
           ],
         ),
       ),
       bottomNavigationBar: AppBottomNavigationBar(onTap: (index) {
         // Handle navigation on tap
       }, currentIndex: 0),
-    );
-  }
-
-  // Product list
-  Widget productList() {
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.7,
-        ),
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return productItem();
-        },
-      ),
-    );
-  }
-
-  Widget productItem() {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to product details
-      },
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              child: Image.network(
-                'https://via.placeholder.com/150',
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Product Name',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 5),
-            const Text(
-              'Price: \$100',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.green,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 5),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Add to cart action
-                },
-                child: const Text('Add to Cart'),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
