@@ -32,6 +32,16 @@ public class Product {
     this.stock = stock;
   }
 
+  public Product(
+      String name,
+      String description,
+      String brand,
+      int price,
+      int stock
+  ) {
+    this(UUID.randomUUID(), name, description, brand, price, stock);
+  }
+
   public UUID getId() {
     return this.id;
   }
