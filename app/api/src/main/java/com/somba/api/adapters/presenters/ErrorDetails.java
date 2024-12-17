@@ -8,4 +8,9 @@ public record ErrorDetails(
   String error,
   String message,
   String path
-) {}
+) {
+
+  public ErrorDetails(int status, String error, String message, String path) {
+    this(LocalDateTime.now(), status, error, message, path);
+  }
+}
