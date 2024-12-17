@@ -1,9 +1,13 @@
 package com.somba.api.core.entities;
 
 import java.util.UUID;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.Id;
 
+@Document(collection = "products")
 public class Product {
   
+  @Id
   private final UUID id;
 
   private String name;
@@ -16,13 +20,14 @@ public class Product {
    * Price in cents
    */
   private int price;
-  
+
   private int stock;
 
-  public Product(UUID id, String name, String description, int price, int stock) {
+  public Product(UUID id, String name, String description, String brand, int price, int stock) {
     this.id = id;
     this.name = name;
     this.description = description;
+    this.brand = brand;
     this.price = price;
     this.stock = stock;
   }
