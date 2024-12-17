@@ -4,7 +4,7 @@ package com.somba.api.core.usecases;
 import java.util.List;
 
 import com.somba.api.adapters.presenters.ProductResponse;
-import com.somba.api.core.interfaces.ProductRepository;
+import com.somba.api.adapters.repositories.ProductRepository;
 
 public class ListProductsUseCase {
 

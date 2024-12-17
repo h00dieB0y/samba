@@ -1,4 +1,4 @@
-package com.somba.api.core.interfaces;
+package com.somba.api.adapters.repositories;
 
 import java.util.List;
 
