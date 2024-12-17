@@ -1,13 +1,9 @@
 package com.somba.api.core.entities;
 
 import java.util.UUID;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.annotation.Id;
 
-@Document(collection = "products")
 public class Product {
   
-  @Id
   private final UUID id;
 
   private String name;
