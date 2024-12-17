@@ -3,7 +3,7 @@ package com.somba.api.core.usecases;
 
 import java.util.List;
 
-import com.somba.api.core.entities.Product;
+import com.somba.api.adapters.presenters.ProductResponse;
 import com.somba.api.core.interfaces.ProductRepository;
 
 public class ListProductsUseCase {
@@ -14,7 +14,9 @@ public class ListProductsUseCase {
     this.productRepository = productRepository;
   }
 
-  public List<Product> execute(int page, int size) {
-    return productRepository.getProducts(page, size);
+  public List<ProductResponse> execute(int page, int size) {
+    return productRepository.getProducts(page, size).stream()
+        .map(ProductResponse::fromDomain)
+        .toList();
   }
 }
