@@ -2,10 +2,16 @@ name: API CI Pipeline
 
 on:
   push:
-    branches: [ '**' ]  # Triggers on pushes to any branch
+    branches:
+      - main
+      - develop
   pull_request:
     types: [ opened, synchronize, reopened ]
-    branches: [ '**' ]  # Triggers on pull requests targeting any branch
+    branches: [ '**' ]
+
+concurrency:
+  group: ${{ github.event.pull_request.head.sha }}
+  cancel-in-progress: true
 
 jobs:
   Build_and_Test:
