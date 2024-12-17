@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Product {
   
-  private UUID id;
+  private final UUID id;
 
   private String name;
 
@@ -16,10 +16,8 @@ public class Product {
    * Price in cents
    */
   private int price;
+  
   private int stock;
-
-  public Product() {
-  }
 
   public Product(UUID id, String name, String description, int price, int stock) {
     this.id = id;
