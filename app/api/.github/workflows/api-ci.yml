@@ -9,8 +9,6 @@ on:
   pull_request:
     # Specifies the types of pull request events to trigger the workflow
     types: [ opened, synchronize, reopened ]
-    # Specifies that the workflow should run for pull requests targeting any branch
-    branches: [ '**' ]
 
 jobs:
   Build_and_Test:
