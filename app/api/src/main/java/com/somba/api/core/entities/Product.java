@@ -41,6 +41,10 @@ public class Product {
     return this.description;
   }
 
+  public String getBrand() {
+    return this.brand;
+  }
+
   public int getPrice() {
     return this.price;
   }
