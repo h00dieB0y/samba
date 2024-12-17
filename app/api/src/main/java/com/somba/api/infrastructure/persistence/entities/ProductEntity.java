@@ -7,9 +7,13 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.somba.api.infrastructure.persistence.listeners.ProductEntityListener;
+
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 
 @Document(collection = "products")
+@EntityListeners(ProductEntityListener.class)
 public class ProductEntity {
 
   @Id
@@ -35,8 +39,7 @@ public class ProductEntity {
   private LocalDateTime updatedAt;
 
   public ProductEntity() {
-    this.createdAt = LocalDateTime.now();
-    this.updatedAt = LocalDateTime.now();
+    // Empty constructor needed by Spring Data
   }
 
   public String getId() {
