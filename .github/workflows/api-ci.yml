@@ -1,20 +1,20 @@
 name: API CI Pipeline
 
-run-name: ${{ github.actor }} is testing out the API
-
 on:
   push:
-    branches:
-      - main
+    branches: [ '**' ]  # Triggers on pushes to any branch
   pull_request:
-    branches:
-      - main
-
+    types: [ opened, synchronize, reopened ]
+    branches: [ '**' ]  # Triggers on pull requests targeting any branch
 
 jobs:
   Build_and_Test:
 
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./app/api
 
     env:
       JAVA_VERSION: '21'
@@ -24,41 +24,10 @@ jobs:
       SONAR_HOST_URL: https://sonarcloud.io
       SONAR_PROJECT_KEY: com.somba:api
 
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: test_user
-          POSTGRES_PASSWORD: test_password
-          POSTGRES_DB: somba_test_db
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U test_user"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-      mongo:
-        image: mongo:6
-        env:
-          MONGO_INITDB_ROOT_USERNAME: test_mongo_user
-          MONGO_INITDB_ROOT_PASSWORD: test_mongo_pass
-          MONGO_INITDB_DATABASE: test_somba_catalog
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "echo 'db.runCommand({ ping: 1 })' | mongo localhost:27017/test_somba_catalog --quiet"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
-      # 1. Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2. Set up JDK 21
       - name: Set Up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -66,24 +35,24 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
-      # 3. Cache Maven Dependencies
       - name: Cache Maven Dependencies
         uses: actions/cache@v4
         with:
           path: |
             ~/.m2/repository
             !~/.m2/repository/org/apache/maven/plugins/maven-surefire-plugin
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+            !~/.m2/repository/org/jacoco
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/app/api/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # 4. Verify Maven Installation
       - name: Verify Maven Installation
         run: mvn --version
+        working-directory: ./app/api
 
-      # 5. Build and Test with Maven
       - name: Build and Test with Maven
         run: mvn clean verify --fail-fast -Dspring.profiles.active=test
+        working-directory: ./app/api
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/somba_test_db
           SPRING_DATA_MONGODB_URI: mongodb://test_mongo_user:test_mongo_pass@localhost:27017/test_somba_catalog
@@ -97,9 +66,7 @@ jobs:
           MONGO_INITDB_ROOT_USERNAME: test_mongo_user
           MONGO_INITDB_ROOT_PASSWORD: test_mongo_pass
           API_VERSION: test_v1
-          # Add other necessary environment variables if needed
 
-      # 6. Run SonarCloud Analysis
       - name: Run SonarCloud Analysis
         uses: SonarSource/sonarcloud-github-action@v4
         with:
@@ -110,18 +77,16 @@ jobs:
             -Dsonar.login=${{ env.SONAR_TOKEN }}
             -Dsonar.java.binaries=target/classes
 
-      # 7. Upload Test Reports
       - name: Upload Test Reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: test-reports
-          path: target/surefire-reports/
+          path: ./app/api/target/surefire-reports/
 
-      # 8. Upload JaCoCo Coverage Report
       - name: Upload JaCoCo Coverage Report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
-          path: target/site/jacoco/
+          path: ./app/api/target/site/jacoco/
