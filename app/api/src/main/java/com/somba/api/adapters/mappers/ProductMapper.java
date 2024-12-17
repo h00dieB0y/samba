@@ -13,14 +13,13 @@ public class ProductMapper {
   
   public ProductResponse toResponse(Product product) {
     return new ProductResponse(
-        product.getId().toString(),
-        product.getName(),
-        product.getBrand(),
-        product.getPrice()
+        product.id().toString(),
+        product.name(),
+        product.brand(),
+        product.price()
     );
   }
   
-  // ProductEntity to Product
   public Product toDomain(ProductEntity productEntity) {
     return new Product(
       UUID.fromString(productEntity.getId()),
