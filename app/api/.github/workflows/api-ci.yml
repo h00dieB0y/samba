@@ -1,12 +1,15 @@
 name: API CI Pipeline
 
-on:
-  # Trigger the workflow on push events to the 'main' branch
-  push:
-    branches: [ main ]
+run-name: ${{ github.actor }} is testing out the API
 
-  # Trigger the workflow on pull request events targeting any branch
+on:
+  push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
+
 
 jobs:
   Build_and_Test:
