@@ -1,9 +1,8 @@
 package com.somba.api.infrastructure.persistence;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import java.util.UUID;
 
-import com.somba.api.core.entities.Product;
+import com.somba.api.infrastructure.persistence.entities.ProductEntity;
 
-public interface MdbProductRepository extends MongoRepository<Product, UUID> {
+public interface MdbProductRepository extends MongoRepository<ProductEntity, String> {
 }
