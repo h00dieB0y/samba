@@ -13,8 +13,9 @@ public class ProductEntityListener {
   public void prePersist(ProductEntity productEntity) {
     LocalDateTime now = LocalDateTime.now();
 
-    productEntity.setCreatedAt(now);
-    productEntity.setUpdatedAt(now);
+    productEntity
+      .setCreatedAt(now)
+      .setUpdatedAt(now);
   }
 
   @PreUpdate

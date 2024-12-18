@@ -43,100 +43,118 @@ public class ProductEntity {
   }
 
   public String getId() {
-      return this.id;
+    return this.id;
   }
 
-  public void setId(String id) {
-      this.id = id;
+  public ProductEntity setId(String id) {
+    this.id = id;
+
+    return this;
   }
 
   public String getName() {
-      return this.name;
+    return this.name;
   }
 
-  public void setName(String name) {
-      this.name = name;
+  public ProductEntity setName(String name) {
+    this.name = name;
+
+    return this;
   }
 
   public String getDescription() {
-      return description;
+    return description;
   }
 
-  public void setDescription(String description) {
-      this.description = description;
+  public ProductEntity setDescription(String description) {
+    this.description = description;
+
+    return this;
   }
 
   public String getBrand() {
-      return this.brand;
+    return this.brand;
   }
 
-  public void setBrand(String brand) {
-      this.brand = brand;
+  public ProductEntity setBrand(String brand) {
+    this.brand = brand;
+
+    return this;
   }
 
   public int getPrice() {
-      return this.price;
+    return this.price;
   }
 
-  public void setPrice(int price) {
-      this.price = price;
+  public ProductEntity setPrice(int price) {
+    this.price = price;
+
+    return this;
   }
 
   public int getStock() {
-      return this.stock;
+    return this.stock;
   }
 
-  public void setStock(int stock) {
-      this.stock = stock;
+  public ProductEntity setStock(int stock) {
+    this.stock = stock;
+
+    return this;
   }
 
   public LocalDateTime getCreatedAt() {
-      return createdAt;
+    return createdAt;
   }
 
-  public void setCreatedAt(LocalDateTime createdAt) {
-      this.createdAt = createdAt;
+  public ProductEntity setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+
+    return this;
   }
 
   public LocalDateTime getUpdatedAt() {
-      return updatedAt;
+    return updatedAt;
   }
 
-  public void setUpdatedAt(LocalDateTime updatedAt) {
-      this.updatedAt = updatedAt;
+  public ProductEntity setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+
+    return this;
   }
 
   @Override
   public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      ProductEntity that = (ProductEntity) o;
-      return price == that.price &&
-              stock == that.stock &&
-              Objects.equals(id, that.id) &&
-              Objects.equals(name, that.name) &&
-              Objects.equals(description, that.description) &&
-              Objects.equals(brand, that.brand) &&
-              Objects.equals(createdAt, that.createdAt) &&
-              Objects.equals(updatedAt, that.updatedAt);
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
+    ProductEntity that = (ProductEntity) o;
+    return price == that.price &&
+        stock == that.stock &&
+        Objects.equals(id, that.id) &&
+        Objects.equals(name, that.name) &&
+        Objects.equals(description, that.description) &&
+        Objects.equals(brand, that.brand) &&
+        Objects.equals(createdAt, that.createdAt) &&
+        Objects.equals(updatedAt, that.updatedAt);
   }
 
   @Override
   public int hashCode() {
-      return Objects.hash(id, name, description, brand, price, stock, createdAt, updatedAt);
+    return Objects.hash(id, name, description, brand, price, stock, createdAt, updatedAt);
   }
 
   @Override
   public String toString() {
-      return "ProductEntity{" +
-              "id='" + id + '\'' +
-              ", name='" + name + '\'' +
-              ", description='" + description + '\'' +
-              ", brand='" + brand + '\'' +
-              ", price=" + price +
-              ", stock=" + stock +
-              ", createdAt=" + createdAt +
-              ", updatedAt=" + updatedAt +
-              '}';
+    return "ProductEntity{" +
+        "id='" + id + '\'' +
+        ", name='" + name + '\'' +
+        ", description='" + description + '\'' +
+        ", brand='" + brand + '\'' +
+        ", price=" + price +
+        ", stock=" + stock +
+        ", createdAt=" + createdAt +
+        ", updatedAt=" + updatedAt +
+        '}';
   }
 }
