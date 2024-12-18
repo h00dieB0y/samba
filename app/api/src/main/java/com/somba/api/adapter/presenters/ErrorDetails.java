@@ -1,4 +1,4 @@
-package com.somba.api.adapters.presenters;
+package com.somba.api.adapter.presenters;
 
 import java.time.LocalDateTime;
 

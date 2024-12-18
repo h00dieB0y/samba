@@ -1,12 +1,12 @@
-package com.somba.api.adapters.controllers;
+package com.somba.api.adapter.controllers;
 
 import java.util.List;
 import java.util.stream.Stream;
 
+import com.somba.api.adapter.mappers.ProductMapper;
+import com.somba.api.adapter.presenters.ProductView;
+import com.somba.api.adapter.presenters.Response;
 import com.somba.api.core.usecases.ListProductsUseCase;
-import com.somba.api.adapters.mappers.ProductMapper;
-import com.somba.api.adapters.presenters.ProductView;
-import com.somba.api.adapters.presenters.Response;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

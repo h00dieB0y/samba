@@ -1,10 +1,10 @@
-package com.somba.api.adapters.mappers;
+package com.somba.api.adapter.mappers;
 
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
-import com.somba.api.adapters.presenters.ProductView;
+import com.somba.api.adapter.presenters.ProductView;
 import com.somba.api.core.entities.Product;
 import com.somba.api.infrastructure.persistence.entities.ProductEntity;
 

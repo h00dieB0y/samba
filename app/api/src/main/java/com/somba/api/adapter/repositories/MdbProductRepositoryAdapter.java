@@ -1,9 +1,9 @@
-package com.somba.api.adapters.repositories;
+package com.somba.api.adapter.repositories;
 
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
 
-import com.somba.api.adapters.mappers.ProductMapper;
+import com.somba.api.adapter.mappers.ProductMapper;
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.ports.ProductRepository;
 import com.somba.api.infrastructure.persistence.MdbProductRepository;
