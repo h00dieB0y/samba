@@ -51,6 +51,18 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] %-5level %logger{36} - %msg%n"
 
 # ----------------------------------------
+# Spring Doc OpenAPI Configuration
+# ----------------------------------------
+springdoc:
+  show-actuator: true
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+# ----------------------------------------
 # CORS Configuration
 # ----------------------------------------
 cors:
@@ -64,3 +76,8 @@ cors:
 # ----------------------------------------
 api:
   version: ${API_VERSION:v1}
+  contact:
+    name: "h00dieB0y"
+    email: "emilemannekitsoukou@gmail.com"
+    website: "https://mkitsoukou.engineer"
+
