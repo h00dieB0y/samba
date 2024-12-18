@@ -4,15 +4,15 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
-import com.somba.api.adapters.presenters.ProductResponse;
+import com.somba.api.adapters.presenters.ProductView;
 import com.somba.api.core.entities.Product;
 import com.somba.api.infrastructure.persistence.entities.ProductEntity;
 
 @Component
 public class ProductMapper {
   
-  public ProductResponse toResponse(Product product) {
-    return new ProductResponse(
+  public ProductView toResponse(Product product) {
+    return new ProductView(
         product.id().toString(),
         product.name(),
         product.brand(),
