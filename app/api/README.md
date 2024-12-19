@@ -1,6 +1,14 @@
 # Somba E-commerce API
 
-This is the Somba E-commerce API built with Spring Boot. It provides a RESTful API for managing products in an e-commerce platform.
+[![Build Status](https://github.com/h00dieB0y/somba-api/actions/workflows/api-ci.yml/badge.svg)](https://github.com/h00dieB0y/somba-api/actions)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.somba%3Aapi&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=com.somba%3Aapi)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=com.somba%3Aapi&metric=bugs)](https://sonarcloud.io/summary/new_code?id=com.somba%3Aapi)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=com.somba%3Aapi&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=com.somba%3Aapi)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.somba%3Aapi&metric=coverage)](https://sonarcloud.io/summary/new_code?id=com.somba%3Aapi)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=com.somba%3Aapi&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=com.somba%3Aapi)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+Somba E-commerce API is a robust RESTful service built with Spring Boot, designed to manage products within an e-commerce platform efficiently.
 
 ## Table of Contents
 
@@ -17,14 +25,14 @@ This is the Somba E-commerce API built with Spring Boot. It provides a RESTful A
 
 ## Features
 
-- **Product Management**: 
-  - Create, read, update, and delete products.*(Coming soon)*
-  - Search products by name, category, and other attributes.*(Coming soon)*
+- **Product Management**:
+  - Create, read, update, and delete products.*(Coming Soon)*
+  - Search products by name, category, and other attributes.*(Coming Soon)*
   - Pagination support for product listings.
 
 ## Getting Started
 
-These instructions will help you set up and run the project on your local machine for development and testing purposes.
+Follow these instructions to set up and run the project locally for development and testing purposes.
 
 ## Prerequisites
 
@@ -41,7 +49,7 @@ These instructions will help you set up and run the project on your local machin
     cd somba-api
     ```
 
-2. Copy the example environment file and configure it:
+2. Configure environment variables:
     ```sh
     cp .env.example .env
     ```
@@ -53,32 +61,30 @@ These instructions will help you set up and run the project on your local machin
 
 ## Running the Application
 
-1. Start the required services using Docker Compose:
+1. Start services with Docker Compose:
     ```sh
     docker-compose up -d
     ```
 
-2. Run the Spring Boot application:
+2. Launch the Spring Boot application:
     ```sh
     ./mvnw spring-boot:run
     ```
 
-The application will be available at [http://localhost:8081](http://localhost:8081).
+Access the application at [http://localhost:8081](http://localhost:8081).
 
 ## Running Tests
 
-To run the tests, use the following command:
+Execute the tests with:
 ```sh
 ./mvnw test
 ```
 
 ## API Documentation
 
-The API documentation is available at [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html).
+Access the API documentation at [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html).
 
 ## Project Structure
-
-The project structure is as follows:
 
 ```
 src/
@@ -121,8 +127,8 @@ src/
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for any changes.
+Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
 
-# License
-This project is licensed under the MIT License - see the LICENSE file for details.
+## License
 
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
