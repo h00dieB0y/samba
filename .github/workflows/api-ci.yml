@@ -1,0 +1,79 @@
+name: API CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    branches: [ '**' ]
+
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  Build_and_Test:
+
+    runs-on: ubuntu-latest
+
+    env:
+      JAVA_VERSION: '21'
+      MAVEN_OPTS: '-Xmx2g'
+      SONAR_TOKEN: ${{ secrets.API_SONAR_TOKEN }}
+      SONAR_ORGANIZATION: jarhead-killgrave
+      SONAR_HOST_URL: https://sonarcloud.io
+      SONAR_PROJECT_KEY: com.somba:api
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            !~/.m2/repository/org/apache/maven/plugins/maven-surefire-plugin
+            !~/.m2/repository/org/jacoco
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/app/api/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Verify Maven Installation
+        run: mvn --version
+        working-directory: ./app/api
+
+      - name: Build and Test with Maven
+        run: mvn clean verify --fail-fast -Dspring.profiles.active=test
+        working-directory: ./app/api
+
+      - name: Run SonarCloud Analysis
+        uses: SonarSource/sonarqube-scan-action@v4
+        with:
+          args: >
+            -Dsonar.token=${{ env.SONAR_TOKEN }}
+          projectBaseDir: ./app/api
+
+
+      - name: Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: ./app/api/target/surefire-reports/
+
+      - name: Upload JaCoCo Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: ./app/api/target/site/jacoco/

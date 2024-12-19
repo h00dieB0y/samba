@@ -1,0 +1,83 @@
+# ----------------------------------------
+# Spring Boot Core Settings
+# ----------------------------------------
+spring:
+  application:
+    name: somba-api
+
+  profiles:
+    active: development
+
+  # PostgreSQL Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:${DB_PORT:5432}/${DB_NAME:somba_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:securepassword}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # Use "validate" or "none" in production
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # MongoDB Configuration (Localhost Connection from Docker)
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: ${MONGO_DB:somba_db}
+      username: ${MONGO_INITDB_ROOT_USERNAME:admin}
+      password: ${MONGO_INITDB_ROOT_PASSWORD:securepassword}
+      authentication-database: admin
+
+# Server Configuration
+server:
+  port: ${APP_PORT:8081}
+
+# ----------------------------------------
+# Logging Configuration (Best Practices)
+# ----------------------------------------
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    com.somba: DEBUG  # Customize based on your package structure
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] %-5level %logger{36} - %msg%n"
+
+# ----------------------------------------
+# Spring Doc OpenAPI Configuration
+# ----------------------------------------
+springdoc:
+  show-actuator: true
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+# ----------------------------------------
+# CORS Configuration
+# ----------------------------------------
+cors:
+  allowed-origins: "*"
+  allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+  allowed-headers: "*"
+  exposed-headers: "Authorization"
+
+# ----------------------------------------
+# API Versioning
+# ----------------------------------------
+api:
+  version: ${API_VERSION:v1}
+  contact:
+    name: "h00dieB0y"
+    email: "emilemannekitsoukou@gmail.com"
+    website: "https://mkitsoukou.engineer"
+
