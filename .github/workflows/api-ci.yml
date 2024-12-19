@@ -10,7 +10,7 @@ on:
     branches: [ '**' ]
 
 concurrency:
-  group: ${{ github.event.pull_request.head.sha }}
+  group: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
 
 jobs:
