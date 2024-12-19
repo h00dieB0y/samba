@@ -1,16 +1,22 @@
 package com.somba.api.adapter.presenters;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record ErrorDetails(
-  LocalDateTime timestamp,
   int status,
-  String error,
+  String errorType,
   String message,
-  String path
+  List<String> details,
+  String path,
+  LocalDateTime timestamp
 ) {
 
+  public ErrorDetails(int status, String error, String message, List<String> details, String path) {
+    this(status, error, message, details, path, LocalDateTime.now());
+  }
+
   public ErrorDetails(int status, String error, String message, String path) {
-    this(LocalDateTime.now(), status, error, message, path);
+    this(status, error, message, List.of(), path, LocalDateTime.now());
   }
 }
