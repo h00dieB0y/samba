@@ -1,6 +1,6 @@
 # Somba E-commerce API
 
-[![Build Status](https://github.com/h00dieB0y/somba-api/actions/workflows/api-ci.yml/badge.svg)](https://github.com/h00dieB0y/somba-api/actions)
+[![Build Status](https://github.com/h00dieB0y/somba/actions/workflows/api-ci.yml/badge.svg)](https://github.com/h00dieB0y/somba-api/actions)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.somba%3Aapi&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=com.somba%3Aapi)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=com.somba%3Aapi&metric=bugs)](https://sonarcloud.io/summary/new_code?id=com.somba%3Aapi)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=com.somba%3Aapi&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=com.somba%3Aapi)
