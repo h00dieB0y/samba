@@ -30,4 +30,14 @@ public class ProductMapper {
     productEntity.getStock()
   );
   }
+
+  public ProductEntity toEntity(Product product) {
+  return new ProductEntity()
+    .setId(product.id().toString())
+    .setName(product.name())
+    .setDescription(product.description())
+    .setBrand(product.brand())
+    .setPrice(product.price())
+    .setStock(product.stock());
+  }
 }
