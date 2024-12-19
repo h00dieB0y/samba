@@ -25,10 +25,15 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  # MongoDB Configuration (Localhost)
+  # MongoDB Configuration (Localhost Connection from Docker)
   data:
     mongodb:
-      uri: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:${MONGO_PORT:27017}/${MONGO_DB:somba_catalog}
+      host: localhost
+      port: 27017
+      database: ${MONGO_DB:somba_db}
+      username: ${MONGO_INITDB_ROOT_USERNAME:admin}
+      password: ${MONGO_INITDB_ROOT_PASSWORD:securepassword}
+      authentication-database: admin
 
 # Server Configuration
 server:
@@ -46,6 +51,18 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] %-5level %logger{36} - %msg%n"
 
 # ----------------------------------------
+# Spring Doc OpenAPI Configuration
+# ----------------------------------------
+springdoc:
+  show-actuator: true
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+# ----------------------------------------
 # CORS Configuration
 # ----------------------------------------
 cors:
@@ -59,3 +76,8 @@ cors:
 # ----------------------------------------
 api:
   version: ${API_VERSION:v1}
+  contact:
+    name: "h00dieB0y"
+    email: "emilemannekitsoukou@gmail.com"
+    website: "https://mkitsoukou.engineer"
+
