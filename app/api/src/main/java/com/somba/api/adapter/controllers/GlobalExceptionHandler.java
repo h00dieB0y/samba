@@ -16,7 +16,6 @@ import jakarta.validation.ConstraintViolationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,7 +31,7 @@ public class GlobalExceptionHandler {
         logger.error("An unexpected error occurred: {}", ex.getMessage(), ex);
         return new ErrorDetails(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Internal Server Error",
+                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 "An unexpected error occurred. Please try again later.",
                 request.getDescription(false).replace("uri=", "")
         );
@@ -56,7 +55,7 @@ public class GlobalExceptionHandler {
 
         return new ErrorDetails(
                 HttpStatus.BAD_REQUEST.value(),
-                "Bad Request",
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 "Validation failed for one or more fields.",
                 errors,
                 request.getDescription(false).replace("uri=", ""),
@@ -80,7 +79,7 @@ public class GlobalExceptionHandler {
 
         return new ErrorDetails(
                 HttpStatus.BAD_REQUEST.value(),
-                "Bad Request",
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 "Validation failed for one or more fields.",
                 errors,
                 request.getDescription(false).replace("uri=", ""),
@@ -97,7 +96,7 @@ public class GlobalExceptionHandler {
         logger.warn("HTTP message not readable: {}", ex.getMessage());
         return new ErrorDetails(
                 HttpStatus.BAD_REQUEST.value(),
-                "Bad Request",
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 "Malformed JSON request.",
                 request.getDescription(false).replace("uri=", "")
         );
