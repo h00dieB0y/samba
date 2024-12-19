@@ -29,4 +29,20 @@ public class MdbProductRepositoryAdapter implements ProductRepository {
       .map(productMapper::toDomain)
       .toList();
   }
+
+  @Override
+  public void saveAll(List<Product> products) {
+    this.mdbProductRepository
+      .saveAll(
+        products
+          .stream()
+          .map(productMapper::toEntity)
+          .toList()
+      );
+  }
+
+  @Override
+  public void deleteAll() {
+    this.mdbProductRepository.deleteAll();
+  }
 }
