@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
         List<String> errors = ex.getConstraintViolations()
                 .stream()
                 .map(violation -> {
-                    String field = violation.getPropertyPath().toString();
+                    String field = violation.getPropertyPath().toString().split("\\.")[1];
                     String message = violation.getMessage();
                     return field + ": " + message;
                 })
