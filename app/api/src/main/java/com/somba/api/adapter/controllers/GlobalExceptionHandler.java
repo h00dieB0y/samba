@@ -3,9 +3,7 @@ package com.somba.api.adapter.controllers;
 import com.somba.api.adapter.presenters.ErrorDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -54,7 +52,7 @@ public class GlobalExceptionHandler {
                     String message = violation.getMessage();
                     return field + ": " + message;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         return new ErrorDetails(
                 HttpStatus.BAD_REQUEST.value(),
@@ -78,7 +76,7 @@ public class GlobalExceptionHandler {
                 .getFieldErrors()
                 .stream()
                 .map(FieldError::getDefaultMessage)
-                .collect(Collectors.toList());
+                .toList();
 
         return new ErrorDetails(
                 HttpStatus.BAD_REQUEST.value(),
