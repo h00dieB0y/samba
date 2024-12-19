@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ui/domain/entities/product_item_entity.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key});
+
+  final ProductItemEntity product;
+
+  const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -35,8 +39,8 @@ class ProductCard extends StatelessWidget {
                 tag: 'productImage', // Unique tag for smooth navigation animation
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    'https://via.placeholder.com/150',
+                  child: Image.asset(
+                    'assets/images/placeholder-image.png',
                     height: 120,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -46,9 +50,9 @@ class ProductCard extends StatelessWidget {
               const SizedBox(height: 10),
 
               // Shop Name
-              const Text(
-                "Shop Name",
-                style: TextStyle(
+              Text(
+                product.brand,
+                style: const TextStyle(
                   fontSize: 12,
                   color: Colors.blueGrey,
                   fontWeight: FontWeight.w500,
@@ -57,9 +61,9 @@ class ProductCard extends StatelessWidget {
               const SizedBox(height: 5),
 
               // Product Name
-              const Text(
-                'Product Name',
-                style: TextStyle(
+              Text(
+                product.name,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -68,9 +72,9 @@ class ProductCard extends StatelessWidget {
               const SizedBox(height: 5),
 
               // Price
-              const Text(
-                'Price: \$100',
-                style: TextStyle(
+              Text(
+                product.price,
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.green,
                   fontWeight: FontWeight.w600,
