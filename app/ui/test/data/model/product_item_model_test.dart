@@ -41,4 +41,50 @@ void main() {
       expect(entity.price, '1,000');
     });
   });
+
+  group('ProductItemModel Equatable', () {
+    test('should compare two equal ProductItemModel instances', () {
+      // Arrange
+      final model1 = ProductItemModel(
+        id: '123',
+        name: 'Test Product',
+        brand: 'Test Brand',
+        price: 1000,
+      );
+      final model2 = ProductItemModel(
+        id: '123',
+        name: 'Test Product',
+        brand: 'Test Brand',
+        price: 1000,
+      );
+
+      // Act
+      final result = model1 == model2;
+
+      // Assert
+      expect(result, true);
+    });
+
+    test('should compare two different ProductItemModel instances', () {
+      // Arrange
+      final model1 = ProductItemModel(
+        id: '123',
+        name: 'Test Product',
+        brand: 'Test Brand',
+        price: 1000,
+      );
+      final model2 = ProductItemModel(
+        id: '456',
+        name: 'Test Product 2',
+        brand: 'Test Brand 2',
+        price: 2000,
+      );
+
+      // Act
+      final result = model1 == model2;
+
+      // Assert
+      expect(result, false);
+    });
+  });
 }
