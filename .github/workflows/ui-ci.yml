@@ -8,7 +8,7 @@ on:
     types: [opened, synchronize, reopened]
 
 concurrency:
-  group: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+  group: ui-${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }} 
   cancel-in-progress: true
 
 jobs:
@@ -17,10 +17,15 @@ jobs:
     with:
       base_ref: ${{ github.event.pull_request.base.sha || github.event.before }}
       head_ref: ${{ github.event.pull_request.head.sha || github.event.after }}
-      paths: 'app/ui/'
+      paths: 'app/ui'
 
   sonarqube:
     name: SonarQube
+
+    needs: path-check
+
+    if: needs.path-check.outputs.changes_detected == 'true'
+    
     runs-on: ubuntu-latest
     defaults:
       run:

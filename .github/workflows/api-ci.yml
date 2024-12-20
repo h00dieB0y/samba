@@ -10,7 +10,7 @@ on:
     branches: [ '**' ]
 
 concurrency:
-  group: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+  group: api-${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
 
 jobs:
@@ -22,9 +22,14 @@ jobs:
       paths: 'app/api'
 
   Build_and_Test:
+    name: Build and Test
+
+    needs: path-check
+
+    if: needs.path-check.outputs.changes_detected == 'true'
 
     runs-on: ubuntu-latest
-
+    
     env:
       JAVA_VERSION: '21'
       MAVEN_OPTS: '-Xmx2g'
