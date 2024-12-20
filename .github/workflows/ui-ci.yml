@@ -72,3 +72,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Required to get PR information
           SONAR_TOKEN: ${{ secrets.UI_SONAR_TOKEN }}
+        with:
+          projectBaseDir: ./app/ui
