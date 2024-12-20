@@ -12,6 +12,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  path-check:
+    uses: ./.github/workflows/path-change-detector.yml
+    with:
+      base_ref: ${{ github.event.pull_request.base.sha || github.event.before }}
+      head_ref: ${{ github.event.pull_request.head.sha || github.event.after }}
+      paths: 'app/ui/'
+
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
@@ -49,7 +56,7 @@ jobs:
 
       - name: Build Flutter project (Web)
         run: flutter build web
-        
+
       # Test the Flutter project
       - name: Run Tests
         run: flutter test
