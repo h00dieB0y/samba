@@ -1,7 +1,8 @@
 
 import 'package:ui/domain/entities/product_item_entity.dart';
+import 'package:equatable/equatable.dart';
 
-class ProductItemModel {
+class ProductItemModel extends Equatable {
   final String id;
   final String name;
   final String brand;
@@ -35,5 +36,8 @@ class ProductItemModel {
       ),
     );
   }
+  
+  @override
+  List<Object?> get props => [id, name, brand, price];
 
 }
