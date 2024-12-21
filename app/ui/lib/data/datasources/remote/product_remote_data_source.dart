@@ -7,9 +7,10 @@ class ProductRemoteDataSource {
 
   ProductRemoteDataSource(this.client);
 
-  Future<List<ProductItemModel>> getProducts() async {
+  Future<List<ProductItemModel>> getProducts(
+      {required int page, required int perPage}) async {
     final response =
-        await client.get(Uri.parse('http://localhost:8081/api/v1/products'));
+        await client.get(Uri.parse('http://localhost:8081/api/v1/products?page=$page&size=$perPage'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
       final List<dynamic> products = jsonResponse['data'];
