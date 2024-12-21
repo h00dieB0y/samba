@@ -11,4 +11,8 @@ public record Product(
     int stock,
     Category category
 ) {
+
+  public Product(UUID id, String name, String description, String brand, int price, int stock) {
+    this(id, name, description, brand, price, stock, Category.OTHER);
+  }
 }
