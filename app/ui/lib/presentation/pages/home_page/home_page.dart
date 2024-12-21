@@ -14,16 +14,10 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: RepositoryProvider(
         create: (context) => GetProductsUseCase(context.read()),
-
         child: BlocProvider(
-          create: (context) => ProductsCubit(context.read<GetProductsUseCase>())..getProductList(),
-          child: const SafeArea(
-            child: Column(
-              children: [
-                HomeHeader(),
-                Expanded(child: ProductGrid()),
-              ],
-            ),
+          create: (context) => ProductsCubit(context.read<GetProductsUseCase>())..fetchProducts(isInitialLoad: true),
+          child: SafeArea(
+            child: HomeContent(),
           ),
         ),
       ),
@@ -33,6 +27,22 @@ class HomePage extends StatelessWidget {
         },
         currentIndex: 0,
       ),
+    );
+  }
+}
+
+class HomeContent extends StatelessWidget {
+  const HomeContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        HomeHeader(),
+        Expanded(
+          child: ProductGrid(),
+        ),
+      ],
     );
   }
 }
