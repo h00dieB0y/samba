@@ -63,13 +63,26 @@ class MockProductsCubit extends _i1.Mock implements _i3.ProductsCubit {
       ) as bool);
 
   @override
-  void getProductList() => super.noSuchMethod(
+  _i4.Future<void> fetchProducts({bool? isInitialLoad = false}) =>
+      (super.noSuchMethod(
         Invocation.method(
-          #getProductList,
+          #fetchProducts,
+          [],
+          {#isInitialLoad: isInitialLoad},
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> refreshProducts() => (super.noSuchMethod(
+        Invocation.method(
+          #refreshProducts,
           [],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
   void emit(_i2.ProductsState? state) => super.noSuchMethod(
