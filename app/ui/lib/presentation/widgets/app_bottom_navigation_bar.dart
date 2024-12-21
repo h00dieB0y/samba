@@ -27,10 +27,8 @@ class AppBottomNavigationBar extends StatelessWidget {
             label: 'Profile',
           ),
         ],
-        currentIndex: 0, // Set the current index as needed
-        onTap: (index) {
-          // Handle navigation on tap
-        },
+        currentIndex: currentIndex,
+        onTap: onTap,
         backgroundColor: Colors.white, // Set the background color
         selectedItemColor: Colors.blue, // Set the color of the selected item
         unselectedItemColor:
