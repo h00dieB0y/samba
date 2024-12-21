@@ -6,7 +6,11 @@ class GetProductsUseCase {
 
   GetProductsUseCase(this._productRepository);
 
-  Future<List<ProductItemEntity>> execute() {
-    return _productRepository.getProducts();
+  Future<List<ProductItemEntity>> execute(
+      {required int page, required int perPage}) {
+    return _productRepository.getProducts(
+      page: page,
+      perPage: perPage,
+    );
   }
 }
