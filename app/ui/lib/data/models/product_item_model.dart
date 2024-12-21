@@ -9,7 +9,7 @@ class ProductItemModel extends Equatable {
   // Price of the product in cents
   final int price;
 
-  ProductItemModel({
+  const ProductItemModel({
     required this.id,
     required this.name,
     required this.brand,
