@@ -13,9 +13,9 @@ class ProductsNotifier extends StateNotifier<AsyncValue<List<ProductItemEntity>>
 
   ProductsNotifier(this.getProductsUseCase) : super(const AsyncLoading());
 
-  Future<void> fetchProducts() async {
+  Future<void> fetchProducts({required int page, required int perPage}) async {
     try {
-      final products = await getProductsUseCase.execute();
+      final products = await getProductsUseCase.execute(page: page, perPage: perPage);
       state = AsyncData(products);
     } catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);
