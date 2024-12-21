@@ -53,10 +53,18 @@ class MockProductRemoteDataSource extends _i1.Mock
       ) as _i2.Client);
 
   @override
-  _i4.Future<List<_i5.ProductItemModel>> getProducts() => (super.noSuchMethod(
+  _i4.Future<List<_i5.ProductItemModel>> getProducts({
+    required int? page,
+    required int? perPage,
+  }) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getProducts,
           [],
+          {
+            #page: page,
+            #perPage: perPage,
+          },
         ),
         returnValue: _i4.Future<List<_i5.ProductItemModel>>.value(
             <_i5.ProductItemModel>[]),
