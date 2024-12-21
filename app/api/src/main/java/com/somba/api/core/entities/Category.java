@@ -21,14 +21,14 @@ public enum Category {
 
     public static Category fromValue(String value) {
       if (value == null) {
-          throw new NullCategoryException("Category cannot be null");
+          throw new NullCategoryException();
       }
         for (Category category : Category.values()) {
             if (category.value.equals(value.toLowerCase())) {
                 return category;
             }
         }
-        throw new InvalidCategoryException("Invalid category: " + value);
+        throw new InvalidCategoryException(value);
     }
 
     @Override
