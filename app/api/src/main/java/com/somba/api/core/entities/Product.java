@@ -8,6 +8,7 @@ public record Product(
     String description,
     String brand,
     int price,
-    int stock
+    int stock,
+    Category category
 ) {
 }
