@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class CategoryItem extends StatelessWidget {
@@ -16,7 +18,7 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) => GestureDetector(
         onTap: onTap,
         child: Container(
-          width: 100,
+          width: max(title.length * 10.0, 100), // Limit width
           margin: const EdgeInsets.only(left: 10),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
