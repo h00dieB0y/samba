@@ -25,6 +25,8 @@ public class ProductEntity {
 
   private String brand;
 
+  private String category;
+
   /**
    * Price of the product in cents
    */
@@ -102,6 +104,16 @@ public class ProductEntity {
     return this;
   }
 
+  public String getCategory() {
+    return category;
+  }
+
+  public ProductEntity setCategory(String category) {
+    this.category = category;
+
+    return this;
+  }
+
   public LocalDateTime getCreatedAt() {
     return createdAt;
   }
@@ -135,13 +147,14 @@ public class ProductEntity {
         Objects.equals(name, that.name) &&
         Objects.equals(description, that.description) &&
         Objects.equals(brand, that.brand) &&
+        Objects.equals(category, that.category) &&
         Objects.equals(createdAt, that.createdAt) &&
         Objects.equals(updatedAt, that.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, brand, price, stock, createdAt, updatedAt);
+    return Objects.hash(id, name, description, brand, category, price, stock, createdAt, updatedAt);
   }
 
   @Override
@@ -150,6 +163,7 @@ public class ProductEntity {
         "id='" + id + '\'' +
         ", name='" + name + '\'' +
         ", description='" + description + '\'' +
+        ", category='" + category + '\'' +
         ", brand='" + brand + '\'' +
         ", price=" + price +
         ", stock=" + stock +
