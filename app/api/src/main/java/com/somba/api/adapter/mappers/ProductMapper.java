@@ -39,6 +39,6 @@ public class ProductMapper {
     .setBrand(product.brand())
     .setPrice(product.price())
     .setStock(product.stock())
-    .setCategory(product.category().getValue());
+    .setCategory(product.category().name());
   }
 }
