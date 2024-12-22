@@ -1,3 +1,4 @@
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -7,6 +8,7 @@ import 'package:ui/data/repositories/product_repository_impl.dart';
 import 'package:ui/domain/entities/product_item_entity.dart';
 
 import 'product_repository_impl_test.mocks.dart';
+
 @GenerateMocks([ProductRemoteDataSource])
 void main() {
   late ProductRepositoryImpl repository;
@@ -28,7 +30,9 @@ void main() {
       ProductItemEntity(id: '2', name: 'Test Product 2', brand: 'Brand 2', price: '2,000'),
     ];
 
-    test('should return a list of ProductItemEntity when the call to remote data source is successful', () async {
+    test(
+        'should return a list of ProductItemEntity when the call to remote data source is successful',
+        () async {
       // Arrange
       when(mockRemoteDataSource.getProducts(page: anyNamed('page'), perPage: anyNamed('perPage')))
           .thenAnswer((_) async => tProductModels);
@@ -41,16 +45,19 @@ void main() {
       expect(result, tProductEntities);
     });
 
-    test('should throw an exception when the call to remote data source is unsuccessful', () async {
+    test(
+        'should throw an exception when the call to remote data source is unsuccessful',
+        () async {
       // Arrange
       when(mockRemoteDataSource.getProducts(page: anyNamed('page'), perPage: anyNamed('perPage')))
-          .thenThrow(Exception());
+          .thenThrow(Exception('Failed to fetch products'));
 
       // Act
       final call = repository.getProducts(page: 1, perPage: 10);
 
       // Assert
-      expect(() => call, throwsException);
+      expect(() => call, throwsA(isA<Exception>()));
+      verify(mockRemoteDataSource.getProducts(page: 1, perPage: 10));
     });
 
     test('should return an empty list when the remote data source returns an empty list', () async {
@@ -62,51 +69,97 @@ void main() {
       final result = await repository.getProducts(page: 1, perPage: 10);
 
       // Assert
+      verify(mockRemoteDataSource.getProducts(page: 1, perPage: 10));
       expect(result, []);
     });
+  });
 
-    test('should handle additional fields in the response from remote data source', () async {
+  group('getProductsByCategory', () {
+    final tCategory = 'Electronics';
+    final tProductModelsByCategory = [
+      ProductItemModel(id: '3', name: 'Electronics Product 1', brand: 'Brand E1', price: 3000),
+      ProductItemModel(id: '4', name: 'Electronics Product 2', brand: 'Brand E2', price: 4000),
+    ];
+
+    final tProductEntitiesByCategory = [
+      ProductItemEntity(id: '3', name: 'Electronics Product 1', brand: 'Brand E1', price: '3,000'),
+      ProductItemEntity(id: '4', name: 'Electronics Product 2', brand: 'Brand E2', price: '4,000'),
+    ];
+
+    test(
+        'should return a list of ProductItemEntity when fetching products by category is successful',
+        () async {
       // Arrange
-      final tProductModelsWithExtraFields = [
-        ProductItemModel(id: '1', name: 'Test Product 1', brand: 'Brand 1', price: 1000),
-        ProductItemModel(id: '2', name: 'Test Product 2', brand: 'Brand 2', price: 2000),
-      ];
-      when(mockRemoteDataSource.getProducts(page: anyNamed('page'), perPage: anyNamed('perPage')))
-          .thenAnswer((_) async => tProductModelsWithExtraFields);
+      when(mockRemoteDataSource.getProductsByCategory(
+        category: anyNamed('category'),
+        page: anyNamed('page'),
+        perPage: anyNamed('perPage'),
+      )).thenAnswer((_) async => tProductModelsByCategory);
 
       // Act
-      final result = await repository.getProducts(page: 1, perPage: 10);
+      final result = await repository.getProductsByCategory(
+        category: tCategory,
+        page: 1,
+        perPage: 10,
+      );
 
       // Assert
-      expect(result, tProductEntities);
+      verify(mockRemoteDataSource.getProductsByCategory(
+        category: tCategory,
+        page: 1,
+        perPage: 10,
+      ));
+      expect(result, tProductEntitiesByCategory);
     });
 
-    test('should handle nested objects in the response from remote data source', () async {
+    test(
+        'should throw an exception when fetching products by category is unsuccessful',
+        () async {
       // Arrange
-      final tProductModelsWithNestedObjects = [
-        ProductItemModel(id: '1', name: 'Test Product 1', brand: 'Brand 1', price: 1000),
-        ProductItemModel(id: '2', name: 'Test Product 2', brand: 'Brand 2', price: 2000),
-      ];
-      when(mockRemoteDataSource.getProducts(page: anyNamed('page'), perPage: anyNamed('perPage')))
-          .thenAnswer((_) async => tProductModelsWithNestedObjects);
+      when(mockRemoteDataSource.getProductsByCategory(
+        category: anyNamed('category'),
+        page: anyNamed('page'),
+        perPage: anyNamed('perPage'),
+      )).thenThrow(Exception('Failed to fetch products by category'));
 
       // Act
-      final result = await repository.getProducts(page: 1, perPage: 10);
+      final call = repository.getProductsByCategory(
+        category: tCategory,
+        page: 1,
+        perPage: 10,
+      );
 
       // Assert
-      expect(result, tProductEntities);
+      expect(() => call, throwsA(isA<Exception>()));
+      verify(mockRemoteDataSource.getProductsByCategory(
+        category: tCategory,
+        page: 1,
+        perPage: 10,
+      ));
     });
 
-    test('should throw an exception when the remote data source returns invalid JSON', () async {
+    test('should return an empty list when the remote data source returns an empty list for a category', () async {
       // Arrange
-      when(mockRemoteDataSource.getProducts(page: anyNamed('page'), perPage: anyNamed('perPage')))
-          .thenThrow(FormatException());
+      when(mockRemoteDataSource.getProductsByCategory(
+        category: anyNamed('category'),
+        page: anyNamed('page'),
+        perPage: anyNamed('perPage'),
+      )).thenAnswer((_) async => []);
 
       // Act
-      final call = repository.getProducts(page: 1, perPage: 10);
+      final result = await repository.getProductsByCategory(
+        category: tCategory,
+        page: 1,
+        perPage: 10,
+      );
 
       // Assert
-      expect(() => call, throwsException);
+      verify(mockRemoteDataSource.getProductsByCategory(
+        category: tCategory,
+        page: 1,
+        perPage: 10,
+      ));
+      expect(result, []);
     });
   });
 }
