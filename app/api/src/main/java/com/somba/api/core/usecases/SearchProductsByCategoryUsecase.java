@@ -18,7 +18,7 @@ public class SearchProductsByCategoryUsecase {
     this.productRepository = productRepository;
   }
   
-  List<Product> execute(String category, int page, int size) {
+  public List<Product> execute(String category, int page, int size) {
     if (page < 0 || size < 1) {
       throw new InvalidPaginationParameterException(page, size);
     }
