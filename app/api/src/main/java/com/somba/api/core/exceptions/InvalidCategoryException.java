@@ -1,6 +1,6 @@
 package com.somba.api.core.exceptions;
 
-import java.util.Locale.Category;
+import com.somba.api.core.entities.Category;
 
 public class InvalidCategoryException extends RuntimeException {
     public InvalidCategoryException(String category) {
