@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:bloc_test/bloc_test.dart';
 
 import 'package:ui/domain/entities/product_item_entity.dart';
 import 'package:ui/presentation/cubits/products/products_cubit.dart';
