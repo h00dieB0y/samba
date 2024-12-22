@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Assertions;
     properties = {"spring.profiles.active=test"}
 )
 @Testcontainers
-class ProductControllerE2ETest {
+class PaginatedProductsE2ETest {
 
     @Container
     static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
