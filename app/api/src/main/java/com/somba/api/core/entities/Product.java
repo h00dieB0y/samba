@@ -2,6 +2,8 @@ package com.somba.api.core.entities;
 
 import java.util.UUID;
 
+import com.somba.api.core.enums.Category;
+
 public record Product(
     UUID id,
     String name,

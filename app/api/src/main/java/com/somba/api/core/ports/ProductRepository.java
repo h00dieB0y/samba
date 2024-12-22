@@ -2,8 +2,8 @@ package com.somba.api.core.ports;
 
 import java.util.List;
 
-import com.somba.api.core.entities.Category;
 import com.somba.api.core.entities.Product;
+import com.somba.api.core.enums.Category;
 
 public interface ProductRepository {
 

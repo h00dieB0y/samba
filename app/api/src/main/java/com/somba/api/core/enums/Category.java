@@ -1,4 +1,4 @@
-package com.somba.api.core.entities;
+package com.somba.api.core.enums;
 
 import com.somba.api.core.exceptions.InvalidCategoryException;
 import com.somba.api.core.exceptions.NullCategoryException;

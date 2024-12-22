@@ -16,10 +16,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.somba.api.core.entities.Product;
+import com.somba.api.core.enums.Category;
 import com.somba.api.core.exceptions.InvalidCategoryException;
 import com.somba.api.core.exceptions.InvalidPaginationParameterException;
 import com.somba.api.core.exceptions.NullCategoryException;
-import com.somba.api.core.entities.Category;
 import com.somba.api.core.ports.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)

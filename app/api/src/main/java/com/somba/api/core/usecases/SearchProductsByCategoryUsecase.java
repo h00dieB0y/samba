@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.somba.api.core.entities.Category;
 import com.somba.api.core.entities.Product;
+import com.somba.api.core.enums.Category;
 import com.somba.api.core.exceptions.InvalidPaginationParameterException;
 import com.somba.api.core.ports.ProductRepository;
 
