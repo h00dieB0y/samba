@@ -50,7 +50,7 @@ public class MdbProductRepositoryAdapter implements ProductRepository {
   @Override
   public List<Product> getProductsByCategory(Category category, int page, int size) {
     return this.mdbProductRepository
-      .findByCategory(category.getValue(), PageRequest.of(page, size))
+      .findByCategory(category.name(), PageRequest.of(page, size))
       .map(productMapper::toDomain)
       .toList();
   }
