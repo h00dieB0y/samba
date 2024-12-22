@@ -8,7 +8,7 @@ public class InvalidPaginationParameterException extends RuntimeException {
     private static String constructMessage(int page, int size) {
         String message = "Invalid pagination parameters provided: ";
         String pageMessage = "page=" + page + " (must be >= 0)";
-        String sizeMessage = "size=" + size + " (must be > 0)";
+        String sizeMessage = "size=" + size + " (must be >= 1)";
 
         if (page < 0 && size < 1) {
             return message + pageMessage + " and " + sizeMessage + ".";
