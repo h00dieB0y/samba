@@ -1,6 +1,10 @@
 package com.somba.api.adapter.controllers;
 
 import com.somba.api.adapter.presenters.ErrorDetails;
+import com.somba.api.core.exceptions.InvalidCategoryException;
+import com.somba.api.core.exceptions.InvalidPaginationParameterException;
+import com.somba.api.core.exceptions.NullCategoryException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -98,6 +102,51 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 "Malformed JSON request.",
+                request.getDescription(false).replace("uri=", "")
+        );
+    }
+
+    @ExceptionHandler(InvalidCategoryException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDetails handleInvalidCategoryException(InvalidCategoryException ex, WebRequest request) {
+        logger.warn("Invalid category: {}", ex.getMessage());
+        return new ErrorDetails(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+    }
+
+
+    /**
+     * Handle InvalidPaginationParameterException.
+     */
+    @ExceptionHandler(InvalidPaginationParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDetails handleInvalidPaginationParameterException(InvalidPaginationParameterException ex, WebRequest request) {
+        logger.warn("Invalid pagination parameters: {}", ex.getMessage());
+
+        return new ErrorDetails(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+    }
+
+    /**
+     * Handle NullCategoryException.
+     */
+    @ExceptionHandler(NullCategoryException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDetails handleNullCategoryException(NullCategoryException ex, WebRequest request) {
+        logger.warn("Null category provided: {}", ex.getMessage());
+
+        return new ErrorDetails(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                ex.getMessage(),
                 request.getDescription(false).replace("uri=", "")
         );
     }

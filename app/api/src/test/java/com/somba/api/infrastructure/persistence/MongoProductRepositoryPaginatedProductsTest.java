@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @DataMongoTest
 @Testcontainers
-class MdbProductRepositoryIntegrationTest {
+class MongoProductRepositoryPaginatedProductsTest {
 
   @Container
   static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
