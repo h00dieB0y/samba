@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.data.domain.PageRequest;
 
 import com.somba.api.adapter.mappers.ProductMapper;
+import com.somba.api.core.entities.Category;
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.ports.ProductRepository;
 import com.somba.api.infrastructure.persistence.MdbProductRepository;
@@ -44,5 +45,13 @@ public class MdbProductRepositoryAdapter implements ProductRepository {
   @Override
   public void deleteAll() {
     this.mdbProductRepository.deleteAll();
+  }
+
+  @Override
+  public List<Product> getProductsByCategory(Category category, int page, int size) {
+    return this.mdbProductRepository
+      .findByCategory(category.getValue(), PageRequest.of(page, size))
+      .map(productMapper::toDomain)
+      .toList();
   }
 }
