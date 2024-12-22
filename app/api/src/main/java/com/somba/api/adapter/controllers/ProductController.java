@@ -56,9 +56,9 @@ public class ProductController {
   ){
     return new Response<>(
       200,
-      "Successfully retrieved the list of products by category",
+      "Successfully retrieved the list of products of category: " + category,
       searchProductsByCategoryUsecase.execute(category, page, size).parallelStream().map(productMapper::toProductView).toList(),
-      "/api/v1/products?category=" + category + "&page=" + page + "&size=" + size,
+      "/api/v1/products/search?category=" + category + "&page=" + page + "&size=" + size,
       java.time.LocalDateTime.now()
     );
   }
