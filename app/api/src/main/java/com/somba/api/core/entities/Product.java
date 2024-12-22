@@ -15,6 +15,6 @@ public record Product(
 ) {
 
   public Product(UUID id, String name, String description, String brand, int price, int stock) {
-    this(id, name, description, brand, price, stock, Category.OTHER);
+    this(id, name, description, brand, price, stock, Category.OTHERS);
   }
 }
