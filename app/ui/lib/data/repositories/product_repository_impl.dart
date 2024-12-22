@@ -20,4 +20,18 @@ class ProductRepositoryImpl implements ProductRepository {
         .map((productModel) => productModel.toEntity())
         .toList();
   }
+
+  @override
+  Future<List<ProductItemEntity>> getProductsByCategory(
+      {required String category, required int page, required int perPage}) async {
+    final productModels = await _productRemoteDataSource.getProductsByCategory(
+      category: category,
+      page: page,
+      perPage: perPage,
+    );
+
+    return productModels
+        .map((productModel) => productModel.toEntity())
+        .toList();
+  }
 }
