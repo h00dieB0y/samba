@@ -9,9 +9,9 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         HomeSearchBar(),
         SizedBox(height: 10),
         CategoryList(),
