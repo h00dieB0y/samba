@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/domain/entities/search_product_item_entity.dart';
 import 'package:ui/presentation/widgets/app_bottom_navigation_bar.dart';
 import 'package:ui/presentation/widgets/search_bar_input.dart';
 import 'dart:math';
@@ -21,7 +22,7 @@ class SearchPage extends StatelessWidget {
                 itemCount: 10,
                 itemBuilder: (context, index) {
                   return productCard(
-                    ProductItemEntity(
+                    SearchProductItemEntity(
                       id: 'product-$index',
                       name: 'Product Name $index',
                       brand: 'Brand Name $index',
@@ -62,7 +63,7 @@ class SearchPage extends StatelessWidget {
     return Row(children: stars);
   }
 
-  Widget productCard(ProductItemEntity product) {
+  Widget productCard(SearchProductItemEntity product) {
     // The image on the left side of the card
     // On the right side, there information about the product
     return Container(
@@ -225,26 +226,4 @@ class SearchPage extends StatelessWidget {
           ),
         );
   }
-}
-
-class ProductItemEntity {
-  final String id;
-  final String name;
-  final String brand;
-  final String price;
-  final double rating; // e.g., 4.5
-  final int reviewCount; // e.g., 120
-  final bool isSponsored; // Optional: true if sponsored
-  final bool isBestSeller; // Optional: true if best seller
-
-  ProductItemEntity({
-    required this.id,
-    required this.name,
-    required this.brand,
-    required this.price,
-    this.rating = 0.0,
-    this.reviewCount = 0,
-    this.isSponsored = false,
-    this.isBestSeller = false,
-  });
 }
