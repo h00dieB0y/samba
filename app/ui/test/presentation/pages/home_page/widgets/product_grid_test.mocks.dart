@@ -3,10 +3,11 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i5;
 
-import 'package:flutter_bloc/flutter_bloc.dart' as _i5;
+import 'package:flutter_bloc/flutter_bloc.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:ui/domain/enums/category.dart' as _i4;
 import 'package:ui/presentation/cubits/products/products_cubit.dart' as _i3;
 import 'package:ui/presentation/cubits/products/products_state.dart' as _i2;
 
@@ -42,6 +43,12 @@ class MockProductsCubit extends _i1.Mock implements _i3.ProductsCubit {
   }
 
   @override
+  _i4.Category get selectedCategory => (super.noSuchMethod(
+        Invocation.getter(#selectedCategory),
+        returnValue: _i4.Category.all,
+      ) as _i4.Category);
+
+  @override
   _i2.ProductsState get state => (super.noSuchMethod(
         Invocation.getter(#state),
         returnValue: _FakeProductsState_0(
@@ -51,10 +58,10 @@ class MockProductsCubit extends _i1.Mock implements _i3.ProductsCubit {
       ) as _i2.ProductsState);
 
   @override
-  _i4.Stream<_i2.ProductsState> get stream => (super.noSuchMethod(
+  _i5.Stream<_i2.ProductsState> get stream => (super.noSuchMethod(
         Invocation.getter(#stream),
-        returnValue: _i4.Stream<_i2.ProductsState>.empty(),
-      ) as _i4.Stream<_i2.ProductsState>);
+        returnValue: _i5.Stream<_i2.ProductsState>.empty(),
+      ) as _i5.Stream<_i2.ProductsState>);
 
   @override
   bool get isClosed => (super.noSuchMethod(
@@ -63,26 +70,37 @@ class MockProductsCubit extends _i1.Mock implements _i3.ProductsCubit {
       ) as bool);
 
   @override
-  _i4.Future<void> fetchProducts({bool? isInitialLoad = false}) =>
+  _i5.Future<void> selectCategory(_i4.Category? category) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #selectCategory,
+          [category],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> fetchProducts({bool? isInitialLoad = false}) =>
       (super.noSuchMethod(
         Invocation.method(
           #fetchProducts,
           [],
           {#isInitialLoad: isInitialLoad},
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 
   @override
-  _i4.Future<void> refreshProducts() => (super.noSuchMethod(
+  _i5.Future<void> refreshProducts() => (super.noSuchMethod(
         Invocation.method(
           #refreshProducts,
           [],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 
   @override
   void emit(_i2.ProductsState? state) => super.noSuchMethod(
@@ -94,7 +112,7 @@ class MockProductsCubit extends _i1.Mock implements _i3.ProductsCubit {
       );
 
   @override
-  void onChange(_i5.Change<_i2.ProductsState>? change) => super.noSuchMethod(
+  void onChange(_i6.Change<_i2.ProductsState>? change) => super.noSuchMethod(
         Invocation.method(
           #onChange,
           [change],
@@ -135,12 +153,12 @@ class MockProductsCubit extends _i1.Mock implements _i3.ProductsCubit {
       );
 
   @override
-  _i4.Future<void> close() => (super.noSuchMethod(
+  _i5.Future<void> close() => (super.noSuchMethod(
         Invocation.method(
           #close,
           [],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 }
