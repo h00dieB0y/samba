@@ -1,10 +1,25 @@
+// lib/presentation/pages/search_page/widgets/product_card.dart
+
 import 'package:flutter/material.dart';
 import 'package:ui/domain/entities/search_product_item_entity.dart';
+import 'package:ui/presentation/pages/search_page/widgets/optional_tags.dart';
+import 'package:ui/presentation/pages/search_page/widgets/product_brand.dart';
+import 'package:ui/presentation/pages/search_page/widgets/product_image.dart';
+import 'package:ui/presentation/pages/search_page/widgets/product_name.dart';
+import 'package:ui/presentation/pages/search_page/widgets/product_price.dart';
+import 'package:ui/presentation/pages/search_page/widgets/ratings_and_reviews.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   const ProductCard({super.key, required this.product});
 
   final SearchProductItemEntity product;
+
+  @override
+  _ProductCardState createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  bool isFavorite = false; // Local state for favorite
 
   @override
   Widget build(BuildContext context) => Container(
@@ -25,45 +40,25 @@ class ProductCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Image with Hero animation and Favorites Icon
-            Stack(
-              children: [
-                Hero(
-                  tag: 'productImage-${product.id}', // Stable Hero tag
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      "assets/images/placeholder-image.png",
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.cover,
+            // Product Image with Favorites Icon
+            ProductImage(
+              product: widget.product,
+              isFavorite: isFavorite,
+              onFavoriteToggle: () {
+                setState(() {
+                  isFavorite = !isFavorite;
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      isFavorite
+                          ? '${widget.product.name} added to favorites.'
+                          : '${widget.product.name} removed from favorites.',
                     ),
+                    duration: const Duration(seconds: 2),
                   ),
-                ),
-                // Favorites Icon at the Left Bottom
-                Positioned(
-                  bottom: 8,
-                  left: 8,
-                  child: GestureDetector(
-                    onTap: () {
-                      // Implement favorite functionality
-                      // For example, toggle favorite state
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.8),
-                        shape: BoxShape.circle,
-                      ),
-                      padding: const EdgeInsets.all(6),
-                      child: const Icon(
-                        Icons.favorite_border,
-                        size: 16,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                );
+              },
             ),
             const SizedBox(width: 10),
 
@@ -73,92 +68,25 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Optional Tags (e.g., Sponsored, Best Seller)
-                  Row(
-                    children: [
-                      if (product.isSponsored)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Colors.orangeAccent,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: const Text(
-                            'Sponsored',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ),
-                      if (product.isBestSeller)
-                        Container(
-                          margin: const EdgeInsets.only(left: 4),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: const Text(
-                            'Best Seller',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+                  OptionalTags(product: widget.product),
                   const SizedBox(height: 5),
 
                   // Brand Name
-                  Text(
-                    product.brand,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.blueGrey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  ProductBrand(brand: widget.product.brand),
                   const SizedBox(height: 5),
 
                   // Product Name
-                  Text(
-                    product.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
+                  ProductName(name: widget.product.name),
                   const SizedBox(height: 5),
 
                   // Price
-                  Text(
-                    product.price,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.green,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  ProductPrice(price: widget.product.price),
                   const SizedBox(height: 5),
 
                   // Ratings and Reviews
-                  Row(
-                    children: [
-                      _buildStarRating(product.rating),
-                      const SizedBox(width: 5),
-                      Text(
-                        '(${product.reviewCount})',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.blueGrey,
-                        ),
-                      ),
-                    ],
+                  RatingsAndReviews(
+                    rating: widget.product.rating,
+                    reviewCount: widget.product.reviewCount,
                   ),
                 ],
               ),
@@ -166,19 +94,4 @@ class ProductCard extends StatelessWidget {
           ],
         ),
       );
-
-  // Helper method to build star ratings
-  Widget _buildStarRating(double rating) {
-    List<Widget> stars = [];
-    for (int i = 1; i <= 5; i++) {
-      if (i <= rating.floor()) {
-        stars.add(const Icon(Icons.star, size: 16, color: Colors.amber));
-      } else if (i - rating < 1) {
-        stars.add(const Icon(Icons.star_half, size: 16, color: Colors.amber));
-      } else {
-        stars.add(const Icon(Icons.star_border, size: 16, color: Colors.amber));
-      }
-    }
-    return Row(children: stars);
-  }
 }
