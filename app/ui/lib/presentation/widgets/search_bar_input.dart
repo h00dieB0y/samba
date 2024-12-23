@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 typedef OnSearchCallback = void Function(String query);
@@ -5,8 +7,9 @@ typedef OnSearchCallback = void Function(String query);
 class SearchBarInput extends StatefulWidget {
   final String hintText;
   final OnSearchCallback onSearch;
+  final Duration debounceDuration;
 
-  const SearchBarInput({super.key, required this.hintText, required this.onSearch});
+  const SearchBarInput({super.key, required this.hintText, required this.onSearch, this.debounceDuration = const Duration(milliseconds: 300)});
 
   @override
   _SearchBarInputState createState() => _SearchBarInputState();
@@ -14,7 +17,8 @@ class SearchBarInput extends StatefulWidget {
 
 class _SearchBarInputState extends State<SearchBarInput> {
 
-  late final TextEditingController _controller;
+  late TextEditingController _controller;
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -25,15 +29,28 @@ class _SearchBarInputState extends State<SearchBarInput> {
   }
 
   void _onTextChanged() {
-    // Handle text changed
+    // Rebuild the widget
+    setState(() {});
+
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(widget.debounceDuration, () {
+      widget.onSearch(_controller.text);
+    });
   }
 
-  void _onSearch() {
-    // Handle search
+  void _onClearSearch() {
+    _controller.clear();
+    widget.onSearch('');
+
+    // Rebuild the widget
+    setState(() {});
   }
 
   @override
   void dispose() {
+    _debounce?.cancel();
+
     _controller.removeListener(_onTextChanged);
     _controller.dispose();
 
@@ -60,7 +77,8 @@ class _SearchBarInputState extends State<SearchBarInput> {
                   if (_controller.text.isNotEmpty)
                     IconButton(
                       icon: const Icon(Icons.clear),
-                      onPressed: () => _controller.clear(),
+                      onPressed: _onClearSearch,
+                      tooltip: 'Clear search',
                     ),
                 ],
               ),
