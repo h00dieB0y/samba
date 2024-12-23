@@ -34,7 +34,7 @@ import com.somba.api.core.ports.ProductRepository;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
     "spring.profiles.active=test" })
 @Testcontainers
-class SearchByCategoryE2ETest {
+class PaginatedProductsByCategoryE2ETest {
 
   @Container
   static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
@@ -65,7 +65,7 @@ class SearchByCategoryE2ETest {
 
   @BeforeEach
   public void setUp() {
-    baseUrl = "http://localhost:" + port + "/api/v1/products";
+    baseUrl = "http://localhost:" + port + "/api/v1/products/categories";
 
     // Clear existing data
     productRepository.deleteAll();
@@ -85,7 +85,7 @@ class SearchByCategoryE2ETest {
   void testSearchByCategory() {
     // Given
     String category = "electronics";
-    String url = baseUrl + "/search?category=" + category;
+    String url = baseUrl + "/" + category;
 
     // When
     var response = restTemplate.getForEntity(url, String.class);
@@ -103,7 +103,7 @@ class SearchByCategoryE2ETest {
           () -> assertThat(products.message()).isEqualTo("Successfully retrieved the list of products of category: " + category),
           () -> assertThat(products.data()).hasSize(10),
           () -> assertThat(products.path())
-              .isEqualTo("/api/v1/products/search?category=" + category + "&page=0&size=10"),
+              .isEqualTo("/api/v1/products/categories/electronics?page=0&size=10"),
           () -> assertThat(products.timestamp()).isNotNull());
     } catch (Exception e) {
       e.printStackTrace();
@@ -115,7 +115,7 @@ class SearchByCategoryE2ETest {
   void testSearchByCategoryWithPagination() {
     // Given
     String category = "electronics";
-    String url = baseUrl + "/search?category=" + category + "&page=0&size=5";
+    String url = baseUrl + "/" + category + "?page=0&size=5";
 
     // When
     var response = restTemplate.getForEntity(url, String.class);
@@ -133,7 +133,7 @@ class SearchByCategoryE2ETest {
           () -> assertThat(products.message()).isEqualTo("Successfully retrieved the list of products of category: " + category),
           () -> assertThat(products.data()).hasSize(5),
           () -> assertThat(products.path())
-              .isEqualTo("/api/v1/products/search?category=" + category + "&page=0&size=5"),
+              .isEqualTo("/api/v1/products/categories/" + category + "?page=0&size=5"),
           () -> assertThat(products.timestamp()).isNotNull());
     } catch (Exception e) {
       e.printStackTrace();
@@ -145,7 +145,7 @@ class SearchByCategoryE2ETest {
   void testSearchByCategoryWithInvalidCategory() {
     // Given
     String category = "invalid";
-    String url = baseUrl + "/search?category=" + category;
+    String url = baseUrl + "/" + category;
 
     // When
     var response = restTemplate.getForEntity(url, String.class);
@@ -163,7 +163,7 @@ class SearchByCategoryE2ETest {
                       .map(Enum::name)
                       .collect(Collectors.joining(", "))
           ),
-          () -> assertThat(errorDetails.path()).isEqualTo("/api/v1/products/search"),
+          () -> assertThat(errorDetails.path()).isEqualTo("/api/v1/products/categories/invalid"),
           () -> assertThat(errorDetails.timestamp()).isNotNull());
 
     } catch (Exception e) {
@@ -176,7 +176,7 @@ class SearchByCategoryE2ETest {
   void testSearchByCategoryWithInvalidPageParameter() {
     // Given
     String category = "electronics";
-    String url = baseUrl + "/search?category=" + category + "&page=-1&size=10";
+    String url = baseUrl + "/" + category + "?page=-1";
 
     // When
     var response = restTemplate.getForEntity(url, String.class);
@@ -192,7 +192,7 @@ class SearchByCategoryE2ETest {
           () -> assertThat(errorDetails.message()).isEqualTo("Validation failed for one or more fields."),
           () -> assertThat(errorDetails.details()).isNotNull().isNotEmpty(),
           () -> assertThat(errorDetails.details()).contains("page: Page number must be greater than or equal to 0"),
-          () -> assertThat(errorDetails.path()).isEqualTo("/api/v1/products/search"),
+          () -> assertThat(errorDetails.path()).isEqualTo("/api/v1/products/categories/electronics"),
           () -> assertThat(errorDetails.timestamp()).isNotNull());
 
     } catch (Exception e) {
@@ -205,7 +205,7 @@ class SearchByCategoryE2ETest {
   void testSearchByCategoryWithInvalidSizeParameter() {
     // Given
     String category = "electronics";
-    String url = baseUrl + "/search?category=" + category + "&page=1&size=0";
+    String url = baseUrl + "/" + category + "?page=1&size=0";
 
     // When
     var response = restTemplate.getForEntity(url, String.class);
@@ -221,7 +221,7 @@ class SearchByCategoryE2ETest {
           () -> assertThat(errorDetails.message()).isEqualTo("Validation failed for one or more fields."),
           () -> assertThat(errorDetails.details()).isNotNull().isNotEmpty(),
           () -> assertThat(errorDetails.details()).contains("size: Page size must be greater than or equal to 1"),
-          () -> assertThat(errorDetails.path()).isEqualTo("/api/v1/products/search"),
+          () -> assertThat(errorDetails.path()).isEqualTo("/api/v1/products/categories/electronics"),
           () -> assertThat(errorDetails.timestamp()).isNotNull());
 
     } catch (Exception e) {
@@ -234,7 +234,7 @@ class SearchByCategoryE2ETest {
   void testSearchByCategoryWithInvalidPageAndSizeParameters() {
     // Given
     String category = "electronics";
-    String url = baseUrl + "/search?category=" + category + "&page=-1&size=0";
+    String url = baseUrl + "/" + category + "?page=-1&size=0";
 
     // When
     var response = restTemplate.getForEntity(url, String.class);
@@ -253,7 +253,7 @@ class SearchByCategoryE2ETest {
               "page: Page number must be greater than or equal to 0",
               "size: Page size must be greater than or equal to 1"
           ),
-          () -> assertThat(errorDetails.path()).isEqualTo("/api/v1/products/search"),
+          () -> assertThat(errorDetails.path()).isEqualTo("/api/v1/products/categories/electronics"),
           () -> assertThat(errorDetails.timestamp()).isNotNull());
 
     } catch (Exception e) {

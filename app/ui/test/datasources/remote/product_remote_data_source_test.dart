@@ -105,7 +105,7 @@ void main() {
     const String category = 'Electronics';
     const int page = 1;
     const int perPage = 10;
-    final String endpoint = '$baseUrl/search?category=$category&page=$page&size=$perPage';
+    final String endpoint = '$baseUrl/categories/$category?page=$page&size=$perPage';
 
     final tProductListByCategory = [
       ProductItemModel(id: '3', name: 'Electronics Product 1', brand: 'Brand E1', price: 3000),

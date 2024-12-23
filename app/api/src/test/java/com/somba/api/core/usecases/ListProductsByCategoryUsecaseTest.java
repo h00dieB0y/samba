@@ -23,13 +23,13 @@ import com.somba.api.core.exceptions.NullCategoryException;
 import com.somba.api.core.ports.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
-class SearchProductsByCategoryUsecaseTest {
+class ListProductsByCategoryUsecaseTest {
 
   @Mock
   private ProductRepository productRepository;
 
   @InjectMocks
-  private SearchProductsByCategoryUsecase searchProductsByCategoryUsecase;
+  private ListProductsByCategoryUsecase searchProductsByCategoryUsecase;
 
   private List<Product> generateProducts(int size, Category category) {
     return IntStream.range(0, size)
