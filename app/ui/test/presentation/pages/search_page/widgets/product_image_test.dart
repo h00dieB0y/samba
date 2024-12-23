@@ -1,5 +1,3 @@
-// test/presentation/pages/search_page/widgets/product_image_test.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ui/domain/entities/search_product_item_entity.dart';
