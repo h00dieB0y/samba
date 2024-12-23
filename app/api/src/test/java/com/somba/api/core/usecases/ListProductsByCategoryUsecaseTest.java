@@ -23,7 +23,7 @@ import com.somba.api.core.exceptions.NullCategoryException;
 import com.somba.api.core.ports.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
-class SearchProductsByCategoryUsecaseTest {
+class ListProductsByCategoryUsecaseTest {
 
   @Mock
   private ProductRepository productRepository;
