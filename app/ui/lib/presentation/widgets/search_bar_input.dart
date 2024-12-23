@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 typedef OnSearchCallback = void Function(String query);
@@ -9,29 +8,33 @@ class SearchBarInput extends StatefulWidget {
   final OnSearchCallback onSearch;
   final Duration debounceDuration;
 
-  const SearchBarInput({super.key, required this.hintText, required this.onSearch, this.debounceDuration = const Duration(milliseconds: 300)});
+  const SearchBarInput({
+    Key? key,
+    required this.hintText,
+    required this.onSearch,
+    this.debounceDuration = const Duration(milliseconds: 300),
+  }) : super(key: key);
 
   @override
   _SearchBarInputState createState() => _SearchBarInputState();
 }
 
 class _SearchBarInputState extends State<SearchBarInput> {
-
   late TextEditingController _controller;
   Timer? _debounce;
 
   @override
   void initState() {
     super.initState();
-    
     _controller = TextEditingController();
     _controller.addListener(_onTextChanged);
   }
 
   void _onTextChanged() {
-    // Rebuild the widget
+    // Trigger a rebuild to update the UI based on the current text
     setState(() {});
 
+    // Debounce the search callback
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
     _debounce = Timer(widget.debounceDuration, () {
@@ -47,13 +50,17 @@ class _SearchBarInputState extends State<SearchBarInput> {
     setState(() {});
   }
 
+  void _onSubmitted(String query) {
+    // Cancel the debounce timer to prevent duplicate calls
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    widget.onSearch(query);
+  }
+
   @override
   void dispose() {
     _debounce?.cancel();
-
     _controller.removeListener(_onTextChanged);
     _controller.dispose();
-
     super.dispose();
   }
 
@@ -67,7 +74,7 @@ class _SearchBarInputState extends State<SearchBarInput> {
             controller: _controller,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.search,
-            onSubmitted: widget.onSearch,
+            onSubmitted: _onSubmitted, // Updated here
             decoration: InputDecoration(
               hintText: widget.hintText,
               prefixIcon: const Icon(Icons.search),
@@ -83,10 +90,10 @@ class _SearchBarInputState extends State<SearchBarInput> {
                 ],
               ),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             ),
           ),
         ),
       );
-
 }
