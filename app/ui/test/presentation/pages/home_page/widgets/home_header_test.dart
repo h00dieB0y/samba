@@ -9,7 +9,6 @@ import 'package:ui/presentation/cubits/products/products_cubit.dart';
 import 'package:ui/presentation/cubits/products/products_state.dart';
 import 'package:ui/presentation/pages/home_page/widgets/category_item.dart';
 import 'package:ui/presentation/pages/home_page/widgets/home_header.dart';
-import 'package:ui/presentation/widgets/search_bar_input.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Generate a MockProductsCubit using the Mockito package.

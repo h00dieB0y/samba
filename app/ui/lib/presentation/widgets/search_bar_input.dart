@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 
 typedef OnSearchCallback = void Function(String query);
