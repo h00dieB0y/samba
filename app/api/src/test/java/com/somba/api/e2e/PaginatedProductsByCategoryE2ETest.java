@@ -34,7 +34,7 @@ import com.somba.api.core.ports.ProductRepository;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
     "spring.profiles.active=test" })
 @Testcontainers
-class SearchByCategoryE2ETest {
+class PaginatedProductsByCategoryE2ETest {
 
   @Container
   static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
