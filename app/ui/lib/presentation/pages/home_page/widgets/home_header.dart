@@ -9,12 +9,12 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SearchBarInput(),
-        SizedBox(height: 10),
-        CategoryList(),
+        SearchBarInput(hintText: 'Search on Somba.com', onSearch: (query) {}),
+        const SizedBox(height: 10),
+        const CategoryList(),
       ],
     );
   }
