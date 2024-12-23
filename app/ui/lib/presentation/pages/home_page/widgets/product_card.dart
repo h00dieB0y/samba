@@ -36,7 +36,7 @@ class ProductCard extends StatelessWidget {
             children: [
               // Product Image with Hero animation
               Hero(
-                tag: 'productImage', // Unique tag for smooth navigation animation
+                tag: 'productImage${product.id}',
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.asset(
