@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ui/presentation/pages/home_page/widgets/home_search_bar.dart';
+import 'package:ui/presentation/widgets/search_bar_input.dart';
 
 void main() {
   group('HomeSearchBar Widget Tests', () {
@@ -9,7 +9,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: HomeSearchBar(),
+            body: SearchBar(),
           ),
         ),
       );
@@ -28,7 +28,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: HomeSearchBar(),
+            body: SearchBar(),
           ),
         ),
       );

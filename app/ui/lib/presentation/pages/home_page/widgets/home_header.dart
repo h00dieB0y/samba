@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:ui/presentation/pages/home_page/widgets/category_list.dart';
-import 'package:ui/presentation/pages/home_page/widgets/home_search_bar.dart';
+import 'package:ui/presentation/widgets/search_bar_input.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
@@ -12,7 +12,7 @@ class HomeHeader extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        HomeSearchBar(),
+        SearchBarInput(),
         SizedBox(height: 10),
         CategoryList(),
       ],
