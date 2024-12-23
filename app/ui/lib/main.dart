@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:ui/data/datasources/remote/product_remote_data_source.dart';
 import 'package:ui/data/repositories/product_repository_impl.dart';
 import 'package:ui/domain/repositories/product_repository.dart';
+import 'package:ui/domain/usecases/get_products_by_category_use_case.dart';
 import 'package:ui/domain/usecases/get_products_use_case.dart';
 import 'package:ui/presentation/pages/home_page/home_page.dart';
 
@@ -26,6 +27,11 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<GetProductsUseCase>(
           create: (context) => GetProductsUseCase(
+            context.read<ProductRepository>(),
+          ),
+        ),
+        RepositoryProvider<GetProductsByCategoryUseCase>(
+          create: (context) => GetProductsByCategoryUseCase(
             context.read<ProductRepository>(),
           ),
         ),
