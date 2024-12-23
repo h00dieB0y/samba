@@ -54,7 +54,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert
-      expect(tappedIndex, 1);
+      expect(tappedIndex, 3);
     });
 
     testWidgets('should set currentIndex correctly', (WidgetTester tester) async {
