@@ -6,13 +6,11 @@ typedef OnSearchCallback = void Function(String query);
 class SearchBarInput extends StatefulWidget {
   final String hintText;
   final OnSearchCallback onSearch;
-  final Duration debounceDuration;
 
   const SearchBarInput({
     Key? key,
     required this.hintText,
     required this.onSearch,
-    this.debounceDuration = const Duration(milliseconds: 300),
   }) : super(key: key);
 
   @override
@@ -20,26 +18,12 @@ class SearchBarInput extends StatefulWidget {
 }
 
 class _SearchBarInputState extends State<SearchBarInput> {
-  late TextEditingController _controller;
-  Timer? _debounce;
+  late final TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    _controller.addListener(_onTextChanged);
-  }
-
-  void _onTextChanged() {
-    // Trigger a rebuild to update the UI based on the current text
-    setState(() {});
-
-    // Debounce the search callback
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-
-    _debounce = Timer(widget.debounceDuration, () {
-      widget.onSearch(_controller.text);
-    });
   }
 
   void _onClearSearch() {
@@ -50,16 +34,9 @@ class _SearchBarInputState extends State<SearchBarInput> {
     setState(() {});
   }
 
-  void _onSubmitted(String query) {
-    // Cancel the debounce timer to prevent duplicate calls
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    widget.onSearch(query);
-  }
 
   @override
   void dispose() {
-    _debounce?.cancel();
-    _controller.removeListener(_onTextChanged);
     _controller.dispose();
     super.dispose();
   }
@@ -74,7 +51,10 @@ class _SearchBarInputState extends State<SearchBarInput> {
             controller: _controller,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.search,
-            onSubmitted: _onSubmitted, // Updated here
+            onSubmitted: widget.onSearch,
+            onChanged: (text) => {
+              setState(() {}),
+            },
             decoration: InputDecoration(
               hintText: widget.hintText,
               prefixIcon: const Icon(Icons.search),
