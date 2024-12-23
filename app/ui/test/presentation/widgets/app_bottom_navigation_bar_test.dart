@@ -24,7 +24,7 @@ void main() {
       // Assert
       expect(find.byType(BottomNavigationBar), findsOneWidget);
       expect(find.byIcon(Icons.home), findsOneWidget);
-      expect(find.byIcon(Icons.category), findsOneWidget);
+      expect(find.byIcon(Icons.menu), findsOneWidget);
       expect(find.byIcon(Icons.shopping_cart), findsOneWidget);
       expect(find.byIcon(Icons.person), findsOneWidget);
     });
@@ -50,7 +50,7 @@ void main() {
       );
 
       // Tap on the Categories icon
-      await tester.tap(find.byIcon(Icons.category));
+      await tester.tap(find.byIcon(Icons.menu));
       await tester.pumpAndSettle();
 
       // Assert
