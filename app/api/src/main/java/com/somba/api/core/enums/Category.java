@@ -7,6 +7,9 @@ public enum Category {
     ELECTRONICS,
     CLOTHES,
     SHOES,
+    HOME,
+    BEAUTY,
+    SPORTS,
     OTHERS;
 
 
