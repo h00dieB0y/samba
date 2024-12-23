@@ -28,7 +28,7 @@ class CategoryList extends StatelessWidget {
           final selectedCategory = context.read<ProductsCubit>().selectedCategory;
 
           // Define your categories. Ideally, fetch this dynamically if possible.
-          final List<Category> categories = Category.values;
+          const List<Category> categories = Category.values;
 
           return ListView.separated(
             scrollDirection: Axis.horizontal,
