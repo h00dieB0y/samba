@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/domain/entities/search_product_item_entity.dart';
-import 'package:ui/presentation/pages/home_page/widgets/product_card.dart';
+import 'package:ui/presentation/pages/search_page/widgets/product_card.dart';
 import 'package:ui/presentation/widgets/app_bottom_navigation_bar.dart';
 import 'package:ui/presentation/widgets/search_bar_input.dart';
 import 'dart:math';
