@@ -1,4 +1,5 @@
-import 'dart:async';
+// test/presentation/widgets/search_bar_input_test.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ui/presentation/widgets/search_bar_input.dart';
@@ -13,8 +14,6 @@ class SearchCallbackTracker {
 
 void main() {
   group('SearchBarInput Widget Tests', () {
-    // A helper class to track the onSearch callback calls
-
     late SearchCallbackTracker callbackTracker;
 
     setUp(() {
@@ -147,46 +146,12 @@ void main() {
       await tester.pump(); // Rebuild after tapping
 
       // Assert
-      expect(find.byIcon(Icons.clear),
-          findsNothing); // Clear icon should disappear
+      expect(find.byIcon(Icons.clear), findsNothing); // Clear icon should disappear
       final textField = tester.widget<TextField>(textFieldFinder);
       expect(textField.controller?.text, '');
 
       // Verify onSearch was called with empty string
       expect(callbackTracker.queries, ['']);
-    });
-
-    testWidgets('typing into TextField calls onSearch after debounce duration',
-        (WidgetTester tester) async {
-      // Arrange
-      const debounceDuration = Duration(milliseconds: 300);
-      const searchQuery = 'Flutter';
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SearchBarInput(
-              hintText: 'Search',
-              onSearch: callbackTracker.call,
-              debounceDuration: debounceDuration,
-            ),
-          ),
-        ),
-      );
-
-      // Act
-      final textFieldFinder = find.byType(TextField);
-      await tester.enterText(textFieldFinder, searchQuery);
-      await tester.pump(); // Trigger the listener
-
-      // At this point, debounce timer is active but hasn't fired yet
-      expect(callbackTracker.queries, isEmpty);
-
-      // Advance time by debounceDuration
-      await tester.pump(debounceDuration);
-
-      // Now, the debounce timer should have fired
-      expect(callbackTracker.queries, [searchQuery]);
     });
 
     testWidgets('pressing enter submits the search immediately',
@@ -200,7 +165,6 @@ void main() {
             body: SearchBarInput(
               hintText: 'Search',
               onSearch: callbackTracker.call,
-              debounceDuration: Duration(milliseconds: 300),
             ),
           ),
         ),
@@ -215,15 +179,43 @@ void main() {
       // Assert
       expect(callbackTracker.queries, [searchQuery]);
 
-      // Additionally, ensure debounce doesn't call onSearch again
+      // Additionally, ensure onSearch is not called again after debounce duration
       await tester.pump(const Duration(milliseconds: 300));
       expect(callbackTracker.queries.length, 1); // Should still be 1
     });
 
-    testWidgets('multiple rapid text changes debounce correctly',
+    testWidgets('onSearch is not called on text change without submission',
         (WidgetTester tester) async {
       // Arrange
-      const debounceDuration = Duration(milliseconds: 300);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SearchBarInput(
+              hintText: 'Search',
+              onSearch: callbackTracker.call,
+            ),
+          ),
+        ),
+      );
+
+      // Act
+      final textFieldFinder = find.byType(TextField);
+      await tester.enterText(textFieldFinder, 'F');
+      await tester.pump(); // Rebuild after text input
+
+      await tester.enterText(textFieldFinder, 'Fl');
+      await tester.pump(); // Rebuild after text input
+
+      await tester.enterText(textFieldFinder, 'Flu');
+      await tester.pump(); // Rebuild after text input
+
+      // Assert
+      expect(callbackTracker.queries, isEmpty); // onSearch should not be called
+    });
+
+    testWidgets('multiple rapid text changes do not trigger onSearch',
+        (WidgetTester tester) async {
+      // Arrange
       const searchQueries = ['F', 'Fl', 'Flu', 'Flut', 'Flutt', 'Flutter'];
 
       await tester.pumpWidget(
@@ -232,7 +224,6 @@ void main() {
             body: SearchBarInput(
               hintText: 'Search',
               onSearch: callbackTracker.call,
-              debounceDuration: debounceDuration,
             ),
           ),
         ),
@@ -242,18 +233,17 @@ void main() {
       final textFieldFinder = find.byType(TextField);
       for (final query in searchQueries) {
         await tester.enterText(textFieldFinder, query);
-        await tester
-            .pump(const Duration(milliseconds: 100)); // Less than debounce
+        await tester.pump(const Duration(milliseconds: 100)); // Rapid changes
       }
 
-      // At this point, debounce timer should still be active
-      expect(callbackTracker.queries, isEmpty);
-
-      // Advance time to exceed debounce duration
-      await tester.pump(debounceDuration);
-
       // Assert
-      expect(callbackTracker.queries, [searchQueries.last]);
+      expect(callbackTracker.queries, isEmpty); // onSearch should not be called
+
+      // Now submit the search
+      await tester.testTextInput.receiveAction(TextInputAction.search);
+      await tester.pump(); // Process the action
+
+      expect(callbackTracker.queries, ['Flutter']); // onSearch called once
     });
 
     testWidgets(
@@ -287,8 +277,7 @@ void main() {
       await tester.pump(); // Rebuild after tapping
 
       // Assert
-      expect(find.byIcon(Icons.clear),
-          findsNothing); // Clear icon should disappear
+      expect(find.byIcon(Icons.clear), findsNothing); // Clear icon should disappear
       expect(
           callbackTracker.queries, ['']); // onSearch called with empty string
     });
