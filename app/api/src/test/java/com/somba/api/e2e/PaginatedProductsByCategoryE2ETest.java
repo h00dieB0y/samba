@@ -115,7 +115,7 @@ class PaginatedProductsByCategoryE2ETest {
   void testSearchByCategoryWithPagination() {
     // Given
     String category = "electronics";
-    String url = baseUrl + "/" + category;
+    String url = baseUrl + "/" + category + "?page=0&size=5";
 
     // When
     var response = restTemplate.getForEntity(url, String.class);
@@ -133,7 +133,7 @@ class PaginatedProductsByCategoryE2ETest {
           () -> assertThat(products.message()).isEqualTo("Successfully retrieved the list of products of category: " + category),
           () -> assertThat(products.data()).hasSize(5),
           () -> assertThat(products.path())
-              .isEqualTo("/api/v1/products/categories/" + category + "?page=0&size=10"),
+              .isEqualTo("/api/v1/products/categories/" + category + "?page=0&size=5"),
           () -> assertThat(products.timestamp()).isNotNull());
     } catch (Exception e) {
       e.printStackTrace();
