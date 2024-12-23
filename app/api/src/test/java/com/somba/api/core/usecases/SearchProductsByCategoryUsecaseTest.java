@@ -29,7 +29,7 @@ class SearchProductsByCategoryUsecaseTest {
   private ProductRepository productRepository;
 
   @InjectMocks
-  private SearchProductsByCategoryUsecase searchProductsByCategoryUsecase;
+  private ListProductsByCategoryUsecase searchProductsByCategoryUsecase;
 
   private List<Product> generateProducts(int size, Category category) {
     return IntStream.range(0, size)

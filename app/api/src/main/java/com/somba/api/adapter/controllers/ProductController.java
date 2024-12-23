@@ -6,7 +6,7 @@ import com.somba.api.adapter.mappers.ProductMapper;
 import com.somba.api.adapter.presenters.ProductView;
 import com.somba.api.adapter.presenters.Response;
 import com.somba.api.core.usecases.ListProductsUseCase;
-import com.somba.api.core.usecases.SearchProductsByCategoryUsecase;
+import com.somba.api.core.usecases.ListProductsByCategoryUsecase;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +25,11 @@ import jakarta.websocket.server.PathParam;
 public class ProductController {
 
   private final ListProductsUseCase listProductsUseCase;
-  private final SearchProductsByCategoryUsecase searchProductsByCategoryUsecase;
+  private final ListProductsByCategoryUsecase searchProductsByCategoryUsecase;
   private final ProductMapper productMapper;
 
   public ProductController(ListProductsUseCase listProductsUseCase,
-      SearchProductsByCategoryUsecase searchProductsByCategoryUsecase, ProductMapper productMapper) {
+      ListProductsByCategoryUsecase searchProductsByCategoryUsecase, ProductMapper productMapper) {
     this.listProductsUseCase = listProductsUseCase;
     this.searchProductsByCategoryUsecase = searchProductsByCategoryUsecase;
     this.productMapper = productMapper;

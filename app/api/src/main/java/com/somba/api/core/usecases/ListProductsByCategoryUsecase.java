@@ -10,11 +10,11 @@ import com.somba.api.core.exceptions.InvalidPaginationParameterException;
 import com.somba.api.core.ports.ProductRepository;
 
 @Service
-public class SearchProductsByCategoryUsecase {
+public class ListProductsByCategoryUsecase {
 
   private final ProductRepository productRepository;
 
-  public SearchProductsByCategoryUsecase(ProductRepository productRepository) {
+  public ListProductsByCategoryUsecase(ProductRepository productRepository) {
     this.productRepository = productRepository;
   }
   
