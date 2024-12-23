@@ -3,6 +3,7 @@ enum Category {
   all,
   electronics,
   clothing,
+  shoes,
   home,
   beauty,
   sports,
@@ -23,6 +24,8 @@ extension CategoryExtension on Category {
         return 'Beauty';
       case Category.sports:
         return 'Sports';
+      case Category.shoes:
+        return 'Shoes';
       default:
         return '';
     }
