@@ -7,12 +7,20 @@ import 'package:ui/presentation/widgets/search_bar_input.dart';
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
 
+
+  void _handleSearch(BuildContext context, String query) {
+    // Handle search
+    if (query.isEmpty) return;
+
+    Navigator.of(context).pushNamed('/search', arguments: query);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SearchBarInput(hintText: 'Search on Somba.com', onSearch: (query) {}),
+        SearchBarInput(hintText: 'Search on Somba.com', onSearch: (query) => _handleSearch(context, query)),
         const SizedBox(height: 10),
         const CategoryList(),
       ],
