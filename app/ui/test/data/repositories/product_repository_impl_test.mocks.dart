@@ -69,4 +69,24 @@ class MockProductRemoteDataSource extends _i1.Mock
         returnValue: _i4.Future<List<_i5.ProductItemModel>>.value(
             <_i5.ProductItemModel>[]),
       ) as _i4.Future<List<_i5.ProductItemModel>>);
+
+  @override
+  _i4.Future<List<_i5.ProductItemModel>> getProductsByCategory({
+    required String? category,
+    required int? page,
+    required int? perPage,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getProductsByCategory,
+          [],
+          {
+            #category: category,
+            #page: page,
+            #perPage: perPage,
+          },
+        ),
+        returnValue: _i4.Future<List<_i5.ProductItemModel>>.value(
+            <_i5.ProductItemModel>[]),
+      ) as _i4.Future<List<_i5.ProductItemModel>>);
 }

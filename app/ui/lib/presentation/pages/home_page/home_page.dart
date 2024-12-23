@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ui/domain/usecases/get_products_by_category_use_case.dart';
 import 'package:ui/domain/usecases/get_products_use_case.dart';
 import 'package:ui/presentation/cubits/products/products_cubit.dart';
 import 'package:ui/presentation/pages/home_page/widgets/home_header.dart';
@@ -15,7 +16,10 @@ class HomePage extends StatelessWidget {
       body: RepositoryProvider(
         create: (context) => GetProductsUseCase(context.read()),
         child: BlocProvider(
-          create: (context) => ProductsCubit(context.read<GetProductsUseCase>())..fetchProducts(isInitialLoad: true),
+          create: (context) => ProductsCubit(
+            context.read<GetProductsUseCase>(),
+            context.read<GetProductsByCategoryUseCase>(),
+          )..fetchProducts(isInitialLoad: true),
           child: SafeArea(
             child: HomeContent(),
           ),

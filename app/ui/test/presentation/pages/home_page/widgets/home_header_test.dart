@@ -1,66 +1,155 @@
+// Enhanced test/presentation/pages/home_page/widgets/home_header_test.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ui/presentation/pages/home_page/widgets/home_header.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:ui/domain/enums/category.dart';
+import 'package:ui/presentation/cubits/products/products_cubit.dart';
+import 'package:ui/presentation/cubits/products/products_state.dart';
 import 'package:ui/presentation/pages/home_page/widgets/category_item.dart';
+import 'package:ui/presentation/pages/home_page/widgets/home_header.dart';
 import 'package:ui/presentation/pages/home_page/widgets/home_search_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+// Generate a MockProductsCubit using the Mockito package.
+@GenerateNiceMocks([MockSpec<ProductsCubit>()])
+import 'home_header_test.mocks.dart';
 
 void main() {
+  late MockProductsCubit mockProductsCubit;
+
+  setUp(() {
+    mockProductsCubit = MockProductsCubit();
+    when(mockProductsCubit.stream).thenAnswer((_) => Stream<ProductsState>.empty());
+  });
+
+  Widget createWidgetUnderTest() {
+    return MaterialApp(
+      home: Scaffold(
+        body: BlocProvider<ProductsCubit>.value(
+          value: mockProductsCubit,
+          child: HomeHeader(),
+        ),
+      ),
+    );
+  }
+
   group('HomeHeader Widget Tests', () {
     testWidgets('renders HomeHeader without errors', (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: HomeHeader(),
-          ),
-        ),
-      );
+      when(mockProductsCubit.selectedCategory).thenReturn(Category.all);
+      when(mockProductsCubit.state).thenReturn(ProductsLoaded([]));
+      when(mockProductsCubit.stream).thenAnswer((_) => Stream.value(ProductsLoaded([])));
 
-      // Act & Assert
-      // 1. Verify HomeSearchBar is present.
+      // Act
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      // Assert
       expect(find.byType(HomeSearchBar), findsOneWidget);
-
-      // 2. Verify four CategoryItem widgets are present.
-      expect(find.byType(CategoryItem), findsNWidgets(4));
+      expect(find.byType(CategoryItem), findsNWidgets(Category.values.length));
     });
 
     testWidgets('tapping on a category changes the selected category',
         (WidgetTester tester) async {
       // Arrange
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: HomeHeader(),
-          ),
-        ),
+      when(mockProductsCubit.selectedCategory).thenReturn(Category.all);
+      when(mockProductsCubit.state).thenReturn(ProductsLoaded([]));
+      when(mockProductsCubit.stream).thenAnswer(
+        (_) => Stream.fromIterable([
+          ProductsLoaded([]),
+          ProductsLoaded([]),
+        ]),
       );
 
-      // The category items should be: [All, Clothes, Shoes, Electronics].
-      // By default, index 0 ("All") is selected.
-
       // Act
-      // Find all CategoryItem widgets.
-      final categoryItems = find.byType(CategoryItem);
-      // Verify there are 4 items.
-      expect(categoryItems, findsNWidgets(4));
+      await tester.pumpWidget(createWidgetUnderTest());
 
-      // Initially, the first item ("All") should be selected.
-      CategoryItem allCategory = tester.widget<CategoryItem>(categoryItems.at(0));
-      expect(allCategory.isSelected, isTrue);
+      // Assert initial state
+      final allCategoryFinder = find.widgetWithText(CategoryItem, 'All');
+      expect(allCategoryFinder, findsOneWidget);
+      var allCategoryItem = tester.widget<CategoryItem>(allCategoryFinder);
+      expect(allCategoryItem.isSelected, isTrue);
 
-      // Tap the third category ("Shoes", index 2).
-      await tester.tap(categoryItems.at(2));
-      // Wait for the widget tree to rebuild.
+      // Update selected category
+      when(mockProductsCubit.selectedCategory).thenReturn(Category.shoes);
+
+      // Tap on "Shoes"
+      final shoesCategoryFinder = find.widgetWithText(CategoryItem, 'Shoes');
+      expect(shoesCategoryFinder, findsOneWidget);
+      await tester.tap(shoesCategoryFinder);
       await tester.pumpAndSettle();
 
-      // Assert
-      // After tapping "Shoes", "All" should no longer be selected.
-      allCategory = tester.widget<CategoryItem>(categoryItems.at(0));
-      expect(allCategory.isSelected, isFalse);
+      verify(mockProductsCubit.selectCategory(Category.shoes)).called(1);
 
-      // "Shoes" should now be selected.
-      final shoesCategory = tester.widget<CategoryItem>(categoryItems.at(2));
-      expect(shoesCategory.isSelected, isTrue);
+      // Rebuild with updated state
+      when(mockProductsCubit.state).thenReturn(ProductsLoaded([]));
+      await tester.pump();
+
+      // Verify selection
+      final updatedShoesCategoryItem = tester.widget<CategoryItem>(shoesCategoryFinder);
+      expect(updatedShoesCategoryItem.isSelected, isTrue);
+
+      allCategoryItem = tester.widget<CategoryItem>(allCategoryFinder);
+      expect(allCategoryItem.isSelected, isFalse);
+    });
+
+    testWidgets('does not invoke selectCategory when the selected category is tapped',
+        (WidgetTester tester) async {
+      // Arrange
+      when(mockProductsCubit.selectedCategory).thenReturn(Category.clothing);
+      when(mockProductsCubit.state).thenReturn(ProductsLoaded([]));
+      when(mockProductsCubit.stream).thenAnswer((_) => Stream.value(ProductsLoaded([])));
+
+      // Act
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      // Assert initial state
+      final clothingCategoryFinder = find.widgetWithText(CategoryItem, 'Clothes');
+      expect(clothingCategoryFinder, findsOneWidget);
+      final clothingCategoryItem = tester.widget<CategoryItem>(clothingCategoryFinder);
+      expect(clothingCategoryItem.isSelected, isTrue);
+
+      // Tap on "Clothing"
+      await tester.tap(clothingCategoryFinder);
+      await tester.pumpAndSettle();
+
+      verifyNever(mockProductsCubit.selectCategory(Category.clothing));
+    });
+
+    testWidgets('rebuilds correctly on state changes', (WidgetTester tester) async {
+      // Arrange
+      when(mockProductsCubit.selectedCategory).thenReturn(Category.all);
+      when(mockProductsCubit.state).thenReturn(ProductsLoaded([]));
+      when(mockProductsCubit.stream).thenAnswer(
+        (_) => Stream.fromIterable([
+          ProductsLoaded([]),
+          ProductsLoaded([]),
+        ]),
+      );
+
+      // Act
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      // Assert initial selection
+      final allCategoryFinder = find.widgetWithText(CategoryItem, 'All');
+      expect(allCategoryFinder, findsOneWidget);
+      var allCategoryItem = tester.widget<CategoryItem>(allCategoryFinder);
+      expect(allCategoryItem.isSelected, isTrue);
+
+      // Change selected category
+      when(mockProductsCubit.selectedCategory).thenReturn(Category.electronics);
+
+      await tester.pump();
+
+      // Verify new selection
+      final electronicsCategoryFinder = find.widgetWithText(CategoryItem, 'Electronics');
+      expect(electronicsCategoryFinder, findsOneWidget);
+      final electronicsCategoryItem = tester.widget<CategoryItem>(electronicsCategoryFinder);
+      expect(electronicsCategoryItem.isSelected, isTrue);
+
+      allCategoryItem = tester.widget<CategoryItem>(allCategoryFinder);
+      expect(allCategoryItem.isSelected, isFalse);
     });
   });
 }
