@@ -9,12 +9,15 @@ import com.somba.api.core.usecases.ListProductsUseCase;
 import com.somba.api.core.usecases.SearchProductsByCategoryUsecase;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.Min;
+import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -47,18 +50,20 @@ public class ProductController {
   }
 
   @GetMapping(
-    path = "/search",
-    produces = { "application/json" }, params = { "category" })
+    path = "/categories/{category}",
+    produces = { "application/json" }
+  )
   public Response<List<ProductView>> listProductsByCategory(
-      @RequestParam String category,
+      @PathVariable String category,
       @RequestParam(defaultValue = "0") @Min(value = 0, message = "Page number must be greater than or equal to 0") int page,
-      @RequestParam(defaultValue = "10") @Min(value = 1, message = "Page size must be greater than or equal to 1") int size
+      @RequestParam(defaultValue = "10") @Min(value = 1, message = "Page size must be greater than or equal to 1") int size,
+      WebRequest request
   ){
     return new Response<>(
       200,
       "Successfully retrieved the list of products of category: " + category,
       searchProductsByCategoryUsecase.execute(category, page, size).parallelStream().map(productMapper::toProductView).toList(),
-      "/api/v1/products/search?category=" + category + "&page=" + page + "&size=" + size,
+      request.getDescription(false).replace("uri=", "") + "?page=" + page + "&size=" + size,
       java.time.LocalDateTime.now()
     );
   }
