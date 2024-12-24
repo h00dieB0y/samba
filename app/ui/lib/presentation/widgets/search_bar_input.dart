@@ -4,13 +4,15 @@ typedef OnSearchCallback = void Function(String query);
 
 class SearchBarInput extends StatefulWidget {
   final String hintText;
+  final String? initialValue;
   final OnSearchCallback onSearch;
 
   const SearchBarInput({
-    Key? key,
+    super.key,
     required this.hintText,
     required this.onSearch,
-  }) : super(key: key);
+    this.initialValue
+  });
 
   @override
   _SearchBarInputState createState() => _SearchBarInputState();
@@ -22,7 +24,7 @@ class _SearchBarInputState extends State<SearchBarInput> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _controller = TextEditingController(text: widget.initialValue ?? '');
   }
 
   void _onClearSearch() {
