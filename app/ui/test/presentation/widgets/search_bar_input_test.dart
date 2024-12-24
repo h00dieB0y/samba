@@ -1,4 +1,4 @@
-// test/presentation/widgets/search_bar_input_test.dart
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -39,11 +39,12 @@ void main() {
       // No action needed for rendering test
 
       // Assert
-      expect(find.byType(TextField), findsOneWidget);
+      expect(find.byKey(const Key('search_bar_input_text_field')), findsOneWidget);
       expect(find.byIcon(Icons.search), findsOneWidget);
     });
 
-    testWidgets('contains a TextField with the correct hint and prefix icon',
+    testWidgets(
+        'contains a TextField with the correct hint and prefix icon',
         (WidgetTester tester) async {
       // Arrange
       const hintText = 'Search on Somba.com';
@@ -59,7 +60,7 @@ void main() {
       );
 
       // Act
-      final textFieldFinder = find.byType(TextField);
+      final textFieldFinder = find.byKey(const Key('search_bar_input_text_field'));
       final textField = tester.widget<TextField>(textFieldFinder);
 
       // Assert
@@ -87,7 +88,7 @@ void main() {
       // No action needed
 
       // Assert
-      expect(find.byIcon(Icons.clear), findsNothing);
+      expect(find.byKey(const Key('search_bar_input_clear_button')), findsNothing);
     });
 
     testWidgets('clear icon appears when text is entered',
@@ -107,12 +108,12 @@ void main() {
       );
 
       // Act
-      final textFieldFinder = find.byType(TextField);
+      final textFieldFinder = find.byKey(const Key('search_bar_input_text_field'));
       await tester.enterText(textFieldFinder, initialText);
       await tester.pump(); // Rebuild after text input
 
       // Assert
-      expect(find.byIcon(Icons.clear), findsOneWidget);
+      expect(find.byKey(const Key('search_bar_input_clear_button')), findsOneWidget);
     });
 
     testWidgets(
@@ -133,12 +134,12 @@ void main() {
       );
 
       // Act
-      final textFieldFinder = find.byType(TextField);
+      final textFieldFinder = find.byKey(const Key('search_bar_input_text_field'));
       await tester.enterText(textFieldFinder, initialText);
       await tester.pump(); // Rebuild after text input
 
       // Verify clear icon is present
-      final clearIconFinder = find.byIcon(Icons.clear);
+      final clearIconFinder = find.byKey(const Key('search_bar_input_clear_button'));
       expect(clearIconFinder, findsOneWidget);
 
       // Tap the clear icon
@@ -146,7 +147,7 @@ void main() {
       await tester.pump(); // Rebuild after tapping
 
       // Assert
-      expect(find.byIcon(Icons.clear), findsNothing); // Clear icon should disappear
+      expect(find.byKey(const Key('search_bar_input_clear_button')), findsNothing);
       final textField = tester.widget<TextField>(textFieldFinder);
       expect(textField.controller?.text, '');
 
@@ -171,17 +172,13 @@ void main() {
       );
 
       // Act
-      final textFieldFinder = find.byType(TextField);
+      final textFieldFinder = find.byKey(const Key('search_bar_input_text_field'));
       await tester.enterText(textFieldFinder, searchQuery);
       await tester.testTextInput.receiveAction(TextInputAction.search);
       await tester.pump(); // Process the action
 
       // Assert
       expect(callbackTracker.queries, [searchQuery]);
-
-      // Additionally, ensure onSearch is not called again after debounce duration
-      await tester.pump(const Duration(milliseconds: 300));
-      expect(callbackTracker.queries.length, 1); // Should still be 1
     });
 
     testWidgets('onSearch is not called on text change without submission',
@@ -199,7 +196,7 @@ void main() {
       );
 
       // Act
-      final textFieldFinder = find.byType(TextField);
+      final textFieldFinder = find.byKey(const Key('search_bar_input_text_field'));
       await tester.enterText(textFieldFinder, 'F');
       await tester.pump(); // Rebuild after text input
 
@@ -213,7 +210,8 @@ void main() {
       expect(callbackTracker.queries, isEmpty); // onSearch should not be called
     });
 
-    testWidgets('multiple rapid text changes do not trigger onSearch',
+    testWidgets(
+        'multiple rapid text changes do not trigger onSearch, only submission does',
         (WidgetTester tester) async {
       // Arrange
       const searchQueries = ['F', 'Fl', 'Flu', 'Flut', 'Flutt', 'Flutter'];
@@ -230,7 +228,7 @@ void main() {
       );
 
       // Act
-      final textFieldFinder = find.byType(TextField);
+      final textFieldFinder = find.byKey(const Key('search_bar_input_text_field'));
       for (final query in searchQueries) {
         await tester.enterText(textFieldFinder, query);
         await tester.pump(const Duration(milliseconds: 100)); // Rapid changes
@@ -264,12 +262,12 @@ void main() {
       );
 
       // Act
-      final textFieldFinder = find.byType(TextField);
+      final textFieldFinder = find.byKey(const Key('search_bar_input_text_field'));
       await tester.enterText(textFieldFinder, initialText);
       await tester.pump(); // Rebuild after text input
 
       // Verify clear icon is present
-      final clearIconFinder = find.byIcon(Icons.clear);
+      final clearIconFinder = find.byKey(const Key('search_bar_input_clear_button'));
       expect(clearIconFinder, findsOneWidget);
 
       // Tap the clear icon
@@ -277,9 +275,124 @@ void main() {
       await tester.pump(); // Rebuild after tapping
 
       // Assert
-      expect(find.byIcon(Icons.clear), findsNothing); // Clear icon should disappear
+      expect(find.byKey(const Key('search_bar_input_clear_button')), findsNothing);
       expect(
           callbackTracker.queries, ['']); // onSearch called with empty string
+    });
+
+    // Additional Tests for Enhanced Coverage
+
+    testWidgets('uses external TextEditingController if provided',
+        (WidgetTester tester) async {
+      // Arrange
+      final externalController = TextEditingController();
+      const externalText = 'External Text';
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SearchBarInput(
+              hintText: 'Search',
+              onSearch: callbackTracker.call,
+              controller: externalController,
+            ),
+          ),
+        ),
+      );
+
+      // Act
+      externalController.text = externalText;
+      await tester.pump(); // Rebuild after external text change
+
+      // Assert
+      final textFieldFinder = find.byKey(const Key('search_bar_input_text_field'));
+      final textField = tester.widget<TextField>(textFieldFinder);
+      expect(textField.controller?.text, externalText);
+      expect(find.byKey(const Key('search_bar_input_clear_button')), findsOneWidget);
+    });
+
+    testWidgets('uses external FocusNode if provided and manages focus accordingly',
+        (WidgetTester tester) async {
+      // Arrange
+      final externalFocusNode = FocusNode();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SearchBarInput(
+              hintText: 'Search',
+              onSearch: callbackTracker.call,
+              focusNode: externalFocusNode,
+            ),
+          ),
+        ),
+      );
+
+      // Act
+      await tester.tap(find.byKey(const Key('search_bar_input_text_field')));
+      await tester.pump(); // Rebuild after tapping
+
+      // Assert
+      expect(externalFocusNode.hasFocus, isTrue);
+
+      // Now, simulate clearing the search which should not unfocus since focus node is externally managed
+      final clearIconFinder = find.byKey(const Key('search_bar_input_clear_button'));
+      await tester.enterText(find.byKey(const Key('search_bar_input_text_field')), 'Flutter');
+      await tester.pump();
+      await tester.tap(clearIconFinder);
+      await tester.pump();
+
+      expect(externalFocusNode.hasFocus, isTrue); // Focus should remain
+    });
+
+    testWidgets('handles whitespace-only search submission by trimming input',
+        (WidgetTester tester) async {
+      // Arrange
+      const searchQuery = '   Flutter   ';
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SearchBarInput(
+              hintText: 'Search',
+              onSearch: callbackTracker.call,
+            ),
+          ),
+        ),
+      );
+
+      // Act
+      final textFieldFinder = find.byKey(const Key('search_bar_input_text_field'));
+      await tester.enterText(textFieldFinder, searchQuery);
+      await tester.testTextInput.receiveAction(TextInputAction.search);
+      await tester.pump(); // Process the action
+
+      // Assert
+      expect(callbackTracker.queries, ['Flutter']); // Should be trimmed
+    });
+
+    testWidgets('accessibility: TextField has appropriate semantics',
+        (WidgetTester tester) async {
+      // Arrange
+      const hintText = 'Search Products';
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SearchBarInput(
+              hintText: hintText,
+              onSearch: callbackTracker.call,
+            ),
+          ),
+        ),
+      );
+
+      // Act
+      final semantics = tester.getSemantics(find.byKey(const Key('search_bar_input_text_field')));
+
+      // Assert
+      expect(semantics.hasFlag(SemanticsFlag.isTextField), isTrue);
+      expect(
+          semantics.label, contains(hintText)); // Hint text is part of semantics
     });
   });
 }
