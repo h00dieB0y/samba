@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:ui/data/models/product_item_model.dart';
 import 'dart:convert';
 
+import 'package:ui/data/models/search_product_item_model.dart';
+
 class ProductRemoteDataSource {
   final http.Client client;
 
@@ -37,5 +39,24 @@ class ProductRemoteDataSource {
     } else {
       throw Exception('Failed to load products');
     }
+  }
+
+  Future<List<SearchProductItemModel>> searchProducts(String query) async {
+    final mockProductModels = <SearchProductItemModel>[];
+
+    for (int i = 0; i < 10; i++) {
+      mockProductModels.add(SearchProductItemModel(
+        id: '$i',
+        name: 'Product $i',
+        brand: 'Brand $i',
+        price: (i + 1) * 1000,
+        rating: 4.5,
+        reviewCount: 120,
+        isSponsored: i % 2 == 0,
+        isBestSeller: i % 3 == 0,
+      ));
+    }
+
+    return mockProductModels;
   }
 }
