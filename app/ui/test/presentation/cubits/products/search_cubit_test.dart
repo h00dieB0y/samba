@@ -7,47 +7,38 @@ import 'package:ui/domain/usecases/search_products_use_case.dart';
 import 'package:ui/presentation/cubits/products/search_cubit.dart';
 import 'package:ui/presentation/cubits/products/search_state.dart';
 
+import 'search_cubit_test.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<SearchProductsUseCase>(),
 ])
-import 'search_cubit_test.mocks.dart';
-
 void main() {
-  late SearchCubit searchCubit;
   late MockSearchProductsUseCase mockSearchProductsUseCase;
 
   setUp(() {
     mockSearchProductsUseCase = MockSearchProductsUseCase();
-    searchCubit = SearchCubit(mockSearchProductsUseCase);
-  });
-
-  tearDown(() {
-    searchCubit.close();
   });
 
   group('SearchCubit', () {
     test('initial state should be SearchInitial', () {
+      final searchCubit = SearchCubit(mockSearchProductsUseCase);
       expect(searchCubit.state, equals(SearchInitial()));
+      searchCubit.close();
     });
 
     blocTest<SearchCubit, SearchState>(
       'emits [SearchLoading, SearchEmpty] when search returns an empty list',
       build: () {
-        // Arrange
         when(mockSearchProductsUseCase.execute(any))
             .thenAnswer((_) async => []);
-        return searchCubit;
+        return SearchCubit(mockSearchProductsUseCase);
       },
       act: (cubit) => cubit.searchProducts('empty query'),
       expect: () => [
-        // 1. SearchLoading
-        // 2. SearchEmpty (because results are [])
         SearchLoading(),
         SearchEmpty(),
       ],
-      verify: (_) {
-        // Verify the use case was called with the correct query
+      verify: (cubit) {
         verify(mockSearchProductsUseCase.execute('empty query')).called(1);
       },
     );
@@ -55,7 +46,6 @@ void main() {
     blocTest<SearchCubit, SearchState>(
       'emits [SearchLoading, SearchLoaded] when search returns results',
       build: () {
-        // Arrange
         final tResults = [
           const SearchProductItemEntity(
             id: '1',
@@ -81,7 +71,7 @@ void main() {
 
         when(mockSearchProductsUseCase.execute(any))
             .thenAnswer((_) async => tResults);
-        return searchCubit;
+        return SearchCubit(mockSearchProductsUseCase);
       },
       act: (cubit) => cubit.searchProducts('normal query'),
       expect: () => [
@@ -109,7 +99,7 @@ void main() {
           ),
         ]),
       ],
-      verify: (_) {
+      verify: (cubit) {
         verify(mockSearchProductsUseCase.execute('normal query')).called(1);
       },
     );
@@ -119,15 +109,36 @@ void main() {
       build: () {
         when(mockSearchProductsUseCase.execute(any))
             .thenThrow(Exception('Failed to search'));
-        return searchCubit;
+        return SearchCubit(mockSearchProductsUseCase);
       },
       act: (cubit) => cubit.searchProducts('error query'),
       expect: () => [
         SearchLoading(),
         SearchError('Exception: Failed to search'),
       ],
-      verify: (_) {
+      verify: (cubit) {
         verify(mockSearchProductsUseCase.execute('error query')).called(1);
+      },
+    );
+
+    blocTest<SearchCubit, SearchState>(
+      'emits [SearchInitial] when reset is called',
+      build: () => SearchCubit(mockSearchProductsUseCase),
+      act: (cubit) => cubit.reset(),
+      expect: () => [
+        SearchInitial(),
+      ],
+    );
+
+    blocTest<SearchCubit, SearchState>(
+      'emits [SearchLoading, SearchInitial] when search is called with empty query',
+      build: () => SearchCubit(mockSearchProductsUseCase),
+      act: (cubit) => cubit.searchProducts(''),
+      expect: () => [
+        SearchInitial(),
+      ],
+      verify: (cubit) {
+        verifyNever(mockSearchProductsUseCase.execute(any));
       },
     );
   });
