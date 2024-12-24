@@ -1,6 +1,4 @@
-
 import 'package:ui/data/datasources/remote/product_remote_data_source.dart';
-import 'package:ui/data/models/search_product_item_model.dart';
 import 'package:ui/domain/entities/product_item_entity.dart';
 import 'package:ui/domain/entities/search_product_item_entity.dart';
 import 'package:ui/domain/repositories/product_repository.dart';
