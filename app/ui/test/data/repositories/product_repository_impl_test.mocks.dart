@@ -10,6 +10,7 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:ui/data/datasources/remote/product_remote_data_source.dart'
     as _i3;
 import 'package:ui/data/models/product_item_model.dart' as _i5;
+import 'package:ui/data/models/search_product_item_model.dart' as _i6;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -89,4 +90,15 @@ class MockProductRemoteDataSource extends _i1.Mock
         returnValue: _i4.Future<List<_i5.ProductItemModel>>.value(
             <_i5.ProductItemModel>[]),
       ) as _i4.Future<List<_i5.ProductItemModel>>);
+
+  @override
+  _i4.Future<List<_i6.SearchProductItemModel>> searchProducts(String? query) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #searchProducts,
+          [query],
+        ),
+        returnValue: _i4.Future<List<_i6.SearchProductItemModel>>.value(
+            <_i6.SearchProductItemModel>[]),
+      ) as _i4.Future<List<_i6.SearchProductItemModel>>);
 }
