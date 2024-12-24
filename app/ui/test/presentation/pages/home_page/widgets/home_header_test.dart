@@ -10,6 +10,7 @@ import 'package:ui/presentation/cubits/products/products_state.dart';
 import 'package:ui/presentation/pages/home_page/widgets/category_item.dart';
 import 'package:ui/presentation/pages/home_page/widgets/home_header.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ui/presentation/widgets/search_bar_input.dart';
 
 // Generate a MockProductsCubit using the Mockito package.
 @GenerateNiceMocks([MockSpec<ProductsCubit>()])
@@ -45,7 +46,7 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest());
 
       // Assert
-      expect(find.byType(SearchBar), findsOneWidget);
+      expect(find.byType(SearchBarInput), findsOneWidget);
       expect(find.byType(CategoryItem), findsNWidgets(Category.values.length));
     });
 
