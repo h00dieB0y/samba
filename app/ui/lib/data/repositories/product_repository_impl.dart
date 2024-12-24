@@ -1,6 +1,7 @@
 
 import 'package:ui/data/datasources/remote/product_remote_data_source.dart';
 import 'package:ui/domain/entities/product_item_entity.dart';
+import 'package:ui/domain/entities/search_product_item_entity.dart';
 import 'package:ui/domain/repositories/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -34,4 +35,24 @@ class ProductRepositoryImpl implements ProductRepository {
         .map((productModel) => productModel.toEntity())
         .toList();
   }
+
+  Future<List<SearchProductItemEntity>> searchProducts(String query) async {
+    final mockProductModels = <SearchProductItemEntity>[];
+
+    for (int i = 0; i < 10; i++) {
+      mockProductModels.add(SearchProductItemEntity(
+        id: '$i',
+        name: 'Product $i',
+        brand: 'Brand $i',
+        price: '\$${(i + 1) * 10}',
+        rating: 4.5,
+        reviewCount: 120,
+        isSponsored: i % 2 == 0,
+        isBestSeller: i % 3 == 0,
+      ));
+    }
+
+    return mockProductModels;
+  }
+
 }
