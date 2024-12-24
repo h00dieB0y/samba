@@ -5,7 +5,7 @@ import 'package:ui/presentation/cubits/products/search_cubit.dart';
 import 'package:ui/presentation/cubits/products/search_state.dart';
 import 'package:ui/presentation/widgets/app_bottom_navigation_bar.dart';
 import 'package:ui/presentation/widgets/search_bar_input.dart';
-import 'widgets/product_card.dart';
+import 'widgets/product_list.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -95,14 +95,7 @@ class _SearchPageContentState extends State<SearchPageContent> {
                     return const Center(child: Text('No results found.'));
                   } else if (state is SearchLoaded) {
                     final products = state.products;
-                    return ListView.builder(
-                      key: const Key('search_results_list'),
-                      itemCount: products.length,
-                      itemBuilder: (context, index) {
-                        final product = products[index];
-                        return ProductCard(product: product);
-                      },
-                    );
+                    return ProductList(products: products); // Use the new widget
                   } else if (state is SearchError) {
                     return Center(child: Text('Error: ${state.message}'));
                   }
