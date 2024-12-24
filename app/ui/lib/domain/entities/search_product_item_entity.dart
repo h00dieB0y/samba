@@ -1,29 +1,37 @@
 
-import 'package:ui/domain/entities/product_item_entity.dart';
+import 'package:equatable/equatable.dart';
 
-class SearchProductItemEntity extends ProductItemEntity {
-  final double rating; // e.g., 4.5
-  final int reviewCount; // e.g., 120
-  final bool isSponsored; // Optional: true if sponsored
-  final bool isBestSeller;
+class SearchProductItemEntity extends Equatable {
 
   const SearchProductItemEntity({
-    required super.id,
-    required super.name,
-    required super.brand,
-    required super.price,
+    required this.id,
+    required this.name,
+    required this.brand,
+    required this.price,
     required this.rating,
     required this.reviewCount,
     required this.isSponsored,
     required this.isBestSeller,
   });
 
+  final String id;
+  final String name;
+  final String brand;
+  final String price;
+  final double rating;
+  final int reviewCount;
+  final bool isSponsored;
+  final bool isBestSeller;
+
   @override
   List<Object?> get props => [
-        ...super.props,
-        rating,
-        reviewCount,
-        isSponsored,
-        isBestSeller,
-      ];
+    id,
+    name,
+    brand,
+    price,
+    rating,
+    reviewCount,
+    isSponsored,
+    isBestSeller,
+  ];
 }
