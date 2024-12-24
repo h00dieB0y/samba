@@ -42,5 +42,4 @@ class ProductRepositoryImpl implements ProductRepository {
         .map((productModel) => productModel.toEntity())
         .toList());
   }
-
 }
