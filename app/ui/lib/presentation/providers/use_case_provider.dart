@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ui/domain/usecases/get_products_by_category_use_case.dart';
 import 'package:ui/domain/usecases/get_products_use_case.dart';
+import 'package:ui/domain/usecases/search_products_use_case.dart';
 import 'product_provider.dart';
 
 // Provides the Use Case for Getting Products
@@ -10,4 +11,8 @@ final getProductsUseCaseProvider = Provider(
 
 final getProductsByCategoryUseCaseProvider = Provider(
   (ref) => GetProductsByCategoryUseCase(ref.read(productRepositoryProvider)),
+);
+
+final searchProductsUseCaseProvider = Provider(
+  (ref) => SearchProductsUseCase(ref.read(productRepositoryProvider)),
 );
