@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui/domain/usecases/search_products_use_case.dart';
 import 'package:ui/presentation/cubits/products/search_cubit.dart';
 import 'package:ui/presentation/cubits/products/search_state.dart';
-import 'package:ui/presentation/pages/search_page/widgets/product_card.dart';
 import 'package:ui/presentation/widgets/app_bottom_navigation_bar.dart';
 import 'package:ui/presentation/widgets/search_bar_input.dart';
+import 'widgets/product_card.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -13,7 +13,8 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Extract the passed-in query (String)
-    final String? initialQuery = ModalRoute.of(context)!.settings.arguments as String?;
+    final String? initialQuery =
+        ModalRoute.of(context)?.settings.arguments as String?;
 
     return BlocProvider(
       create: (context) => SearchCubit(
@@ -34,19 +35,37 @@ class SearchPageContent extends StatefulWidget {
 }
 
 class _SearchPageContentState extends State<SearchPageContent> {
+  late final TextEditingController _searchController;
+  late final FocusNode _focusNode;
+
   @override
   void initState() {
     super.initState();
+    _searchController =
+        TextEditingController(text: widget.initialQuery ?? '');
+    _focusNode = FocusNode();
 
     // If we have an initial query, perform the search immediately
     if (widget.initialQuery != null && widget.initialQuery!.isNotEmpty) {
-      context.read<SearchCubit>().searchProducts(widget.initialQuery!);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.read<SearchCubit>().searchProducts(widget.initialQuery!);
+      });
     }
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   void _onSearch(String query) {
-    if (query.isEmpty) return;
-    context.read<SearchCubit>().searchProducts(query);
+    if (query.isEmpty) {
+      context.read<SearchCubit>().reset();
+    } else {
+      context.read<SearchCubit>().searchProducts(query);
+    }
   }
 
   @override
@@ -55,20 +74,21 @@ class _SearchPageContentState extends State<SearchPageContent> {
       body: SafeArea(
         child: Column(
           children: [
-            // Reuse the same search bar, calling _onSearch
+            // SearchBarInput without debounce
             SearchBarInput(
               hintText: 'Search on Somba.com',
               onSearch: _onSearch,
-              initialValue: widget.initialQuery ?? '',
+              controller: _searchController,
+              focusNode: _focusNode,
             ),
             const SizedBox(height: 10),
-
             // Display results from the SearchCubit
             Expanded(
               child: BlocBuilder<SearchCubit, SearchState>(
                 builder: (context, state) {
                   if (state is SearchInitial) {
-                    return const Center(child: Text('Type something to search.'));
+                    return const Center(
+                        child: Text('Type something to search.'));
                   } else if (state is SearchLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is SearchEmpty) {
@@ -76,6 +96,7 @@ class _SearchPageContentState extends State<SearchPageContent> {
                   } else if (state is SearchLoaded) {
                     final products = state.products;
                     return ListView.builder(
+                      key: const Key('search_results_list'),
                       itemCount: products.length,
                       itemBuilder: (context, index) {
                         final product = products[index];
@@ -101,7 +122,7 @@ class _SearchPageContentState extends State<SearchPageContent> {
             Navigator.pop(context);
           }
         },
-        currentIndex: 1,
+        currentIndex: 0,
       ),
     );
   }
