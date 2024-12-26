@@ -45,11 +45,14 @@ public class ProductRepositoryAdapter implements ProductRepository, ProductSearc
           .map(productMapper::toEntity)
           .toList()
       );
+
+    products.forEach(this::index);
   }
 
   @Override
   public void deleteAll() {
     this.mdbProductRepository.deleteAll();
+    this.elasticsearchProductSearchRepository.deleteAll();
   }
 
   @Override
@@ -62,8 +65,7 @@ public class ProductRepositoryAdapter implements ProductRepository, ProductSearc
 
   @Override
   public void index(Product product) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'index'");
+    this.elasticsearchProductSearchRepository.save(productMapper.toDocument(product));
   }
 
   @Override
