@@ -19,7 +19,7 @@ public class ProductSearchUseCase {
     this.productSearchRepository = productSearchRepository;
   }
 
-  public List<Product> search(String keyword) {
+  public List<Product> execute(String keyword) {
     String query = Optional.ofNullable(keyword).map(String::trim).orElse(null);
 
     if (Objects.isNull(query) || query.length() < 3) {

@@ -42,7 +42,7 @@ class ProductSearchUseCaseTest {
     when(productSearchRepository.search("Product")).thenReturn(products);
 
     // When
-    List<Product> result = productSearchUseCase.search("Product");
+    List<Product> result = productSearchUseCase.execute("Product");
 
     // Then
     assertThat(result).hasSize(2);
@@ -56,7 +56,7 @@ class ProductSearchUseCaseTest {
     when(productSearchRepository.search("Product")).thenReturn(List.of());
 
     // When
-    List<Product> result = productSearchUseCase.search("Product");
+    List<Product> result = productSearchUseCase.execute("Product");
 
     // Then
     assertThat(result).isEmpty();
@@ -68,7 +68,7 @@ class ProductSearchUseCaseTest {
     // Given
     // When
     // Then
-    assertThrows(InvalidKeywordException.class, () -> productSearchUseCase.search(null));
+    assertThrows(InvalidKeywordException.class, () -> productSearchUseCase.execute(null));
   }
 
   @Test
@@ -76,7 +76,7 @@ class ProductSearchUseCaseTest {
     // Given
     // When
     // Then
-    assertThrows(InvalidKeywordException.class, () -> productSearchUseCase.search(""));
+    assertThrows(InvalidKeywordException.class, () -> productSearchUseCase.execute(""));
   }
 
   @Test
@@ -84,7 +84,7 @@ class ProductSearchUseCaseTest {
     // Given
     // When
     // Then
-    assertThrows(InvalidKeywordException.class, () -> productSearchUseCase.search("ab"));
+    assertThrows(InvalidKeywordException.class, () -> productSearchUseCase.execute("ab"));
   }
 
   @Test
@@ -92,6 +92,6 @@ class ProductSearchUseCaseTest {
     // Given
     // When
     // Then
-    assertThrows(InvalidKeywordException.class, () -> productSearchUseCase.search(" ab "));
+    assertThrows(InvalidKeywordException.class, () -> productSearchUseCase.execute(" ab "));
   }
 }
