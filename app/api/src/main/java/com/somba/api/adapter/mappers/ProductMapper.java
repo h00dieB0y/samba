@@ -48,6 +48,16 @@ public class ProductMapper {
         productDocument.getDescription(),
         productDocument.getBrand(),
         productDocument.getPrice(),
-        0);
+        productDocument.getStock());
+  }
+
+  public ProductDocument toDocument(Product product) {
+    return new ProductDocument()
+        .setId(product.id().toString())
+        .setName(product.name())
+        .setDescription(product.description())
+        .setBrand(product.brand())
+        .setPrice(product.price())
+        .setStock(product.stock());
   }
 }
