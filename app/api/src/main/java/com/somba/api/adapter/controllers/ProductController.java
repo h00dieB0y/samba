@@ -6,6 +6,7 @@ import com.somba.api.adapter.mappers.ProductMapper;
 import com.somba.api.adapter.presenters.ProductView;
 import com.somba.api.adapter.presenters.Response;
 import com.somba.api.core.usecases.ListProductsUseCase;
+import com.somba.api.core.usecases.ProductSearchUseCase;
 import com.somba.api.core.usecases.ListProductsByCategoryUsecase;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,22 +18,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.Min;
-import jakarta.websocket.server.PathParam;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/products")
 @Validated
 public class ProductController {
 
   private final ListProductsUseCase listProductsUseCase;
   private final ListProductsByCategoryUsecase searchProductsByCategoryUsecase;
+  private final ProductSearchUseCase searchProductsUseCase;
   private final ProductMapper productMapper;
 
   public ProductController(ListProductsUseCase listProductsUseCase,
-      ListProductsByCategoryUsecase searchProductsByCategoryUsecase, ProductMapper productMapper) {
+      ListProductsByCategoryUsecase searchProductsByCategoryUsecase,
+      ProductSearchUseCase searchProductsUseCase, ProductMapper productMapper) {
     this.listProductsUseCase = listProductsUseCase;
     this.searchProductsByCategoryUsecase = searchProductsByCategoryUsecase;
     this.productMapper = productMapper;
+    this.searchProductsUseCase = searchProductsUseCase;
   }
 
   @GetMapping(produces = { "application/json" })
@@ -67,4 +70,20 @@ public class ProductController {
       java.time.LocalDateTime.now()
     );
   }
+
+  // Search products by keyword
+  @GetMapping(
+    path = "/search",
+    produces = { "application/json" }
+  )
+  public Response<List<ProductView>> searchProducts(@RequestParam("q") String keyword) {
+    return new Response<>(
+      200,
+      "Successfully retrieved the list of products matching the keyword: " + keyword,
+      searchProductsUseCase.execute(keyword).parallelStream().map(productMapper::toProductView).toList(),
+      "/api/v1/products/search?q=" + keyword,
+      java.time.LocalDateTime.now()
+    );
+  }
+
 }
