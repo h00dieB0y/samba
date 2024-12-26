@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Bean;
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.enums.Category;
 import com.somba.api.core.ports.ProductRepository;
-import com.somba.api.infrastructure.persistence.MdbProductRepository;
-import com.somba.api.infrastructure.persistence.entities.ProductEntity;
 
 @Configuration
 public class DataLoader {
