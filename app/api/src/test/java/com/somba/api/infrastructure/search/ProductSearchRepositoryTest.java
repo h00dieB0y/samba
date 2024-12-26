@@ -27,12 +27,10 @@ class ProductSearchRepositoryTest {
     private ElasticsearchProductSearchRepository productSearchRepository;
 
     @Autowired
-    private ElasticsearchOperations elasticsearchOperations; // For index refresh
+    private ElasticsearchOperations elasticsearchOperations;
 
-    // Define the Docker image for Elasticsearch
     private static final String ELASTICSEARCH_DOCKER_IMAGE = "docker.elastic.co/elasticsearch/elasticsearch:8.16.2";
 
-    // Initialize the Elasticsearch TestContainer
     @Container
     public static ElasticsearchContainer elasticsearchContainer = new ElasticsearchContainer(DockerImageName.parse(ELASTICSEARCH_DOCKER_IMAGE))
                 .withEnv("discovery.type", "single-node")
@@ -43,7 +41,6 @@ class ProductSearchRepositoryTest {
     @DynamicPropertySource
     static void setElasticsearchProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.elasticsearch.uris", elasticsearchContainer::getHttpHostAddress);
-        // Removed username and password since security is disabled
     }
 
     @BeforeEach
