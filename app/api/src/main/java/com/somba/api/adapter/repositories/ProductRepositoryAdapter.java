@@ -9,6 +9,7 @@ import com.somba.api.core.enums.Category;
 import com.somba.api.core.ports.ProductRepository;
 import com.somba.api.core.ports.ProductSearchRepository;
 import com.somba.api.infrastructure.persistence.MdbProductRepository;
+import com.somba.api.infrastructure.search.ElasticsearchProductSearchRepository;
 
 import org.springframework.stereotype.Component;
 
@@ -17,10 +18,13 @@ public class ProductRepositoryAdapter implements ProductRepository, ProductSearc
 
   private final MdbProductRepository mdbProductRepository;
 
+  private final ElasticsearchProductSearchRepository elasticsearchProductSearchRepository;
+
   private final ProductMapper productMapper;
 
-  public ProductRepositoryAdapter(MdbProductRepository mdbProductRepository, ProductMapper productMapper) {
+  public ProductRepositoryAdapter(MdbProductRepository mdbProductRepository, ElasticsearchProductSearchRepository elasticsearchProductSearchRepository, ProductMapper productMapper) {
     this.mdbProductRepository = mdbProductRepository;
+    this.elasticsearchProductSearchRepository = elasticsearchProductSearchRepository;
     this.productMapper = productMapper;
   }
 
@@ -64,7 +68,11 @@ public class ProductRepositoryAdapter implements ProductRepository, ProductSearc
 
   @Override
   public List<Product> search(String query) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'search'");
+    // Here we assume that all prerequisites are met for the query
+    return this.elasticsearchProductSearchRepository
+      .findByNameOrDescriptionOrBrand(query, query, query)
+      .stream()
+      .map(productMapper::toDomain)
+      .toList();
   }
 }
