@@ -7,4 +7,7 @@ public record Review(
     UUID productId,
     int rating
 ) {
+  public Review(UUID productId, int rating) {
+    this(UUID.randomUUID(), productId, rating);
+  }
 }
