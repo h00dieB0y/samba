@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.somba.api.adapter.presenters.ProductView;
 import com.somba.api.core.entities.Product;
+import com.somba.api.core.enums.Category;
 import com.somba.api.infrastructure.persistence.entities.ProductEntity;
 
 @Component
@@ -27,7 +28,8 @@ public class ProductMapper {
     productEntity.getDescription(),
     productEntity.getBrand(),
     productEntity.getPrice(),
-    productEntity.getStock()
+    productEntity.getStock(),
+    Category.valueOf(productEntity.getCategory())
   );
   }
 
