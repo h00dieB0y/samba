@@ -69,8 +69,8 @@ class PaginatedProductsE2ETest {
         productRepository.deleteAll();
 
         // Initialize test data
-        Product product1 = new Product(UUID.randomUUID(), "Product 1", "Description 1", "Brand 1", 100, 10);
-        Product product2 = new Product(UUID.randomUUID(), "Product 2", "Description 2", "Brand 2", 200, 20);
+        Product product1 = new Product(UUID.randomUUID(), "Product 1", "Description 1", "Brand 1", 100, 10, null);
+        Product product2 = new Product(UUID.randomUUID(), "Product 2", "Description 2", "Brand 2", 200, 20, null);
         productRepository.saveAll(List.of(product1, product2));
     }
 
