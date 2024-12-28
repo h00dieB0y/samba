@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:ui/data/models/product_item_model.dart';
 import 'dart:convert';
 
+import 'package:ui/data/models/search_product_item_model.dart';
+
 class ProductRemoteDataSource {
   final http.Client client;
 
@@ -33,6 +35,22 @@ class ProductRemoteDataSource {
 
       return products
           .map((product) => ProductItemModel.fromJson(product))
+          .toList();
+    } else {
+      throw Exception('Failed to load products');
+    }
+  }
+
+  Future<List<SearchProductItemModel>> searchProducts(String query) async {
+    final response = await client.get(
+        Uri.parse('http://localhost:8081/api/v1/products/search?q=$query'));
+    
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      final List<dynamic> products = jsonResponse['data'];
+
+      return products
+          .map((product) => SearchProductItemModel.fromJson(product))
           .toList();
     } else {
       throw Exception('Failed to load products');

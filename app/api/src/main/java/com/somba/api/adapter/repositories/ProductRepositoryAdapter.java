@@ -40,11 +40,15 @@ public class ProductRepositoryAdapter implements ProductRepository, ProductSearc
 
   @Override
   public Product save(Product product) {
-    return this.productMapper.toDomain(
+    Product savedProduct = this.productMapper.toDomain(
       this.mdbProductRepository.save(
         this.productMapper.toEntity(product)
       )
     );
+    
+    this.index(savedProduct);
+    
+    return savedProduct;
   }
 
   @Override

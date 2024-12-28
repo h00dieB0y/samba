@@ -9,8 +9,8 @@ import 'package:ui/presentation/cubits/products/products_cubit.dart';
 import 'package:ui/presentation/cubits/products/products_state.dart';
 import 'package:ui/presentation/pages/home_page/widgets/category_item.dart';
 import 'package:ui/presentation/pages/home_page/widgets/home_header.dart';
-import 'package:ui/presentation/pages/home_page/widgets/home_search_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ui/presentation/widgets/search_bar_input.dart';
 
 // Generate a MockProductsCubit using the Mockito package.
 @GenerateNiceMocks([MockSpec<ProductsCubit>()])
@@ -26,12 +26,19 @@ void main() {
 
   Widget createWidgetUnderTest() {
     return MaterialApp(
-      home: Scaffold(
-        body: BlocProvider<ProductsCubit>.value(
-          value: mockProductsCubit,
-          child: HomeHeader(),
-        ),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Scaffold(
+              body: BlocProvider<ProductsCubit>.value(
+                value: mockProductsCubit,
+                child: const HomeHeader(),
+              ),
+            ),
+        '/search': (context) => Scaffold(
+          body: const Text('Search Page'),
+        )
+        
+      },
     );
   }
 
@@ -46,7 +53,7 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest());
 
       // Assert
-      expect(find.byType(HomeSearchBar), findsOneWidget);
+      expect(find.byType(SearchBarInput), findsOneWidget);
       expect(find.byType(CategoryItem), findsNWidgets(Category.values.length));
     });
 
@@ -151,5 +158,50 @@ void main() {
       allCategoryItem = tester.widget<CategoryItem>(allCategoryFinder);
       expect(allCategoryItem.isSelected, isFalse);
     });
+  });
+
+  // Submit search query with empty string should not redirect to search page
+  testWidgets('does not navigate to search page when search query is empty',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockProductsCubit.selectedCategory).thenReturn(Category.all);
+    when(mockProductsCubit.state).thenReturn(ProductsLoaded([]));
+    when(mockProductsCubit.stream).thenAnswer((_) => Stream.value(ProductsLoaded([])));
+
+    // Act
+    await tester.pumpWidget(createWidgetUnderTest());
+
+    // Tap on search button
+    final searchButtonFinder = find.byIcon(Icons.search);
+    await tester.tap(searchButtonFinder);
+    await tester.pumpAndSettle();
+
+    // Assert
+    expect(find.text('Search Page'), findsNothing);
+   
+  });
+
+  testWidgets('navigates to search page when search query is not empty',
+      (WidgetTester tester) async {
+    // Arrange
+    when(mockProductsCubit.selectedCategory).thenReturn(Category.all);
+    when(mockProductsCubit.state).thenReturn(ProductsLoaded([]));
+    when(mockProductsCubit.stream).thenAnswer((_) => Stream.value(ProductsLoaded([])));
+
+    // Act
+    await tester.pumpWidget(createWidgetUnderTest());
+
+    // Enter search query
+    final searchQuery = 'search query';
+    final searchBarFinder = find.byType(SearchBarInput);
+    await tester.enterText(searchBarFinder, searchQuery);
+    await tester.pump();
+
+    // Submit search query by tapping "Enter" key
+    await tester.testTextInput.receiveAction(TextInputAction.done);
+    await tester.pumpAndSettle();
+
+    // Assert
+    expect(find.text('Search Page'), findsOneWidget);
   });
 }

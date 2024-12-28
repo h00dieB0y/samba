@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ui/domain/usecases/get_products_by_category_use_case.dart';
+
+// Use Cases
 import 'package:ui/domain/usecases/get_products_use_case.dart';
+import 'package:ui/domain/usecases/get_products_by_category_use_case.dart';
+
+// Cubit
 import 'package:ui/presentation/cubits/products/products_cubit.dart';
 import 'package:ui/presentation/pages/home_page/widgets/home_header.dart';
 import 'package:ui/presentation/pages/home_page/widgets/product_grid.dart';
@@ -13,16 +17,14 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RepositoryProvider(
-        create: (context) => GetProductsUseCase(context.read()),
-        child: BlocProvider(
-          create: (context) => ProductsCubit(
-            context.read<GetProductsUseCase>(),
-            context.read<GetProductsByCategoryUseCase>(),
-          )..fetchProducts(isInitialLoad: true),
-          child: SafeArea(
-            child: HomeContent(),
-          ),
+      body: BlocProvider(
+        // Create and provide the ProductsCubit
+        create: (context) => ProductsCubit(
+          context.read<GetProductsUseCase>(),
+          context.read<GetProductsByCategoryUseCase>(),
+        )..fetchProducts(isInitialLoad: true), // initial product load
+        child: SafeArea(
+          child: const HomeContent(),
         ),
       ),
       bottomNavigationBar: AppBottomNavigationBar(
@@ -42,7 +44,7 @@ class HomeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        HomeHeader(),
+        const HomeHeader(),
         Expanded(
           child: ProductGrid(),
         ),

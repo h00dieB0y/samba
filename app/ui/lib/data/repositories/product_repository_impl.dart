@@ -1,6 +1,6 @@
-
 import 'package:ui/data/datasources/remote/product_remote_data_source.dart';
 import 'package:ui/domain/entities/product_item_entity.dart';
+import 'package:ui/domain/entities/search_product_item_entity.dart';
 import 'package:ui/domain/repositories/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -33,5 +33,13 @@ class ProductRepositoryImpl implements ProductRepository {
     return productModels
         .map((productModel) => productModel.toEntity())
         .toList();
+  }
+
+  @override
+  Future<List<SearchProductItemEntity>> searchProducts(String query) async {
+    return _productRemoteDataSource.searchProducts(query)
+        .then((productModels) => productModels
+        .map((productModel) => productModel.toEntity())
+        .toList());
   }
 }
