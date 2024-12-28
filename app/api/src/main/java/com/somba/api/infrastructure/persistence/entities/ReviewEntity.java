@@ -3,6 +3,7 @@ package com.somba.api.infrastructure.persistence.entities;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.somba.api.infrastructure.persistence.listeners.ReviewEntityListener;
 import jakarta.persistence.EntityListeners;
@@ -17,6 +18,7 @@ public class ReviewEntity {
   @Id
   private String id;
 
+  @Indexed
   private String productId;
 
   private int rating;
