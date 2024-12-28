@@ -78,6 +78,7 @@ jobs:
       # Start only required services
       - name: Start Docker Services (CI)
         run: docker compose -f docker-compose.ci.yml up -d --build
+        working-directory: ./app/api
 
       - name: Wait for services to be healthy
         run: |
@@ -112,4 +113,5 @@ jobs:
 
       - name: Tear Down Docker Services (CI)
         if: always()
-        run: docker-compose -f docker-compose.ci.yml down
+        run: docker compose -f docker-compose.ci.yml down
+        working-directory: ./app/api
