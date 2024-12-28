@@ -14,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -34,10 +33,17 @@ class CreateReviewUseCaseTest {
   @Mock
   private ProductRepository productRepository;
 
-  @InjectMocks
   private CreateReviewUseCase createReviewUseCase;
 
+  private GetProductByIdUseCase getProductByIdUseCase;
+
   private Product product;
+
+  @BeforeEach
+  void setUp() {
+    getProductByIdUseCase = new GetProductByIdUseCase(productRepository);
+    createReviewUseCase = new CreateReviewUseCase(reviewRepository, getProductByIdUseCase, productRepository);
+  }
 
   @Nested
   class GivenValidProductId {
