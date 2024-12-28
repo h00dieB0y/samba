@@ -29,7 +29,7 @@ class SearchProductItemModel extends Equatable {
       brand: json['brand'],
       price: (json['price']).toInt(),
       rating: (json['rating']).toDouble(),
-      reviewCount: (json['reviewCount']).toInt(),
+      reviewCount: (json['reviewsCount']).toInt(),
       isSponsored: json['isSponsored'] ?? false,
       isBestSeller: json['isBestSeller'] ?? false,
     );
