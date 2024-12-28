@@ -10,7 +10,7 @@ void main() {
       'brand': 'Brand Name',
       'price': 1299,
       'rating': 4.5,
-      'reviewCount': 100,
+      'reviewsCount': 100,
       'isSponsored': true,
       'isBestSeller': false,
     };
