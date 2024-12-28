@@ -3,8 +3,6 @@ package com.somba.api.infrastructure.persistence.entities;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.somba.api.infrastructure.persistence.listeners.ReviewEntityListener;
 import jakarta.persistence.EntityListeners;
@@ -19,8 +17,7 @@ public class ReviewEntity {
   @Id
   private String id;
 
-  @DBRef
-  private ProductEntity product;
+  private String productId;
 
   private int rating;
 
@@ -44,12 +41,12 @@ public class ReviewEntity {
     return this;
   }
 
-  public ProductEntity getProduct() {
-    return this.product;
+  public String getProductId() {
+    return this.productId;
   }
 
-  public ReviewEntity setProduct(ProductEntity product) {
-    this.product = product;
+  public ReviewEntity setProductId(String product) {
+    this.productId = product;
 
     return this;
   }
@@ -88,7 +85,7 @@ public class ReviewEntity {
   public String toString() {
     return "ReviewEntity{" +
       "id='" + id + '\'' +
-      ", product=" + product +
+      ", productID='" + productId + '\'' +
       ", rating=" + rating +
       ", createdAt=" + createdAt +
       ", updatedAt=" + updatedAt +
@@ -106,14 +103,14 @@ public class ReviewEntity {
 
     return rating == that.rating &&
       Objects.equals(id, that.id) &&
-      Objects.equals(product, that.product) &&
+      Objects.equals(productId, that.productId) &&
       Objects.equals(createdAt, that.createdAt) &&
       Objects.equals(updatedAt, that.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, product, rating, createdAt, updatedAt);
+    return Objects.hash(id, productId, rating, createdAt, updatedAt);
   }
 
 }
