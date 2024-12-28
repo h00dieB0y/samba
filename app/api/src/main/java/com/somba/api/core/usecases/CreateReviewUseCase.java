@@ -7,12 +7,17 @@ import com.somba.api.core.entities.Review;
 import com.somba.api.core.exceptions.InvalidRatingException;
 import com.somba.api.core.exceptions.ResourceNotFoundException;
 import com.somba.api.core.ports.ProductRepository;
+import com.somba.api.core.ports.ReviewRepository;
 
 public class CreateReviewUseCase {
+
+  private final ReviewRepository reviewRepository;
+
   private final ProductRepository productRepository;
 
-  public CreateReviewUseCase(ProductRepository productRepository) {
+  public CreateReviewUseCase(ProductRepository productRepository, ReviewRepository reviewRepository) {
     this.productRepository = productRepository;
+    this.reviewRepository = reviewRepository;
   }
 
   public Review execute(String productId, int rating) {
@@ -32,7 +37,9 @@ public class CreateReviewUseCase {
 
     Review review = new Review(product, rating);
 
-    product.addReview(review);
+    reviewRepository.save(review);
+
+    product.addReview(review.id());
 
     productRepository.save(product);
 
