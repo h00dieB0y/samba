@@ -150,4 +150,6 @@ class ProductSearchRepositoryTest {
 
         assertThat(results).isEmpty();
     }
+
+    
 }
