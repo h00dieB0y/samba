@@ -85,7 +85,7 @@ public class ProductController {
     produces = { "application/json" }
   )
   public Response<ReviewView> addReview(
-    @PathVariable("productId") String productId,
+    @PathVariable String productId,
     @RequestBody ReviewRequest reviewRequest
   ) {
     return new Response<>(
