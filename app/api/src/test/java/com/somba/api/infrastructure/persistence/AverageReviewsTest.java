@@ -7,27 +7,13 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-
 import com.somba.api.infrastructure.persistence.entities.ReviewEntity;
 
 @DataMongoTest
-@Testcontainers
 class AverageReviewsTest {
-    @Container
-  static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
 
   @Autowired
   private MdbReviewRepository mdbReviewRepository;
-
-  @DynamicPropertySource
-  static void mongoProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-  }
 
   @BeforeEach
   void setUp() {

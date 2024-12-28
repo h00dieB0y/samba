@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 
-import org.testcontainers.junit.jupiter.Testcontainers;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +20,6 @@ import org.junit.jupiter.api.Assertions;
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {"spring.profiles.active=test"}
 )
-@Testcontainers
 class PaginatedProductsE2ETest extends BaseE2ETest {
 
     @BeforeEach

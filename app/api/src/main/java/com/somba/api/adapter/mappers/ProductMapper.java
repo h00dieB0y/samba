@@ -82,13 +82,13 @@ public class ProductMapper {
         .setCategory(product.category().name());
   }
 
-  public ProductSearchView toProductSearchView(Product product, double score) {
+  public ProductSearchView toProductSearchView(Product product, double rating) {
     return new ProductSearchView(
         product.id().toString(),
         product.name(),
         product.brand(),
         product.price(),
-        score,
+        rating,
         product.countReviews());
   }
 }
