@@ -31,8 +31,8 @@ class ListProductsUseCaseTest {
     void shouldReturnProductsWhenRepositoryIsNotEmpty() {
         // Given
         var products = List.of(
-            new Product(UUID.randomUUID(), "Product 1", "Description 1", "Brand 1", 100, 10),
-            new Product(UUID.randomUUID(), "Product 2", "Description 2", "Brand 2", 200, 20)
+            new Product(UUID.randomUUID(), "Product 1", "Description 1", "Brand 1", 100, 10, null),
+            new Product(UUID.randomUUID(), "Product 2", "Description 2", "Brand 2", 200, 20, null)
         );
         
         when(productRepository.getProducts(0, 2)).thenReturn(products);

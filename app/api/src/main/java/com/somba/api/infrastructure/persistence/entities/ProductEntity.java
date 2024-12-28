@@ -1,6 +1,7 @@
 package com.somba.api.infrastructure.persistence.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -33,6 +34,8 @@ public class ProductEntity {
   private int price;
 
   private int stock;
+  // List of reviews IDs
+  private List<String> reviews;
 
   @CreatedDate
   private LocalDateTime createdAt;
@@ -134,6 +137,16 @@ public class ProductEntity {
     return this;
   }
 
+  public List<String> getReviews() {
+    return reviews;
+  }
+
+  public ProductEntity setReviews(List<String> reviews) {
+    this.reviews = reviews;
+
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o)
@@ -148,13 +161,14 @@ public class ProductEntity {
         Objects.equals(description, that.description) &&
         Objects.equals(brand, that.brand) &&
         Objects.equals(category, that.category) &&
+        Objects.equals(reviews, that.reviews) &&
         Objects.equals(createdAt, that.createdAt) &&
         Objects.equals(updatedAt, that.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, brand, category, price, stock, createdAt, updatedAt);
+    return Objects.hash(id, name, description, brand, category, price, stock, reviews, createdAt, updatedAt);
   }
 
   @Override
