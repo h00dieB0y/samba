@@ -20,7 +20,8 @@ spring:
 
 server:
   port: ${APP_PORT:8082}  # Use a different port to avoid conflicts
-
+  servlet:
+    context-path: /api/${API_VERSION:v1}
 # ----------------------------------------
 # Logging Configuration for Testing
 # ----------------------------------------
