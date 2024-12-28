@@ -7,18 +7,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.enums.Category;
 import com.somba.api.core.exceptions.InvalidKeywordException;
 import com.somba.api.core.ports.ProductSearchRepository;
 
+@ExtendWith(MockitoExtension.class)
 class ProductSearchUseCaseTest {
   
   @Mock
@@ -28,7 +29,6 @@ class ProductSearchUseCaseTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
     productSearchUseCase = new ProductSearchUseCase(productSearchRepository);
   }
 
