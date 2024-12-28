@@ -3,7 +3,6 @@ package com.somba.api.e2e;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import org.checkerframework.checker.units.qual.s;
 import org.junit.jupiter.api.Assertions;
 
 
@@ -18,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.somba.api.adapter.presenters.ProductSearchView;
 import com.somba.api.adapter.presenters.Response;
@@ -28,7 +26,6 @@ import com.somba.api.infrastructure.search.ProductDocument;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
         "spring.profiles.active=test" })
-@Testcontainers
 class SearchProductsE2ETest extends BaseE2ETest {
 
     @Autowired

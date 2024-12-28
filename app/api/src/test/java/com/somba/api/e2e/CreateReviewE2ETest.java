@@ -15,7 +15,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.enums.Category;
@@ -25,7 +24,6 @@ import com.somba.api.adapter.presenters.ErrorDetails;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
     "spring.profiles.active=test" })
-@Testcontainers
 class CreateReviewE2ETest extends BaseE2ETest {
 
   private static final MediaType CONTENT_TYPE_JSON = MediaType.APPLICATION_JSON;

@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.somba.api.adapter.presenters.ErrorDetails;
 import com.somba.api.adapter.presenters.ProductView;
@@ -23,7 +22,6 @@ import com.somba.api.core.enums.Category;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
     "spring.profiles.active=test" })
-@Testcontainers
 class PaginatedProductsByCategoryE2ETest extends BaseE2ETest {
 
   @BeforeEach
