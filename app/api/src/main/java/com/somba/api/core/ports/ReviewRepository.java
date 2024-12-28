@@ -4,5 +4,5 @@ import com.somba.api.core.entities.Review;
 
 public interface ReviewRepository {
   Review save(Review review);
-  double averageRating(String productId);
+  double getAverageRatingByProductId(String productId);
 }
