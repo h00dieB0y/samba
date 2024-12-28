@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.somba.api.adapter.mappers.ProductMapper;
 import com.somba.api.adapter.mappers.ReviewMapper;
+import com.somba.api.adapter.presenters.ProductSearchView;
 import com.somba.api.adapter.presenters.ProductView;
 import com.somba.api.adapter.presenters.Response;
 import com.somba.api.adapter.presenters.ReviewRequest;
@@ -12,6 +13,7 @@ import com.somba.api.core.usecases.ListProductsUseCase;
 import com.somba.api.core.usecases.CreateReviewUseCase;
 import com.somba.api.core.usecases.ProductSearchUseCase;
 import com.somba.api.core.usecases.ListProductsByCategoryUsecase;
+import com.somba.api.core.usecases.CalculateProductAverageRatingUseCase;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,19 +36,21 @@ public class ProductController {
   private final ListProductsByCategoryUsecase searchProductsByCategoryUsecase;
   private final CreateReviewUseCase addReviewUseCase;
   private final ProductSearchUseCase searchProductsUseCase;
+  private final CalculateProductAverageRatingUseCase averageReviewOfaProductUseCase;
   private final ProductMapper productMapper;
   private final ReviewMapper reviewMapper;
 
   public ProductController(ListProductsUseCase listProductsUseCase,
       ListProductsByCategoryUsecase searchProductsByCategoryUsecase, CreateReviewUseCase addReviewUseCase,
-     
-      ProductSearchUseCase searchProductsUseCase, ProductMapper productMapper, ReviewMapper reviewMapper) {
+      ProductSearchUseCase searchProductsUseCase, CalculateProductAverageRatingUseCase averageReviewOfaProductUseCase,
+      ProductMapper productMapper, ReviewMapper reviewMapper) {
     this.listProductsUseCase = listProductsUseCase;
     this.searchProductsByCategoryUsecase = searchProductsByCategoryUsecase;
     this.productMapper = productMapper;
     this.addReviewUseCase = addReviewUseCase;
     this.reviewMapper = reviewMapper;
     this.searchProductsUseCase = searchProductsUseCase;
+    this.averageReviewOfaProductUseCase = averageReviewOfaProductUseCase;
   }
 
   @GetMapping(produces = { "application/json" })
@@ -105,11 +109,13 @@ public class ProductController {
     path = "/search",
     produces = { "application/json" }
   )
-  public Response<List<ProductView>> searchProducts(@RequestParam("q") String keyword) {
+  public Response<List<ProductSearchView>> searchProducts(@RequestParam("q") String keyword) {
     return new Response<>(
       200,
       "Successfully retrieved the list of products matching the keyword: " + keyword,
-      searchProductsUseCase.execute(keyword).parallelStream().map(productMapper::toProductView).toList(),
+      searchProductsUseCase.execute(keyword).parallelStream().map(
+        product -> productMapper.toProductSearchView(product, averageReviewOfaProductUseCase.execute(product.id().toString()))
+      ).toList(),
       "/api/v1/products/search?q=" + keyword,
       java.time.LocalDateTime.now()
     );
