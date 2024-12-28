@@ -2,6 +2,8 @@ package com.somba.api.core.usecases;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.entities.Review;
 import com.somba.api.core.exceptions.InvalidRatingException;
@@ -9,6 +11,7 @@ import com.somba.api.core.exceptions.ResourceNotFoundException;
 import com.somba.api.core.ports.ProductRepository;
 import com.somba.api.core.ports.ReviewRepository;
 
+@Service
 public class CreateReviewUseCase {
 
   private final ReviewRepository reviewRepository;
