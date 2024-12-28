@@ -12,9 +12,9 @@ import com.somba.api.core.enums.Category;
 import com.somba.api.core.ports.ProductRepository;
 import com.somba.api.infrastructure.persistence.MdbProductRepository;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class MdbProductRepositoryAdapter implements ProductRepository {
 
   private final MdbProductRepository mdbProductRepository;
