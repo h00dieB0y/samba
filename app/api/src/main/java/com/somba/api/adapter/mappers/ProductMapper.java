@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
+import com.somba.api.adapter.presenters.ProductSearchView;
 import com.somba.api.adapter.presenters.ProductView;
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.enums.Category;
@@ -78,5 +79,15 @@ public class ProductMapper {
         .setBrand(product.brand())
         .setPrice(product.price())
         .setStock(product.stock());
+  }
+
+  public ProductSearchView toProductSearchView(Product product, double score) {
+    return new ProductSearchView(
+        product.id().toString(),
+        product.name(),
+        product.brand(),
+        product.price(),
+        score,
+        product.countReviews());
   }
 }
