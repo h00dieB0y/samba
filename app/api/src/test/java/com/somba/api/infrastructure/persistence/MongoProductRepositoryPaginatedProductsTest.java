@@ -3,12 +3,6 @@ package com.somba.api.infrastructure.persistence;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.somba.api.infrastructure.persistence.entities.ProductEntity;
@@ -20,19 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DataMongoTest
-@Testcontainers
 class MongoProductRepositoryPaginatedProductsTest {
-
-  @Container
-  static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
 
   @Autowired
   private MdbProductRepository mdbProductRepository;
-
-  @DynamicPropertySource
-  static void mongoProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-  }
 
   @BeforeEach
   void setUp() {

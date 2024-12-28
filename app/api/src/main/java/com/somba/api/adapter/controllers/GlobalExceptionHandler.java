@@ -2,6 +2,7 @@ package com.somba.api.adapter.controllers;
 
 import com.somba.api.adapter.presenters.ErrorDetails;
 import com.somba.api.core.exceptions.InvalidCategoryException;
+import com.somba.api.core.exceptions.InvalidKeywordException;
 import com.somba.api.core.exceptions.InvalidPaginationParameterException;
 import com.somba.api.core.exceptions.InvalidRatingException;
 import com.somba.api.core.exceptions.NullCategoryException;
@@ -180,6 +181,22 @@ public class GlobalExceptionHandler {
         return new ErrorDetails(
                 HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+    }
+
+    /**
+     * Handle InvalidKeywordException.
+     */
+    @ExceptionHandler(InvalidKeywordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDetails handleInvalidKeywordException(InvalidKeywordException ex, WebRequest request) {
+        logger.warn("Invalid keyword: {}", ex.getMessage());
+
+        return new ErrorDetails(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 ex.getMessage(),
                 request.getDescription(false).replace("uri=", "")
         );

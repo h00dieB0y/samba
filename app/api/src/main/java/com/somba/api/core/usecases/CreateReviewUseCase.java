@@ -1,13 +1,10 @@
 package com.somba.api.core.usecases;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Service;
 
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.entities.Review;
 import com.somba.api.core.exceptions.InvalidRatingException;
-import com.somba.api.core.exceptions.ResourceNotFoundException;
 import com.somba.api.core.ports.ProductRepository;
 import com.somba.api.core.ports.ReviewRepository;
 
@@ -16,11 +13,13 @@ public class CreateReviewUseCase {
 
   private final ReviewRepository reviewRepository;
 
-  private final ProductRepository productRepository;
+  private final GetProductByIdUseCase getProductByIdUseCase;
 
-  public CreateReviewUseCase(ProductRepository productRepository, ReviewRepository reviewRepository) {
-    this.productRepository = productRepository;
+  private final ProductRepository productRepository;
+  public CreateReviewUseCase(ReviewRepository reviewRepository, GetProductByIdUseCase getProductByIdUseCase, ProductRepository productRepository) {
     this.reviewRepository = reviewRepository;
+    this.getProductByIdUseCase = getProductByIdUseCase;
+    this.productRepository = productRepository;
   }
 
   public Review execute(String productId, int rating) {
@@ -28,15 +27,7 @@ public class CreateReviewUseCase {
       throw new InvalidRatingException(rating);
     }
 
-    UUID id;
-    try {
-      id = UUID.fromString(productId);
-    } catch (IllegalArgumentException | NullPointerException e) {
-      throw new ResourceNotFoundException(productId, Product.class);
-    } 
-
-    Product product = productRepository.getProductById(id)
-      .orElseThrow(() -> new ResourceNotFoundException(productId, Product.class));
+    Product product = getProductByIdUseCase.execute(productId);
 
     Review review = new Review(product.id(), rating);
 
