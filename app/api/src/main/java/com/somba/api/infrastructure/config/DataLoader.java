@@ -2,6 +2,7 @@ package com.somba.api.infrastructure.config;
 
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.springframework.boot.CommandLineRunner;
@@ -30,6 +31,7 @@ public class DataLoader {
               .setPrice(i * 10)
               .setStock(i * 100)
               .setCategory(category.name())
+              .setReviews(new ArrayList<>())
           );
         }
       }
