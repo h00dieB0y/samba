@@ -19,17 +19,14 @@ jobs:
     with:
       base_ref: ${{ github.event.pull_request.base.sha || github.event.before }}
       head_ref: ${{ github.event.pull_request.head.sha || github.event.after }}
-      paths: 'app/api'
+      paths: 'app/api .github/workflows/api-ci.yml .github/workflows/path-change-detector.yml'
 
   Build_and_Test:
     name: Build and Test
-
     needs: path-check
-
     if: needs.path-check.outputs.changes_detected == 'true'
-
     runs-on: ubuntu-latest
-    
+
     env:
       JAVA_VERSION: '21'
       MAVEN_OPTS: '-Xmx2g'
@@ -37,6 +34,20 @@ jobs:
       SONAR_ORGANIZATION: jarhead-killgrave
       SONAR_HOST_URL: https://sonarcloud.io
       SONAR_PROJECT_KEY: com.somba:api
+
+      # Provide defaults or secrets for your DB, Mongo, etc.
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: test_db
+      DB_PORT: 5432
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_DB: test_mongo
+      MONGO_PORT: 27017
+      ELASTICSEARCH_JAVA_OPTS: '-Xms256m -Xmx256m'
+      ELASTICSEARCH_PORT: 9200
+      ELASTICSEARCH_PORT_ALT: 9300
+      KIBANA_PORT: 5601
 
     steps:
       - name: Checkout Repository
@@ -64,6 +75,16 @@ jobs:
         run: mvn --version
         working-directory: ./app/api
 
+      # Start only required services
+      - name: Start Docker Services (CI)
+        run: docker-compose -f docker-compose.ci.yml up -d --build
+
+      - name: Wait for services to be healthy
+        run: |
+          echo "Sleeping for 20s to allow services to start..."
+          sleep 20
+          docker ps
+
       - name: Build and Test with Maven
         run: mvn clean verify --fail-fast -Dspring.profiles.active=test
         working-directory: ./app/api
@@ -74,7 +95,6 @@ jobs:
           args: >
             -Dsonar.token=${{ env.SONAR_TOKEN }}
           projectBaseDir: ./app/api
-
 
       - name: Upload Test Reports
         if: always()
@@ -89,3 +109,7 @@ jobs:
         with:
           name: jacoco-report
           path: ./app/api/target/site/jacoco/
+
+      - name: Tear Down Docker Services (CI)
+        if: always()
+        run: docker-compose -f docker-compose.ci.yml down
