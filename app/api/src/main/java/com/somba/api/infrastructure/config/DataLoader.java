@@ -21,7 +21,6 @@ public class DataLoader {
   public CommandLineRunner initDatabase(ProductRepository repository) {
     return args -> {
       repository.deleteAll();
-      List<Product> products = new ArrayList<>();
       for (int i = 0; i < 10; i++) {
         for (Category category : Category.values()) {
           repository.save(
@@ -36,7 +35,6 @@ public class DataLoader {
           );
         }
       }
-      repository.saveAll(products);
     };
   }
 }
