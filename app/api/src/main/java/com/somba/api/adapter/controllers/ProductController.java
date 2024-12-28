@@ -110,14 +110,17 @@ public class ProductController {
     produces = { "application/json" }
   )
   public Response<List<ProductSearchView>> searchProducts(@RequestParam("q") String keyword) {
+    List<ProductSearchView> products = searchProductsUseCase.execute(keyword).parallelStream().map(
+      product -> productMapper.toProductSearchView(product, averageReviewOfaProductUseCase.execute(product.id().toString()))
+    ).toList();
+
+    String message = products.isEmpty() ? "No products found matching the keyword: " + keyword : "Successfully retrieved the list of products matching the keyword: " + keyword;
+
     return new Response<>(
       200,
-      "Successfully retrieved the list of products matching the keyword: " + keyword,
-      searchProductsUseCase.execute(keyword).parallelStream().map(
-        product -> productMapper.toProductSearchView(product, averageReviewOfaProductUseCase.execute(product.id().toString()))
-      ).toList(),
-      "/api/v1/products/search?q=" + keyword,
-      java.time.LocalDateTime.now()
+      message,
+      products,
+      "/api/v1/products/search?q=" + keyword
     );
   }
 
