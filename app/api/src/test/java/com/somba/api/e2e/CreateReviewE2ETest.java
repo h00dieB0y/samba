@@ -10,25 +10,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.enums.Category;
-import com.somba.api.core.ports.ProductRepository;
 import com.somba.api.adapter.presenters.Response;
 import com.somba.api.adapter.presenters.ReviewView;
 import com.somba.api.adapter.presenters.ErrorDetails;
@@ -36,46 +26,14 @@ import com.somba.api.adapter.presenters.ErrorDetails;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
     "spring.profiles.active=test" })
 @Testcontainers
-class CreateReviewE2ETest {
+class CreateReviewE2ETest extends BaseE2ETest {
 
-  // Constants for test configurations
-  private static final String POSTGRES_IMAGE = "postgres:latest";
-  private static final String MONGO_IMAGE = "mongo:latest";
-  private static final String BASE_API_PATH = "/api/v1/products";
   private static final MediaType CONTENT_TYPE_JSON = MediaType.APPLICATION_JSON;
-
-  @Container
-  static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>(POSTGRES_IMAGE);
-
-  @Container
-  static final MongoDBContainer mongoDBContainer = new MongoDBContainer(MONGO_IMAGE);
-
-  @DynamicPropertySource
-  static void configureProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-    registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-    registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-    registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-  }
-
-  @LocalServerPort
-  private int port;
-
-  @Autowired
-  private TestRestTemplate restTemplate;
-
-  @Autowired
-  private ProductRepository productRepository;
-
-  @Autowired
-  private ObjectMapper objectMapper;
-
-  private String baseUrl;
-
+  
   @BeforeEach
-  void initialize() {
-    baseUrl = "http://localhost:" + port + BASE_API_PATH;
-    productRepository.deleteAll();
+  public void setUp() {
+    super.setUpBase();
+    baseUrl = "http://localhost:" + port + "/api/v1/products";
   }
 
   /**

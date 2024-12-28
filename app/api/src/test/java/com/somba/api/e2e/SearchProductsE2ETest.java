@@ -2,6 +2,8 @@ package com.somba.api.e2e;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+
+import org.checkerframework.checker.units.qual.s;
 import org.junit.jupiter.api.Assertions;
 
 
@@ -13,83 +15,31 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.elasticsearch.ElasticsearchContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.somba.api.adapter.presenters.ProductSearchView;
 import com.somba.api.adapter.presenters.Response;
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.enums.Category;
-import com.somba.api.core.ports.ProductRepository;
 import com.somba.api.infrastructure.search.ProductDocument;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
         "spring.profiles.active=test" })
 @Testcontainers
-class SearchProductsE2ETest {
-
-    // Constants for Testcontainers
-    private static final String POSTGRES_IMAGE = "postgres:latest";
-    private static final String MONGO_IMAGE = "mongo:latest";
-    private static final String ELASTICSEARCH_DOCKER_IMAGE = "docker.elastic.co/elasticsearch/elasticsearch:8.17.0";
-    private static final String BASE_API_PATH = "/api/v1/products/search";
-
-    @Container
-    static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>(POSTGRES_IMAGE);
-
-    @Container
-    static final MongoDBContainer mongoDBContainer = new MongoDBContainer(MONGO_IMAGE);
-
-    @Container
-    public static ElasticsearchContainer elasticsearchContainer = new ElasticsearchContainer(
-            DockerImageName.parse(ELASTICSEARCH_DOCKER_IMAGE))
-            .withEnv("discovery.type", "single-node")
-                .withEnv("xpack.security.enabled", "false") // Disable security
-                .withExposedPorts(9200, 9300) // Ensure ports are exposed
-                .waitingFor(org.testcontainers.containers.wait.strategy.Wait.forHttp("/").forStatusCode(200)); // Wait until Elasticsearch is up
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-        registry.add("spring.elasticsearch.uris", elasticsearchContainer::getHttpHostAddress);
-    }
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+class SearchProductsE2ETest extends BaseE2ETest {
 
     @Autowired
     private ElasticsearchOperations elasticsearchOperations;
 
-    private String baseUrl;
 
     @BeforeEach
     void initialize() {
-        baseUrl = "http://localhost:" + port + BASE_API_PATH;
+        super.setUpBase();
 
-        // Clear existing data
-        productRepository.deleteAll();
+        baseUrl = "http://localhost:" + port + "/api/v1/products/search";
 
         // Initialize test data
         Product product1 = new Product("Product 1", "Description 1", "Brand 1", 100, 10, Category.ELECTRONICS);
