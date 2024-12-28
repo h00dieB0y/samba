@@ -4,12 +4,12 @@ import java.util.UUID;
 
 public record Review(
   UUID id,
-  Product product,
+  UUID productId,
   int rating
 ) {
 
-  public Review(Product product, int rating) {
-    this(UUID.randomUUID(), product, rating);
+  public Review(UUID productId, int rating) {
+    this(UUID.randomUUID(), productId, rating);
   }
 
   public static boolean isValidRating(int rating) {
