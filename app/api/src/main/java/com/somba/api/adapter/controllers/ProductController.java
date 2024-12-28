@@ -3,13 +3,19 @@ package com.somba.api.adapter.controllers;
 import java.util.List;
 
 import com.somba.api.adapter.mappers.ProductMapper;
+import com.somba.api.adapter.mappers.ReviewMapper;
 import com.somba.api.adapter.presenters.ProductView;
 import com.somba.api.adapter.presenters.Response;
+import com.somba.api.adapter.presenters.ReviewRequest;
+import com.somba.api.adapter.presenters.ReviewView;
 import com.somba.api.core.usecases.ListProductsUseCase;
+import com.somba.api.core.usecases.CreateReviewUseCase;
 import com.somba.api.core.usecases.ListProductsByCategoryUsecase;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
@@ -26,13 +32,18 @@ public class ProductController {
 
   private final ListProductsUseCase listProductsUseCase;
   private final ListProductsByCategoryUsecase searchProductsByCategoryUsecase;
+  private final CreateReviewUseCase addReviewUseCase;
   private final ProductMapper productMapper;
+  private final ReviewMapper reviewMapper;
 
   public ProductController(ListProductsUseCase listProductsUseCase,
-      ListProductsByCategoryUsecase searchProductsByCategoryUsecase, ProductMapper productMapper) {
+      ListProductsByCategoryUsecase searchProductsByCategoryUsecase, CreateReviewUseCase addReviewUseCase,
+      ProductMapper productMapper, ReviewMapper reviewMapper) {
     this.listProductsUseCase = listProductsUseCase;
     this.searchProductsByCategoryUsecase = searchProductsByCategoryUsecase;
     this.productMapper = productMapper;
+    this.addReviewUseCase = addReviewUseCase;
+    this.reviewMapper = reviewMapper;
   }
 
   @GetMapping(produces = { "application/json" })
@@ -64,6 +75,24 @@ public class ProductController {
       "Successfully retrieved the list of products of category: " + category,
       searchProductsByCategoryUsecase.execute(category, page, size).parallelStream().map(productMapper::toProductView).toList(),
       request.getDescription(false).replace("uri=", "") + "?page=" + page + "&size=" + size,
+      java.time.LocalDateTime.now()
+    );
+  }
+
+  @PostMapping(
+    path = "/{productId}/reviews",
+    consumes = { "application/json" },
+    produces = { "application/json" }
+  )
+  public Response<ReviewView> addReview(
+    @PathVariable("productId") String productId,
+    @RequestBody ReviewRequest reviewRequest
+  ) {
+    return new Response<>(
+      201,
+      "Successfully added review to product with ID: " + productId,
+      reviewMapper.toReviewView(addReviewUseCase.execute(productId, reviewRequest.rating())),
+      "/api/v1/products/" + productId + "/reviews",
       java.time.LocalDateTime.now()
     );
   }
