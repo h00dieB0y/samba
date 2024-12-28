@@ -62,7 +62,7 @@ class CreateReviewUseCaseTest {
         @Test
         void shouldReturnReview() {
           assertThat(review).isNotNull();
-          assertThat(review.product()).isEqualTo(product);
+          assertThat(review.productId()).isEqualTo(product.id());
           assertThat(review.rating()).isEqualTo(5);
           verify(productRepository).getProductById(product.id());
           verify(productRepository).save(product);
