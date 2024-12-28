@@ -8,18 +8,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.elasticsearch.DataElasticsearchTest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.elasticsearch.ElasticsearchContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Testcontainers
 @DataElasticsearchTest
 class ProductSearchRepositoryTest {
 
@@ -28,20 +20,6 @@ class ProductSearchRepositoryTest {
 
     @Autowired
     private ElasticsearchOperations elasticsearchOperations;
-
-    private static final String ELASTICSEARCH_DOCKER_IMAGE = "docker.elastic.co/elasticsearch/elasticsearch:8.17.0";
-
-    @Container
-    public static ElasticsearchContainer elasticsearchContainer = new ElasticsearchContainer(DockerImageName.parse(ELASTICSEARCH_DOCKER_IMAGE))
-                .withEnv("discovery.type", "single-node")
-                .withEnv("xpack.security.enabled", "false") // Disable security
-                .withExposedPorts(9200, 9300) // Ensure ports are exposed
-                .waitingFor(org.testcontainers.containers.wait.strategy.Wait.forHttp("/").forStatusCode(200)); // Wait until Elasticsearch is up
-
-    @DynamicPropertySource
-    static void setElasticsearchProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.elasticsearch.uris", elasticsearchContainer::getHttpHostAddress);
-    }
 
     @BeforeEach
     void setUp() {
