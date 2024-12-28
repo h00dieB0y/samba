@@ -35,7 +35,7 @@ public class CreateReviewUseCase {
     Product product = productRepository.getProductById(id)
       .orElseThrow(() -> new ResourceNotFoundException(productId, Product.class));
 
-    Review review = new Review(product, rating);
+    Review review = new Review(product.id(), rating);
 
     reviewRepository.save(review);
 
