@@ -77,7 +77,7 @@ jobs:
 
       # Start only required services
       - name: Start Docker Services (CI)
-        run: docker-compose -f docker-compose.ci.yml up -d --build
+        run: docker compose -f docker-compose.ci.yml up -d --build
 
       - name: Wait for services to be healthy
         run: |
