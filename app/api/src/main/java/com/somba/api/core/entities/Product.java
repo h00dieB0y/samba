@@ -35,4 +35,8 @@ public record Product(
 
     reviews.add(reviewId);
   }
+
+  public int countReviews() {
+    return reviews.size();
+  }
 }
