@@ -64,7 +64,10 @@ public class ProductMapper {
         productDocument.getDescription(),
         productDocument.getBrand(),
         productDocument.getPrice(),
-        productDocument.getStock());
+        productDocument.getStock(),
+        Category.valueOf(productDocument.getCategory()),
+        new ArrayList<>()
+    );
   }
 
   public ProductDocument toDocument(Product product) {

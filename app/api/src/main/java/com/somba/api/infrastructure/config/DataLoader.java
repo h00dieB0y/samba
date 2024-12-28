@@ -3,6 +3,7 @@ package com.somba.api.infrastructure.config;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.boot.CommandLineRunner;
@@ -24,15 +25,14 @@ public class DataLoader {
       for (int i = 0; i < 10; i++) {
         for (Category category : Category.values()) {
           repository.save(
-            new ProductEntity()
-              .setId(UUID.randomUUID().toString())
-              .setName("Product " + i + " " + category.name())
-              .setDescription("Description " + i)
-              .setBrand("Brand " + i)
-              .setPrice(i * 10)
-              .setStock(i * 100)
-              .setCategory(category.name())
-              .setReviews(new ArrayList<>())
+            new Product(
+              "Product " + i,
+              "Description " + i,
+              "Brand " + i,
+              100 * i,
+              10,
+              category
+            )
           );
         }
       }

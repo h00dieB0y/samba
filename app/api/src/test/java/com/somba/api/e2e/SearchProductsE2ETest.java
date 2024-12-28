@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.springframework.http.*;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,13 +21,12 @@ import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-import org.testcontainers.utility.TestcontainersConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.somba.api.adapter.presenters.ProductSearchView;
-import com.somba.api.adapter.presenters.ProductView;
 import com.somba.api.adapter.presenters.Response;
 import com.somba.api.core.entities.Product;
+import com.somba.api.core.enums.Category;
 import com.somba.api.core.ports.ProductRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
@@ -86,8 +84,8 @@ public class SearchProductsE2ETest {
     productRepository.deleteAll();
 
     // Initialize test data
-    Product product1 = new Product(UUID.randomUUID(), "Product 1", "Description 1", "Brand 1", 100, 10);
-    Product product2 = new Product(UUID.randomUUID(), "Product 2", "Description 2", "Brand 2", 200, 20);
+    Product product1 = new Product("Product 1", "Description 1", "Brand 1", 100, 10, Category.ELECTRONICS);
+    Product product2 = new Product("Product 2", "Description 2", "Brand 2", 200, 20, Category.ELECTRONICS);
     productRepository.saveAll(List.of(product1, product2));
   }
 

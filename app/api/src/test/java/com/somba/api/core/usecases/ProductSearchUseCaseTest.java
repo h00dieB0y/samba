@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.somba.api.core.entities.Product;
+import com.somba.api.core.enums.Category;
 import com.somba.api.core.exceptions.InvalidKeywordException;
 import com.somba.api.core.ports.ProductSearchRepository;
 
@@ -35,8 +36,8 @@ class ProductSearchUseCaseTest {
   void shouldReturnProductsWhenRepositoryIsNotEmpty() {
     // Given
     var products = List.of(
-        new Product(UUID.randomUUID(), "Product 1", "Description 1", "Brand 1", 100, 10),
-        new Product(UUID.randomUUID(), "Product 2", "Description 2", "Brand 2", 200, 20)
+        new Product("Product 1", "Description 1", "Brand 1", 100, 10, Category.ELECTRONICS),
+        new Product( "Product 2", "Description 2", "Brand 2", 200, 20, Category.ELECTRONICS)
     );
     
     when(productSearchRepository.search("Product")).thenReturn(products);
