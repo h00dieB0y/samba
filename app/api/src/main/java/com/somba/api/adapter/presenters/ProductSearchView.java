@@ -6,9 +6,7 @@ public record ProductSearchView(
     String brand,
     int price,
     double rating,
-    int reviewsCount,
-    boolean isSponsored,
-    boolean isBestSeller
+    int reviewsCount
 ) {
   
 }
