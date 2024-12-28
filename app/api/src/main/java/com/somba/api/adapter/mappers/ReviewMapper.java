@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
+import com.somba.api.adapter.presenters.ReviewView;
 import com.somba.api.core.entities.Review;
 import com.somba.api.infrastructure.persistence.entities.ReviewEntity;
 
@@ -23,6 +24,14 @@ public class ReviewMapper {
       UUID.fromString(reviewEntity.getId()),
       UUID.fromString(reviewEntity.getProductId()),
       reviewEntity.getRating()
+    );
+  }
+
+  public ReviewView toReviewView(Review review) {
+    return new ReviewView(
+      review.id().toString(),
+      review.productId().toString(),
+      review.rating()
     );
   }
 }
