@@ -12,7 +12,7 @@ spring:
   # PostgreSQL Database (Test)
   # ----------------------------------------
   datasource:
-    url: jdbc:postgresql://postgres:5432/somba_ci_db
+    url: jdbc:postgresql://localhost:5432/somba_ci_catalog
     username: somba_ci_user
     password: StrongSombaCiPostgresPass123!
     driver-class-name: org.postgresql.Driver
@@ -36,7 +36,7 @@ spring:
   # ----------------------------------------
   data:
     mongodb:
-      host: mongodb
+      host: localhost
       port: 27017
       database: somba_ci_catalog
       username: somba_ci_mongo_user
@@ -47,7 +47,7 @@ spring:
   # Elasticsearch (Test)
   # ----------------------------------------
   elasticsearch:
-    uris: http://elasticsearch:9200
+    uris: http://localhost:9200
     connection-timeout: 1s
 
 # ----------------------------------------
