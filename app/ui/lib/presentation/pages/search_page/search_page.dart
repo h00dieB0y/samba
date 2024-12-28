@@ -95,7 +95,7 @@ class _SearchPageContentState extends State<SearchPageContent> {
                     return const Center(child: Text('No results found.'));
                   } else if (state is SearchLoaded) {
                     final products = state.products;
-                    return ProductList(products: products); // Use the new widget
+                    return ProductList(products: products);
                   } else if (state is SearchError) {
                     return Center(child: Text('Error: ${state.message}'));
                   }

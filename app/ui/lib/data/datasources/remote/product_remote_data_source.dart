@@ -42,21 +42,18 @@ class ProductRemoteDataSource {
   }
 
   Future<List<SearchProductItemModel>> searchProducts(String query) async {
-    final mockProductModels = <SearchProductItemModel>[];
+    final response = await client.get(
+        Uri.parse('http://localhost:8081/api/v1/products/search?q=$query'));
+    
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      final List<dynamic> products = jsonResponse['data'];
 
-    for (int i = 0; i < 10; i++) {
-      mockProductModels.add(SearchProductItemModel(
-        id: '$i',
-        name: 'Product $i',
-        brand: 'Brand $i',
-        price: (i + 1) * 1000,
-        rating: 4.5,
-        reviewCount: 120,
-        isSponsored: i % 2 == 0,
-        isBestSeller: i % 3 == 0,
-      ));
+      return products
+          .map((product) => SearchProductItemModel.fromJson(product))
+          .toList();
+    } else {
+      throw Exception('Failed to load products');
     }
-
-    return mockProductModels;
   }
 }
