@@ -23,9 +23,13 @@ import com.somba.api.core.entities.Review;
 import com.somba.api.core.exceptions.InvalidRatingException;
 import com.somba.api.core.exceptions.ResourceNotFoundException;
 import com.somba.api.core.ports.ProductRepository;
+import com.somba.api.core.ports.ReviewRepository;
 
 @ExtendWith(MockitoExtension.class)
 class CreateReviewUseCaseTest {
+
+  @Mock
+  private ReviewRepository reviewRepository;
 
   @Mock
   private ProductRepository productRepository;
@@ -52,8 +56,6 @@ class CreateReviewUseCaseTest {
         @BeforeEach
         void executeUseCase() {
           when(productRepository.getProductById(product.id())).thenReturn(Optional.of(product));
-          when(productRepository.save(product)).thenReturn(product);
-
           review = createReviewUseCase.execute(product.id().toString(), 5);
         }
 
@@ -64,6 +66,7 @@ class CreateReviewUseCaseTest {
           assertThat(review.rating()).isEqualTo(5);
           verify(productRepository).getProductById(product.id());
           verify(productRepository).save(product);
+          verify(reviewRepository).save(review);
         }
 
         @Test
