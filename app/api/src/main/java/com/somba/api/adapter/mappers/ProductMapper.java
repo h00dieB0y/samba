@@ -78,7 +78,8 @@ public class ProductMapper {
         .setDescription(product.description())
         .setBrand(product.brand())
         .setPrice(product.price())
-        .setStock(product.stock());
+        .setStock(product.stock())
+        .setCategory(product.category().name());
   }
 
   public ProductSearchView toProductSearchView(Product product, double score) {
