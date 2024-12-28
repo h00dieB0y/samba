@@ -1,5 +1,6 @@
 package com.somba.api.adapter.mappers;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -29,7 +30,12 @@ public class ProductMapper {
     productEntity.getBrand(),
     productEntity.getPrice(),
     productEntity.getStock(),
-    Category.valueOf(productEntity.getCategory())
+    Category.valueOf(productEntity.getCategory()),
+      productEntity
+        .getReviews()
+        .parallelStream()
+        .map(UUID::fromString)
+        .collect(ArrayList::new, ArrayList::add, ArrayList::addAll)
   );
   }
 
@@ -41,6 +47,13 @@ public class ProductMapper {
     .setBrand(product.brand())
     .setPrice(product.price())
     .setStock(product.stock())
-    .setCategory(product.category().name());
+    .setCategory(product.category().name())
+    .setReviews(
+      product
+        .reviews()
+        .parallelStream()
+        .map(UUID::toString)
+        .toList()
+    );
   }
 }
