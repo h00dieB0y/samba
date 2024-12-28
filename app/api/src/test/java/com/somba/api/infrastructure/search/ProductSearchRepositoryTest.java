@@ -29,7 +29,7 @@ class ProductSearchRepositoryTest {
     @Autowired
     private ElasticsearchOperations elasticsearchOperations;
 
-    private static final String ELASTICSEARCH_DOCKER_IMAGE = "docker.elastic.co/elasticsearch/elasticsearch:8.16.2";
+    private static final String ELASTICSEARCH_DOCKER_IMAGE = "docker.elastic.co/elasticsearch/elasticsearch:8.17.0";
 
     @Container
     public static ElasticsearchContainer elasticsearchContainer = new ElasticsearchContainer(DockerImageName.parse(ELASTICSEARCH_DOCKER_IMAGE))
