@@ -27,5 +27,11 @@ public class MdbReviewRepositoryAdapter implements ReviewRepository {
       )
     );
   }
+
+  @Override
+  public double averageRating(String productId) {
+    Double averageRating = this.mdbReviewRepository.averageRating(productId);
+    return averageRating != null ? averageRating : 0;
+  }
   
 }
