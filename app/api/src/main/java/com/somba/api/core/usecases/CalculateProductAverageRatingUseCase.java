@@ -2,9 +2,7 @@ package com.somba.api.core.usecases;
 
 import org.springframework.stereotype.Service;
 
-
 import com.somba.api.core.ports.ReviewRepository;
-
 
 @Service
 public class CalculateProductAverageRatingUseCase {
@@ -18,6 +16,6 @@ public class CalculateProductAverageRatingUseCase {
 
   public double execute(String productId) {
     getProductByIdUseCase.execute(productId);
-    return reviewRepository.averageRating(productId);
+    return reviewRepository.getAverageRatingByProductId(productId);
   }
 }
