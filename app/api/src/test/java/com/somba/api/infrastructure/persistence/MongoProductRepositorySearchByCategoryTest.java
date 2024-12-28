@@ -15,32 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.somba.api.infrastructure.persistence.entities.ProductEntity;
 
 @DataMongoTest
-@Testcontainers
 class MongoProductRepositorySearchByCategoryTest {
 
     private static final String CATEGORY_ONE = "category-one";
     private static final String CATEGORY_TWO = "category-two";
     private static final String CATEGORY_SPORTS = "sports";
 
-    @Container
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
-
     @Autowired
     private MdbProductRepository mdbProductRepository;
-
-    @DynamicPropertySource
-    static void mongoProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-    }
 
     @BeforeEach
     void setUp() {

@@ -2,8 +2,11 @@ package com.somba.api.adapter.controllers;
 
 import com.somba.api.adapter.presenters.ErrorDetails;
 import com.somba.api.core.exceptions.InvalidCategoryException;
+import com.somba.api.core.exceptions.InvalidKeywordException;
 import com.somba.api.core.exceptions.InvalidPaginationParameterException;
+import com.somba.api.core.exceptions.InvalidRatingException;
 import com.somba.api.core.exceptions.NullCategoryException;
+import com.somba.api.core.exceptions.ResourceNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,6 +145,54 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDetails handleNullCategoryException(NullCategoryException ex, WebRequest request) {
         logger.warn("Null category provided: {}", ex.getMessage());
+
+        return new ErrorDetails(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+    }
+
+    /**
+     * Handle InvalidRatingException.
+     */
+    @ExceptionHandler(InvalidRatingException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDetails handleInvalidRatingException(InvalidRatingException ex, WebRequest request) {
+        logger.warn("Invalid rating provided: {}", ex.getMessage());
+
+        return new ErrorDetails(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+    }
+
+    /**
+     * Handle ResourceNotFoundException.
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDetails handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+        logger.warn("Resource not found: {}", ex.getMessage());
+
+        return new ErrorDetails(
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                ex.getMessage(),
+                request.getDescription(false).replace("uri=", "")
+        );
+    }
+
+    /**
+     * Handle InvalidKeywordException.
+     */
+    @ExceptionHandler(InvalidKeywordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDetails handleInvalidKeywordException(InvalidKeywordException ex, WebRequest request) {
+        logger.warn("Invalid keyword: {}", ex.getMessage());
 
         return new ErrorDetails(
                 HttpStatus.BAD_REQUEST.value(),

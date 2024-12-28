@@ -12,56 +12,17 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.MongoDBContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.somba.api.adapter.presenters.ErrorDetails;
 import com.somba.api.adapter.presenters.ProductView;
 import com.somba.api.adapter.presenters.Response;
 import com.somba.api.core.entities.Product;
 import com.somba.api.core.enums.Category;
-import com.somba.api.core.ports.ProductRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
     "spring.profiles.active=test" })
-@Testcontainers
-class PaginatedProductsByCategoryE2ETest {
-
-  @Container
-  static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
-
-  @Container
-  static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
-
-  @DynamicPropertySource
-  static void configureProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-    registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-
-  }
-
-  @LocalServerPort
-  private int port;
-
-  @Autowired
-  private TestRestTemplate restTemplate;
-
-  @Autowired
-  private ProductRepository productRepository;
-
-  @Autowired
-  private ObjectMapper objectMapper;
-
-  private String baseUrl;
+class PaginatedProductsByCategoryE2ETest extends BaseE2ETest {
 
   @BeforeEach
   public void setUp() {
