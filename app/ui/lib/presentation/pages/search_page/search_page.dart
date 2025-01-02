@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui/domain/usecases/search_products_use_case.dart';
 import 'package:ui/presentation/cubits/products/search_cubit.dart';
 import 'package:ui/presentation/cubits/products/search_state.dart';
-import 'package:ui/presentation/widgets/app_bottom_navigation_bar.dart';
-import 'package:ui/presentation/widgets/search_bar_input.dart';
+import 'package:ui/presentation/pages/widgets/app_bottom_navigation_bar.dart';
+import 'package:ui/presentation/pages/widgets/search_bar_input.dart';
 import 'widgets/product_list.dart';
 
 class SearchPage extends StatelessWidget {

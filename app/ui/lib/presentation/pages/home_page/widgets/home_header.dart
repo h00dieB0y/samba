@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/presentation/pages/home_page/widgets/category_list.dart';
-import 'package:ui/presentation/widgets/search_bar_input.dart';
+import 'package:ui/presentation/pages/widgets/search_bar_input.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});

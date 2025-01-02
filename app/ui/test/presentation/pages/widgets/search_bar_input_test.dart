@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ui/presentation/widgets/search_bar_input.dart';
+import 'package:ui/presentation/pages/widgets/search_bar_input.dart';
 
 class SearchCallbackTracker {
   final List<String> queries = [];
