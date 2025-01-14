@@ -7,8 +7,8 @@ import 'package:ui/domain/repositories/product_repository.dart';
 import 'package:ui/domain/usecases/get_products_by_category_use_case.dart';
 import 'package:ui/domain/usecases/get_products_use_case.dart';
 import 'package:ui/domain/usecases/search_products_use_case.dart';
-import 'package:ui/presentation/pages/home_page/home_page.dart';
-import 'package:ui/presentation/pages/search_page/search_page.dart';
+
+import 'presentation/pages/main_scaffold.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,11 +45,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Somba',
-        initialRoute: '/',
-        routes: {
-          '/': (context) => HomePage(),
-          '/search': (context) => SearchPage(),
-        },
+        home: const MainScaffold(),
+        
       ),
     );
   }

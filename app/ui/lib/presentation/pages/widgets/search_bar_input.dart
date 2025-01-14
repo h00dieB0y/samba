@@ -32,6 +32,11 @@ class _SearchBarInputState extends State<SearchBarInput> {
     super.initState();
     _controller = widget.controller ?? TextEditingController();
     _focusNode = widget.focusNode ?? FocusNode();
+
+    // Listen to changes to update the UI (for the clear button)
+    _controller.addListener(() {
+      setState(() {});
+    });
   }
 
   void _onClearSearch() {
@@ -55,41 +60,38 @@ class _SearchBarInputState extends State<SearchBarInput> {
   }
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Material(
-          elevation: 2,
-          borderRadius: BorderRadius.circular(12),
-          child: ValueListenableBuilder<TextEditingValue>(
-            valueListenable: _controller,
-            builder: (context, value, child) {
-              return TextField(
-                key: const Key('search_bar_input_text_field'),
-                controller: _controller,
-                focusNode: _focusNode,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.search,
-                onSubmitted: (query) {
-                  widget.onSearch(query.trim());
-                },
-                decoration: InputDecoration(
-                  hintText: widget.hintText,
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: value.text.isNotEmpty
-                      ? IconButton(
-                          key: const Key('search_bar_input_clear_button'),
-                          icon: const Icon(Icons.clear),
-                          onPressed: _onClearSearch,
-                          tooltip: 'Clear search',
-                        )
-                      : null,
-                  border: InputBorder.none,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                ),
-              );
-            },
+  Widget build(BuildContext context) => Material(
+    elevation: 2,
+    borderRadius: BorderRadius.circular(12),
+    child: ValueListenableBuilder<TextEditingValue>(
+      valueListenable: _controller,
+      builder: (context, value, child) {
+        return TextField(
+          key: const Key('search_bar_input_text_field'),
+          controller: _controller,
+          focusNode: _focusNode,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.search,
+          onSubmitted: (query) {
+            widget.onSearch(query.trim());
+          },
+          decoration: InputDecoration(
+            hintText: widget.hintText,
+            prefixIcon: const Icon(Icons.search),
+            suffixIcon: value.text.isNotEmpty
+                ? IconButton(
+                    key: const Key('search_bar_input_clear_button'),
+                    icon: const Icon(Icons.clear),
+                    onPressed: _onClearSearch,
+                    tooltip: 'Clear search',
+                  )
+                : null,
+            border: InputBorder.none,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           ),
-        ),
-      );
+        );
+      },
+    ),
+  );
 }
