@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui/domain/entities/review_entity.dart';
 import 'review_tile.dart';
-import 'star_rating.dart';
+import '../../widgets/star_rating.dart';
 
 class ReviewsAndQnA extends StatelessWidget {
   final List<ReviewEntity> reviews;

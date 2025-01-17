@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'star_rating.dart';
+import '../../widgets/star_rating.dart';
 
 class ProductTitleAndRating extends StatelessWidget {
   final String productName;

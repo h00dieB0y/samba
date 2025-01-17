@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui/domain/entities/review_entity.dart';
-import 'star_rating.dart';
+import '../../widgets/star_rating.dart';
 import 'package:intl/intl.dart';
 
 class ReviewTile extends StatelessWidget {
