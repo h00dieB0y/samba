@@ -7,7 +7,7 @@ class ReviewEntity extends Equatable {
   final bool isVerifiedPurchase;
   final DateTime date;
 
-  ReviewEntity({
+  const ReviewEntity({
     required this.username,
     required this.rating,
     required this.comment,
