@@ -8,6 +8,7 @@ class RelatedProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
         // Navigate to the related product's detail page
@@ -16,12 +17,14 @@ class RelatedProductCard extends StatelessWidget {
         width: 160,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: Theme.of(context).cardColor,
+          color: theme.cardColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
+              color: theme.shadowColor.withValues(
+                alpha: 0.3,
+              ),
               blurRadius: 4,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
@@ -30,7 +33,7 @@ class RelatedProductCard extends StatelessWidget {
           children: [
             // Product Image
             ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
               child: Image.network(
                 product.image,
                 height: 120,
@@ -51,7 +54,7 @@ class RelatedProductCard extends StatelessWidget {
                   return Center(
                     child: Icon(
                       Icons.broken_image,
-                      color: Colors.grey,
+                      color: theme.colorScheme.onSurface,
                       size: 50,
                       semanticLabel: 'Image failed to load',
                     ),
@@ -65,7 +68,7 @@ class RelatedProductCard extends StatelessWidget {
                 product.name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                 semanticsLabel: 'Product Name: ${product.name}',
@@ -75,14 +78,14 @@ class RelatedProductCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 '\$${product.price}',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                      color: theme.colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                 semanticsLabel: 'Price: \$${product.price}',
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
           ],
         ),
       ),
