@@ -7,6 +7,7 @@ class ProductTitleAndRating extends StatelessWidget {
   final String brandName;
   final double rating;
   final int reviewCount;
+  final Map<int, int> reviewBreakdown;
 
   const ProductTitleAndRating({
     super.key,
@@ -14,6 +15,7 @@ class ProductTitleAndRating extends StatelessWidget {
     required this.brandName,
     required this.rating,
     required this.reviewCount,
+    required this.reviewBreakdown,
   });
 
   @override
@@ -61,13 +63,7 @@ class ProductTitleAndRating extends StatelessWidget {
         const SizedBox(height: 8),
         ReviewBreakdown(
           rating: rating,
-          reviewBreakdown: {
-            5: 80,
-            4: 15,
-            3: 3,
-            2: 1,
-            1: 1,
-          },
+          reviewBreakdown: reviewBreakdown,
         ),
       ],
     );

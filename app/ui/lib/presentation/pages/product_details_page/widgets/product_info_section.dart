@@ -19,6 +19,7 @@ class ProductInfoSection extends StatelessWidget {
           brandName: product.brand,
           rating: product.rating,
           reviewCount: product.reviewCount,
+          reviewBreakdown: product.ratingDistribution,
         ),
         SizedBox(height: 8),
         PriceAndAvailability(
