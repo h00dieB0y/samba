@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/presentation/pages/product_details_page/widgets/review_breakdown.dart';
 import '../../widgets/star_rating.dart';
 
 class ProductTitleAndRating extends StatelessWidget {
@@ -31,7 +32,8 @@ class ProductTitleAndRating extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           productName,
-          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style:
+              theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           semanticsLabel: 'Product Name: $productName',
         ),
         const SizedBox(height: 8),
@@ -57,50 +59,17 @@ class ProductTitleAndRating extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        // Review Breakdown (Example: 5 Stars - 50%, etc.)
-        ReviewBreakdown(rating: rating),
+        ReviewBreakdown(
+          rating: rating,
+          reviewBreakdown: {
+            5: 80,
+            4: 15,
+            3: 3,
+            2: 1,
+            1: 1,
+          },
+        ),
       ],
-    );
-  }
-}
-
-class ReviewBreakdown extends StatelessWidget {
-  final double rating;
-
-  const ReviewBreakdown({super.key, required this.rating});
-
-  @override
-  Widget build(BuildContext context) {
-    // Example data, replace with actual data
-    final Map<int, double> breakdown = {
-      5: 50.0,
-      4: 30.0,
-      3: 10.0,
-      2: 5.0,
-      1: 5.0,
-    };
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: breakdown.entries.map((entry) {
-        return Row(
-          children: [
-            Text('${entry.key}'),
-            SizedBox(width: 4),
-            Icon(Icons.star, color: Colors.orange, size: 16),
-            SizedBox(width: 8),
-            Expanded(
-              child: LinearProgressIndicator(
-                value: entry.value / 100,
-                color: Colors.orange,
-                backgroundColor: Colors.grey[300],
-              ),
-            ),
-            SizedBox(width: 8),
-            Text('${entry.value.toStringAsFixed(0)}%'),
-          ],
-        );
-      }).toList(),
     );
   }
 }

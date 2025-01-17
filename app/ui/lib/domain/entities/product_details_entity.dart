@@ -45,6 +45,15 @@ class ProductDetailsEntity extends Equatable {
 
   int get reviewCount => reviews.length;
 
+  Map<int, int> get ratingDistribution {
+    final distribution = <int, int>{};
+    for (final review in reviews) {
+      final rating = review.rating.toInt();
+      distribution[rating] = (distribution[rating] ?? 0) + 1;
+    }
+    return distribution;
+  }
+
   @override
   List<Object?> get props => [
         id,
