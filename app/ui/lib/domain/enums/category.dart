@@ -26,8 +26,6 @@ extension CategoryExtension on Category {
         return 'Sports';
       case Category.shoes:
         return 'Shoes';
-      default:
-        return '';
-    }
+      }
   }
 }
