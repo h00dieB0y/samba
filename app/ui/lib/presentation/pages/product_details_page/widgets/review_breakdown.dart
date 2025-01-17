@@ -13,6 +13,8 @@ class ReviewBreakdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final totalReviews = reviewBreakdown.values.fold(0, (a, b) => a + b);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: reviewBreakdown.entries.map((entry) {
@@ -20,26 +22,27 @@ class ReviewBreakdown extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 4.0),
           child: Row(
             children: [
-              SizedBox(
-                width: 30,
-                child: Row(
-                  children: List.generate(
-                    entry.key,
-                    (index) => Icon(Icons.star, color: theme.colorScheme.secondary, size: 16),
-                  ),
+              Row(
+                children: List.generate(
+                  entry.key,
+                  (index) => Icon(Icons.star, color: theme.colorScheme.secondary, size: 16),
                 ),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Expanded(
                 child: LinearProgressIndicator(
-                  value: entry.value / reviewBreakdown.values.reduce((a, b) => a + b),
+                  value: entry.value / totalReviews,
                   minHeight: 8,
                   color: theme.colorScheme.secondary,
                   backgroundColor: theme.dividerColor,
                 ),
               ),
-              SizedBox(width: 8),
-              Text('${entry.value}%', style: theme.textTheme.bodyMedium),
+              const SizedBox(width: 8),
+              Text(
+                '${entry.value}%',
+                style: theme.textTheme.bodyMedium,
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
           ),
         );
