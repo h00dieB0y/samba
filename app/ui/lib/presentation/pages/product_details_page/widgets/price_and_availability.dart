@@ -96,7 +96,7 @@ class _PriceAndAvailabilityState extends State<PriceAndAvailability> {
     );
 
     TextStyle shippingStyle = theme.textTheme.labelMedium!.copyWith(
-      color: theme.colorScheme.onSurface.withOpacity(0.7),
+      color: theme.colorScheme.onSurface.withValues(alpha: 0.7)
     );
 
     TextStyle countdownStyle = theme.textTheme.bodyMedium!.copyWith(
@@ -119,7 +119,7 @@ class _PriceAndAvailabilityState extends State<PriceAndAvailability> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.error.withOpacity(0.1),
+                  color: theme.colorScheme.error.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
