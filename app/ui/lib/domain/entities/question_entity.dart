@@ -1,19 +1,27 @@
-class QuestionEntity {
+import 'package:equatable/equatable.dart';
+
+class QuestionEntity extends Equatable {
   final String question;
   final List<AnswerEntity> answers;
 
-  QuestionEntity({
+  const QuestionEntity({
     required this.question,
     required this.answers,
   });
+
+  @override
+  List<Object?> get props => [question, answers];
 }
 
-class AnswerEntity {
+class AnswerEntity extends Equatable {
   final String answer;
   final String answeredBy;
 
-  AnswerEntity({
+  const AnswerEntity({
     required this.answer,
     required this.answeredBy,
   });
+
+  @override
+  List<Object?> get props => [answer, answeredBy];
 }

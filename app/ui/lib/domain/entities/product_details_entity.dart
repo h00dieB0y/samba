@@ -1,8 +1,10 @@
+import 'package:equatable/equatable.dart';
+
 import 'related_product_entity.dart';
 import 'question_entity.dart';
 import 'review_entity.dart';
 
-class ProductDetailsEntity {
+class ProductDetailsEntity extends Equatable {
   final String id;
   final String name;
   final String brand;
@@ -42,5 +44,25 @@ class ProductDetailsEntity {
   double get rating => reviews.fold(0.0, (previousValue, element) => previousValue + element.rating) / reviews.length;
 
   int get reviewCount => reviews.length;
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        brand,
+        price,
+        oldPrice,
+        discount,
+        stockStatus,
+        shippingLabel,
+        offerEndTime,
+        cartCount,
+        images,
+        description,
+        specifications,
+        reviews,
+        relatedProducts,
+        questions,
+      ];
 }
 
