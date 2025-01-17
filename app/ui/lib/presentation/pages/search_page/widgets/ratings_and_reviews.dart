@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/presentation/pages/widgets/star_rating.dart';
 
 class RatingsAndReviews extends StatelessWidget {
   final double rating;
@@ -10,25 +11,10 @@ class RatingsAndReviews extends StatelessWidget {
     required this.reviewCount,
   });
 
-  // Helper method to build star ratings
-  Widget _buildStarRating(double rating) {
-    List<Widget> stars = [];
-    for (int i = 1; i <= 5; i++) {
-      if (i <= rating.floor()) {
-        stars.add(const Icon(Icons.star, size: 16, color: Colors.amber));
-      } else if (i - rating < 1) {
-        stars.add(const Icon(Icons.star_half, size: 16, color: Colors.amber));
-      } else {
-        stars.add(const Icon(Icons.star_border, size: 16, color: Colors.amber));
-      }
-    }
-    return Row(children: stars);
-  }
-
   @override
   Widget build(BuildContext context) => Row(
         children: [
-          _buildStarRating(rating),
+          StarRating(rating: rating, size: 16),
           const SizedBox(width: 5),
           Text(
             '($reviewCount)',
