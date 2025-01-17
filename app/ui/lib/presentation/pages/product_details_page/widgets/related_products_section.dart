@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui/domain/entities/product_details_entity.dart';
 import 'package:ui/domain/entities/related_product_entity.dart';
 import 'related_product_card.dart';
 
