@@ -23,6 +23,7 @@ class ReviewBreakdown extends StatelessWidget {
           child: Row(
             children: [
               Row(
+                key: Key('star_rating_$entry.key'),
                 children: List.generate(
                   entry.key,
                   (index) => Icon(Icons.star, color: theme.colorScheme.secondary, size: 16),
