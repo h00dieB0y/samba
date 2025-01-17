@@ -13,14 +13,44 @@ class SocialSharing extends StatelessWidget {
   });
 
   void _share(BuildContext context, String platform) {
-    String shareText = '$productName\n$productUrl';
-    // Customize sharing based on platform if needed
+    final shareText = '$productName\n$productUrl';
     Share.share(shareText, subject: 'Check out this product!');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Shared via $platform')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final platforms = [
+      {
+        'icon': FontAwesomeIcons.facebook,
+        'color': Colors.blue,
+        'name': 'Facebook',
+      },
+      {
+        'icon': FontAwesomeIcons.twitter,
+        'color': Colors.lightBlue,
+        'name': 'Twitter',
+      },
+      {
+        'icon': FontAwesomeIcons.pinterest,
+        'color': Colors.red,
+        'name': 'Pinterest',
+      },
+      {
+        'icon': FontAwesomeIcons.linkedin,
+        'color': Colors.blueAccent,
+        'name': 'LinkedIn',
+      },
+      {
+        'icon': FontAwesomeIcons.whatsapp,
+        'color': Colors.green,
+        'name': 'WhatsApp',
+      },
+    ];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Row(
@@ -29,22 +59,12 @@ class SocialSharing extends StatelessWidget {
             'Share:',
             style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
-          SizedBox(width: 8),
-          IconButton(
-            icon: Icon(FontAwesomeIcons.facebook, color: Colors.blue),
-            onPressed: () => _share(context, 'facebook'),
-            tooltip: 'Share on Facebook',
-          ),
-          IconButton(
-            icon: Icon(FontAwesomeIcons.twitter, color: Colors.lightBlue),
-            onPressed: () => _share(context, 'twitter'),
-            tooltip: 'Share on Twitter',
-          ),
-          IconButton(
-            icon: Icon(FontAwesomeIcons.pinterest, color: Colors.red),
-            onPressed: () => _share(context, 'pinterest'),
-            tooltip: 'Share on Pinterest',
-          ),
+          const SizedBox(width: 8),
+          ...platforms.map((platform) => IconButton(
+                icon: Icon(platform['icon'] as IconData, color: platform['color'] as Color),
+                onPressed: () => _share(context, platform['name'] as String),
+                tooltip: 'Share on ${platform['name']}',
+              )),
         ],
       ),
     );
