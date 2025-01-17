@@ -60,11 +60,14 @@ class SocialSharing extends StatelessWidget {
             style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(width: 8),
-          ...platforms.map((platform) => IconButton(
-                icon: Icon(platform['icon'] as IconData, color: platform['color'] as Color),
-                onPressed: () => _share(context, platform['name'] as String),
-                tooltip: 'Share on ${platform['name']}',
-              )),
+          ...platforms.map((platform) => 
+            IconButton(
+              key: Key('share_${platform['name']}'), // Corrected Key assignment
+              icon: Icon(platform['icon'] as IconData, color: platform['color'] as Color),
+              onPressed: () => _share(context, platform['name'] as String),
+              tooltip: 'Share on ${platform['name']}',
+            ),
+          ),
         ],
       ),
     );
