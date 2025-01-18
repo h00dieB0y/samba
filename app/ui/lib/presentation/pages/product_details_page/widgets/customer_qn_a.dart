@@ -29,6 +29,7 @@ class CustomerQnA extends StatelessWidget {
           SizedBox(height: 16),
           // Ask a Question Button
           ElevatedButton.icon(
+            key: const Key('ask_question_button'),
             onPressed: () {
               // Open Ask Question Form
             },
