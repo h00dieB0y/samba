@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:ui/data/datasources/remote/product_remote_data_source.dart';
 import 'package:ui/data/repositories/product_repository_impl.dart';
 import 'package:ui/domain/entities/product_details_entity.dart';
+import 'package:ui/domain/entities/question_entity.dart';
 import 'package:ui/domain/entities/related_product_entity.dart';
 import 'package:ui/domain/entities/review_entity.dart';
 import 'package:ui/domain/repositories/product_repository.dart';
@@ -84,7 +85,22 @@ class MyApp extends StatelessWidget {
         image: 'https://placehold.co/600x400.png',
       ),
     ],
-    questions: [],
+    questions: [
+      QuestionEntity(
+        question: 'How long does the battery last on a full charge?',
+        answers: [
+          AnswerEntity(
+            answer: 'The battery lasts up to 20 hours on a full charge.',
+            answeredBy: 'Alice',
+          ),
+          AnswerEntity(
+            answer: 'Yes, the battery is rechargeable.',
+            answeredBy: 'Bob',
+          ),
+        ],
+      ),
+    ],
+
   );
   MyApp({super.key});
 
