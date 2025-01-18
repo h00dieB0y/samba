@@ -11,18 +11,18 @@ class CustomerQuestionTile extends StatelessWidget {
     return ExpansionTile(
       title: Text(
         question.question,
-        style: TextStyle(fontWeight: FontWeight.bold),
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
       ),
       children: question.answers.isNotEmpty
           ? question.answers.map((answer) {
               return ListTile(
                 title: Text(
                   answer.answer,
-                  style: TextStyle(color: Colors.grey[700]),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 subtitle: Text(
                   'Answered by ${answer.answeredBy}',
-                  style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               );
             }).toList()
@@ -30,7 +30,7 @@ class CustomerQuestionTile extends StatelessWidget {
               ListTile(
                 title: Text(
                   'No answers yet.',
-                  style: TextStyle(color: Colors.grey[700]),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
             ],
