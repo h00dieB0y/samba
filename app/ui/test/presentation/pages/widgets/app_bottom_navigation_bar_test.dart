@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ui/presentation/widgets/app_bottom_navigation_bar.dart';
+import 'package:ui/presentation/pages/widgets/app_bottom_navigation_bar.dart';
 
 void main() {
   group('AppBottomNavigationBar', () {

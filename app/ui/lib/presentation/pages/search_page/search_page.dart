@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui/domain/usecases/search_products_use_case.dart';
 import 'package:ui/presentation/cubits/products/search_cubit.dart';
 import 'package:ui/presentation/cubits/products/search_state.dart';
-import 'package:ui/presentation/widgets/app_bottom_navigation_bar.dart';
-import 'package:ui/presentation/widgets/search_bar_input.dart';
+import 'package:ui/presentation/pages/widgets/search_bar_input.dart';
 import 'widgets/product_list.dart';
+
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -71,16 +71,21 @@ class _SearchPageContentState extends State<SearchPageContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: SearchBarInput(
+          hintText: 'Search on Somba.com',
+          onSearch: _onSearch,
+          controller: _searchController,
+          focusNode: _focusNode,
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // SearchBarInput without debounce
-            SearchBarInput(
-              hintText: 'Search on Somba.com',
-              onSearch: _onSearch,
-              controller: _searchController,
-              focusNode: _focusNode,
-            ),
             const SizedBox(height: 10),
             // Display results from the SearchCubit
             Expanded(
@@ -107,15 +112,6 @@ class _SearchPageContentState extends State<SearchPageContent> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: AppBottomNavigationBar(
-        onTap: (index) {
-          // Example: navigate back to Home if index == 0
-          if (index == 0) {
-            Navigator.pop(context);
-          }
-        },
-        currentIndex: 0,
       ),
     );
   }
