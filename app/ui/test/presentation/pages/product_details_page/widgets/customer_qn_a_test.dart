@@ -7,48 +7,6 @@ import 'package:ui/domain/entities/review_entity.dart';
 import 'package:ui/presentation/pages/product_details_page/widgets/customer_qn_a.dart';
 import 'package:ui/presentation/pages/product_details_page/widgets/customer_question_tile.dart';
 
-
-ProductDetailsEntity createTestProductDetails({
-  List<QuestionEntity>? questions,
-}) {
-  return ProductDetailsEntity(
-    id: '1',
-    name: 'Test Product',
-    brand: 'Test Brand',
-    price: '\$99.99',
-    oldPrice: '\$119.99',
-    discount: '20%',
-    stockStatus: 'In Stock',
-    shippingLabel: 'Free Shipping',
-    offerEndTime: DateTime.now().add(Duration(days: 5)),
-    cartCount: 0,
-    images: ['https://example.com/image1.png', 'https://example.com/image2.png'],
-    description: 'This is a test product description.',
-    specifications: {
-      'Weight': '1kg',
-      'Color': 'Red',
-      'Material': 'Plastic',
-    },
-    reviews: [
-      ReviewEntity(
-        username: 'Alice',
-        rating: 4.5,
-        comment: 'Great product!',
-        date: DateTime.now().subtract(Duration(days: 2)),
-      ),
-    ],
-    relatedProducts: [
-      RelatedProductEntity(
-        id: '2',
-        name: 'Related Product 1',
-        price: '\$59.99',
-        image: 'https://example.com/related1.png',
-      ),
-    ],
-    questions: questions ?? [],
-  );
-}
-
 List<QuestionEntity> createTestQuestions() {
   return [
     QuestionEntity(
@@ -73,21 +31,17 @@ List<QuestionEntity> createTestQuestions() {
 void main() {
   group('CustomerQnA Widget Tests', () {
     // Sample data with questions
-    final productWithQuestions = createTestProductDetails(
-      questions: createTestQuestions(),
-    );
+    final emptyQuestions = <QuestionEntity>[];
 
-    // Sample data without questions
-    final productWithoutQuestions = createTestProductDetails(
-      questions: [],
-    );
+    final sampleQuestions = createTestQuestions();
 
     testWidgets('Displays the Q&A section title correctly', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: CustomerQnA(
-              product: productWithQuestions,
+              questions: sampleQuestions,
+              onAskQuestion: () {},
             ),
           ),
         ),
@@ -102,7 +56,8 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CustomerQnA(
-              product: productWithQuestions,
+              questions: sampleQuestions,
+              onAskQuestion: () {},
             ),
           ),
         ),
@@ -119,7 +74,10 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CustomerQnA(
-              product: productWithQuestions,
+              questions: sampleQuestions,
+              onAskQuestion: () {
+                wasTapped = true;
+              },
             ),
           ),
         ),
@@ -139,17 +97,18 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CustomerQnA(
-              product: productWithQuestions,
+              questions: sampleQuestions,
+              onAskQuestion: () {},
             ),
           ),
         ),
       );
 
       // Verify that the correct number of CustomerQuestionTile widgets are rendered
-      expect(find.byType(CustomerQuestionTile), findsNWidgets(productWithQuestions.questions.length));
+      expect(find.byType(CustomerQuestionTile), findsNWidgets(sampleQuestions.length));
 
       // Optionally, verify specific question texts
-      for (var question in productWithQuestions.questions) {
+      for (var question in sampleQuestions) {
         expect(find.text(question.question), findsWidgets);
       }
     });
@@ -159,7 +118,8 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CustomerQnA(
-              product: productWithoutQuestions,
+              questions: emptyQuestions,
+              onAskQuestion: () {},
             ),
           ),
         ),

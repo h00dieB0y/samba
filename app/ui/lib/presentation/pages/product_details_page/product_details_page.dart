@@ -34,7 +34,6 @@ class ProductDetailsPage extends StatelessWidget {
                   relatedProducts: product.relatedProducts,
                 ),
                 CollapsibleSections(product: product),
-                CustomerQnA(product: product),
                 SocialSharing(
                   productName: product.name,
                   productUrl: "https://example.com/product/${product.id}",

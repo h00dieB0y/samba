@@ -4,14 +4,14 @@ import 'package:ui/domain/entities/question_entity.dart';
 import 'customer_question_tile.dart';
 
 class CustomerQnA extends StatelessWidget {
-  final ProductDetailsEntity product;
+  final List<QuestionEntity> questions;
+  final VoidCallback onAskQuestion;
 
-  const CustomerQnA({super.key, required this.product});
+  const CustomerQnA({super.key, required this.questions, required this.onAskQuestion});
 
   @override
   Widget build(BuildContext context) {
     // Assuming product.questions is a list of QuestionEntity
-    final List<QuestionEntity> questions = product.questions;
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -30,9 +30,7 @@ class CustomerQnA extends StatelessWidget {
           // Ask a Question Button
           ElevatedButton.icon(
             key: const Key('ask_question_button'),
-            onPressed: () {
-              // Open Ask Question Form
-            },
+            onPressed: onAskQuestion,
             icon: Icon(Icons.question_answer),
             label: Text('Ask a Question'),
             style: ElevatedButton.styleFrom(

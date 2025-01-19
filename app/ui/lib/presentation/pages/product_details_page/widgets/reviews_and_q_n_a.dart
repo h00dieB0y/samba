@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:ui/domain/entities/question_entity.dart';
 import 'package:ui/domain/entities/review_entity.dart';
+import 'customer_qn_a.dart';
 import 'review_tile.dart';
 import '../../widgets/star_rating.dart';
 
 class ReviewsAndQnA extends StatelessWidget {
   final List<ReviewEntity> reviews;
+  final List<QuestionEntity> questions;
   final double averageRating;
 
-  const ReviewsAndQnA({super.key, required this.reviews, required this.averageRating});
+  const ReviewsAndQnA(
+      {super.key,
+      required this.reviews,
+      required this.questions,
+      required this.averageRating});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,8 @@ class ReviewsAndQnA extends StatelessWidget {
               Text(
                 '${averageRating.toStringAsFixed(1)} out of 5',
                 style: Theme.of(context).textTheme.titleMedium,
-                semanticsLabel: 'Average rating: ${averageRating.toStringAsFixed(1)} out of 5',
+                semanticsLabel:
+                    'Average rating: ${averageRating.toStringAsFixed(1)} out of 5',
               ),
             ],
           ),
@@ -77,6 +85,11 @@ class ReviewsAndQnA extends StatelessWidget {
                     semanticsLabel: 'No reviews available',
                   ),
                 ),
+          // Customer Q&A Section
+          const SizedBox(height: 16),
+          CustomerQnA(questions: questions, onAskQuestion: () {
+            // Open Ask Question Form
+          }),
         ],
       ),
     );

@@ -22,7 +22,7 @@ class ProductDetailsEntity extends Equatable {
   final List<RelatedProductEntity> relatedProducts;
   final List<QuestionEntity> questions;
 
-  ProductDetailsEntity({
+  const ProductDetailsEntity({
     required this.id,
     required this.name,
     required this.brand,
@@ -46,10 +46,12 @@ class ProductDetailsEntity extends Equatable {
   int get reviewCount => reviews.length;
 
   Map<int, int> get ratingDistribution {
-    final distribution = <int, int>{};
+    final distribution = {5:0, 4:0, 3:0, 2:0, 1:0};
     for (final review in reviews) {
       final rating = review.rating.toInt();
-      distribution[rating] = (distribution[rating] ?? 0) + 1;
+      if (distribution.containsKey(rating)) {
+        distribution[rating] = distribution[rating]! + 1;
+      }
     }
     return distribution;
   }

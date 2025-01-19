@@ -6,11 +6,12 @@ class CollapsibleSections extends StatelessWidget {
   final ProductDetailsEntity product;
 
   const CollapsibleSections({super.key, required this.product});
-  
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return ExpansionPanelList.radio(
+    return SingleChildScrollView(
+        child: ExpansionPanelList.radio(
       expandedHeaderPadding: const EdgeInsets.symmetric(vertical: 8.0),
       animationDuration: const Duration(milliseconds: 500),
       children: [
@@ -19,10 +20,12 @@ class CollapsibleSections extends StatelessWidget {
           value: 'description',
           headerBuilder: (context, isExpanded) {
             return ListTile(
-              leading: Icon(Icons.description, color: theme.colorScheme.primary),
+              leading:
+                  Icon(Icons.description, color: theme.colorScheme.primary),
               title: Text(
                 'Description',
-                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
             );
           },
@@ -42,7 +45,8 @@ class CollapsibleSections extends StatelessWidget {
               leading: Icon(Icons.list_alt, color: theme.colorScheme.primary),
               title: Text(
                 'Specifications',
-                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
             );
           },
@@ -61,12 +65,14 @@ class CollapsibleSections extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
                               entry.key,
-                              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+                              style: theme.textTheme.titleSmall
+                                  ?.copyWith(fontWeight: FontWeight.w600),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(entry.value, style: theme.textTheme.bodyMedium),
+                            child: Text(entry.value,
+                                style: theme.textTheme.bodyMedium),
                           ),
                         ],
                       );
@@ -83,19 +89,22 @@ class CollapsibleSections extends StatelessWidget {
           value: 'reviews',
           headerBuilder: (context, isExpanded) {
             return ListTile(
-              leading: Icon(Icons.rate_review, color: theme.colorScheme.primary),
+              leading:
+                  Icon(Icons.rate_review, color: theme.colorScheme.primary),
               title: Text(
-                'Reviews',
-                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                'Reviews & QnA',
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
             );
           },
           body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: ReviewsAndQnA(reviews: product.reviews, averageRating: product.rating),
+            child: ReviewsAndQnA(
+                reviews: product.reviews, averageRating: product.rating, questions: product.questions),
           ),
         ),
       ],
-    );
+    ));
   }
 }
