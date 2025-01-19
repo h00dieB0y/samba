@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ui/domain/entities/product_details_entity.dart';
 import 'package:ui/domain/entities/question_entity.dart';
-import 'package:ui/domain/entities/related_product_entity.dart';
-import 'package:ui/domain/entities/review_entity.dart';
 import 'package:ui/presentation/pages/product_details_page/widgets/customer_qn_a.dart';
 import 'package:ui/presentation/pages/product_details_page/widgets/customer_question_tile.dart';
 

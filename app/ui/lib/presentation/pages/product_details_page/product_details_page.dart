@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ui/domain/entities/product_details_entity.dart';
-import 'package:ui/presentation/pages/product_details_page/widgets/customer_qn_a.dart';
 import 'package:ui/presentation/pages/product_details_page/widgets/social_sharing.dart';
 import 'package:ui/presentation/pages/search_page/search_page.dart';
 import 'package:ui/presentation/pages/widgets/app_bottom_navigation_bar.dart';

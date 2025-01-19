@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui/domain/entities/product_details_entity.dart';
 import 'package:ui/domain/entities/question_entity.dart';
 import 'customer_question_tile.dart';
 
